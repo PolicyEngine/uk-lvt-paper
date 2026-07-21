@@ -1,0 +1,68 @@
+\appendix
+\section{Appendix}
+\label{sec:appendix}
+
+\subsection{Impact by income decile at alternative rates}
+
+Table~\ref{tab:rategrid} reports the average net income change by income decile across the full rate grid, with council tax abolished in every scenario. At 0.5 per cent every decile gains on average, the reform reducing net revenue by \pounds 20.3 billion; from 1.5 per cent upwards every decile loses on average, with losses concentrated in deciles 9--10.
+
+\begin{table}[htbp]
+\centering
+\caption{Average net income change (\pounds/year) by income decile and LVT rate}
+\label{tab:rategrid}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Decile & 0.5\% & 0.77\% & 1.0\% & 1.5\% & 2.0\% & 3.0\% & 5.0\% \\
+\midrule
+1  & $+$826   & $+$481  & $+$192   & $-$442    & $-$1{,}076 & $-$2{,}344  & $-$4{,}880 \\
+2  & $+$527   & $+$20   & $-$404   & $-$1{,}335 & $-$2{,}265 & $-$4{,}127  & $-$7{,}850 \\
+3  & $+$563   & $+$59   & $-$362   & $-$1{,}287 & $-$2{,}212 & $-$4{,}063  & $-$7{,}763 \\
+4  & $+$784   & $+$386  & $+$53    & $-$678    & $-$1{,}409 & $-$2{,}870  & $-$5{,}794 \\
+5  & $+$705   & $+$208  & $-$207   & $-$1{,}119 & $-$2{,}031 & $-$3{,}855  & $-$7{,}502 \\
+6  & $+$681   & $+$81   & $-$421   & $-$1{,}523 & $-$2{,}625 & $-$4{,}830  & $-$9{,}238 \\
+7  & $+$1{,}020 & $+$513  & $+$88    & $-$844    & $-$1{,}776 & $-$3{,}640  & $-$7{,}369 \\
+8  & $+$801   & $+$70   & $-$541   & $-$1{,}883 & $-$3{,}225 & $-$5{,}909  & $-$11{,}277 \\
+9  & $+$149   & $-$991  & $-$1{,}944 & $-$4{,}037 & $-$6{,}130 & $-$10{,}317 & $-$18{,}690 \\
+10 & $+$241   & $-$966  & $-$1{,}975 & $-$4{,}191 & $-$6{,}407 & $-$10{,}840 & $-$19{,}704 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+{\footnotesize\emph{Note:} Rates above 0.77\% raise net revenue that is not recycled; rates below it reduce net revenue. \emph{Source:} Authors' calculations using PolicyEngine UK.}
+\end{table}
+
+\subsection{Landless households}
+
+Households holding no land --- neither residential property nor corporate wealth --- make up 17.2 per cent of the population. Because their LVT liability is zero at any rate, their outcome is invariant across the rate grid: an average gain of \pounds 832 per year (their abolished council tax bill), with 81.5 per cent winning. The non-winners are predominantly households whose council tax was already fully covered by council tax reduction, for whom abolition changes nothing.
+
+\subsection{Worked single-household example}
+
+Consider a household owning a \pounds 400{,}000 home in a region with a land share of 85 per cent, implying a household land value of \pounds 340{,}000. At the budget-neutral rate of 0.77 per cent, its annual LVT on residential land is $0.0077 \times 340{,}000 = \pounds 2{,}618$; at a 1 per cent rate the liability would be \pounds 3{,}400. If the household also holds \pounds 50{,}000 of corporate wealth, it bears in addition a pro-rata share of the \pounds 2.06 trillion corporate land base --- in the microsimulation, \pounds 50{,}000 multiplied by the ratio of aggregate corporate land to aggregate weighted corporate wealth, corresponding to attributed land on the order of tens of thousands of pounds. Whether the household gains from the reform depends on its abolished council tax liability: with a typical upper-band bill above \pounds 3{,}000, it approximately breaks even at 0.77 per cent.
+
+We note that the \texttt{single\_household\_example} block in the accompanying results file reports a corporate land allocation of \pounds 2.06 trillion for this single test household. This figure is an artifact of executing the allocation formula in a one-household simulation, in which the household constitutes the entire population and therefore absorbs the full corporate land base; we accordingly exclude it from the example above.
+
+\subsection{Data and parameter summary}
+
+\begin{table}[htbp]
+\centering
+\caption{Key data sources and parameters}
+\label{tab:params}
+\begin{tabular}{lll}
+\toprule
+Item & Value & Source / method \\
+\midrule
+Microdata & EFRS 2023--24 & FRS + SPI quantile-forest enhancement \\
+Simulation year & 2026 & PolicyEngine UK \\
+Council tax, gross & \pounds 61.9bn & Modelled; calibrated to OBR receipts \\
+Council tax reduction & \pounds 4.3bn & Modelled \\
+Council tax, net ($R_{\mathrm{CT}}$) & \pounds 57.6bn & Equation~(\ref{eq:ctrev}) \\
+Household land & \pounds 5.40tn & WAS property wealth $\times$ regional land shares \\
+Corporate land & \pounds 2.06tn & ONS NBS; allocated by corporate wealth \\
+Total land base ($L$) & \pounds 7.46tn & ONS NBS 2024 (\pounds 7.10tn), OBR-uprated \\
+Regional land shares & 42\%--85\% & North East to London \\
+Budget-neutral rate ($r^{*}$) & 0.77\% & $R_{\mathrm{CT}}/L$ \\
+Reform parameters & \texttt{lvt.rate}, & \texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}; \\
+ & \texttt{abolish\_ct} & \texttt{gov.contrib.abolish\_council\_tax} \\
+\bottomrule
+\end{tabular}
+\end{table}
