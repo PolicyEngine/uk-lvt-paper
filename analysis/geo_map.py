@@ -34,7 +34,11 @@ from matplotlib.colors import TwoSlopeNorm  # noqa: E402
 
 YEAR = 2026
 WEIGHTS_YEAR = 2025  # only year present in the weights file
-LVT_RATE = 0.0077
+# The budget-neutral rate is solved on whichever dataset this script runs on.
+# Hard-coding the headline 0.77% from the paper's dataset produced a map on
+# which almost every constituency lost, because the swap was not revenue
+# neutral on this one.
+LVT_RATE: float | None = None
 
 UK_DATA_STORAGE = Path(
     "/Users/janansadeqian/policyengine-uk-data/policyengine_uk_data/storage"
@@ -62,10 +66,24 @@ def get_dataset():
     return UKSingleYearDataset(str(DATASET_PATH))
 
 
-def household_income_change(dataset: str) -> np.ndarray:
+def budget_neutral_rate(baseline) -> float:
+    """Net council tax revenue divided by total land value, on this dataset."""
+    w = np.asarray(baseline.calculate("household_weight", YEAR).values, dtype=np.float64)
+    ct = np.asarray(
+        baseline.calculate("council_tax_less_benefit", YEAR).values, dtype=np.float64
+    )
+    land = np.asarray(baseline.calculate("land_value", YEAR).values, dtype=np.float64)
+    return float(np.sum(ct * w) / np.sum(land * w))
+
+
+def household_income_change(dataset: str) -> tuple[np.ndarray, float]:
     from policyengine_uk import Microsimulation
 
     baseline = Microsimulation(dataset=dataset)
+    global LVT_RATE
+    if LVT_RATE is None:
+        LVT_RATE = budget_neutral_rate(baseline)
+        print(f"budget-neutral rate on this dataset: {LVT_RATE:.4%}")
     reform = Microsimulation(
         dataset=dataset,
         reform={
@@ -81,7 +99,17 @@ def household_income_change(dataset: str) -> np.ndarray:
     ref = np.asarray(
         reform.calculate("household_net_income", YEAR).values, dtype=np.float64
     )
-    return ref - base
+    change = ref - base
+    w = np.asarray(baseline.calculate("household_weight", YEAR).values, dtype=np.float64)
+    aggregate = float(np.sum(change * w))
+    mean = aggregate / float(np.sum(w))
+    print(f"aggregate net change: £{aggregate / 1e9:.2f}bn (£{mean:.0f} per household)")
+    if abs(mean) > 25:
+        raise RuntimeError(
+            f"Swap is not revenue neutral on this dataset: mean change £{mean:.0f} "
+            "per household. The map would show a level shift, not redistribution."
+        )
+    return change, LVT_RATE
 
 
 def constituency_table(change: np.ndarray) -> pd.DataFrame:
@@ -105,7 +133,7 @@ def constituency_table(change: np.ndarray) -> pd.DataFrame:
     )
 
 
-def draw_map(df: pd.DataFrame, path: Path) -> None:
+def draw_map(df: pd.DataFrame, path: Path, rate: float) -> None:
     figstyle.apply_style()
     gdf = gpd.read_file(BOUNDARIES)[["GSScode", "geometry"]]
     merged = gdf.merge(df, left_on="GSScode", right_on="code", how="inner")
@@ -138,7 +166,7 @@ def draw_map(df: pd.DataFrame, path: Path) -> None:
     cbar.outline.set_visible(False)
     cbar.set_label(
         "Average household net income change (£/year), "
-        "council tax → 0.77% LVT"
+        f"council tax → {rate:.2%} LVT"
     )
     figstyle.save(fig, path)
     print("wrote", path)
@@ -147,7 +175,7 @@ def draw_map(df: pd.DataFrame, path: Path) -> None:
 def main() -> None:
     GEO.mkdir(parents=True, exist_ok=True)
     dataset = get_dataset()
-    change = household_income_change(dataset)
+    change, rate = household_income_change(dataset)
     table = constituency_table(change)
     csv_path = GEO / "constituency_income_change.csv"
     table.to_csv(csv_path, index=False)
@@ -158,7 +186,7 @@ def main() -> None:
     print("\nBiggest losses:")
     print(table.nsmallest(5, "avg_change")[["name", "avg_change"]].to_string(index=False))
 
-    draw_map(table, GEO / "map_income_change.png")
+    draw_map(table, GEO / "map_income_change.png", rate)
 
 
 if __name__ == "__main__":

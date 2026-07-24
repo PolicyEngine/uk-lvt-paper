@@ -1,0 +1,508 @@
+{
+  "budget_neutral_rate_pct": 0.772,
+  "etr_by_property_value": [
+    {
+      "band": "No residential property (memo)",
+      "share_of_households_pct": 38.5,
+      "avg_property_value": 0,
+      "avg_council_tax": 1176,
+      "avg_lvt": 135,
+      "council_tax_pct_of_value": null,
+      "lvt_pct_of_value": null
+    },
+    {
+      "band": "Under 150k",
+      "share_of_households_pct": 15.3,
+      "avg_property_value": 97214,
+      "avg_council_tax": 1706,
+      "avg_lvt": 575,
+      "council_tax_pct_of_value": 1.755,
+      "lvt_pct_of_value": 0.591
+    },
+    {
+      "band": "150-200k",
+      "share_of_households_pct": 6.4,
+      "avg_property_value": 174849,
+      "avg_council_tax": 2057,
+      "avg_lvt": 1060,
+      "council_tax_pct_of_value": 1.177,
+      "lvt_pct_of_value": 0.606
+    },
+    {
+      "band": "200-300k",
+      "share_of_households_pct": 10.0,
+      "avg_property_value": 244157,
+      "avg_council_tax": 2191,
+      "avg_lvt": 1604,
+      "council_tax_pct_of_value": 0.897,
+      "lvt_pct_of_value": 0.657
+    },
+    {
+      "band": "300-400k",
+      "share_of_households_pct": 6.5,
+      "avg_property_value": 352256,
+      "avg_council_tax": 2336,
+      "avg_lvt": 2060,
+      "council_tax_pct_of_value": 0.663,
+      "lvt_pct_of_value": 0.585
+    },
+    {
+      "band": "400-500k",
+      "share_of_households_pct": 6.1,
+      "avg_property_value": 450709,
+      "avg_council_tax": 2403,
+      "avg_lvt": 2761,
+      "council_tax_pct_of_value": 0.533,
+      "lvt_pct_of_value": 0.613
+    },
+    {
+      "band": "500-750k",
+      "share_of_households_pct": 5.2,
+      "avg_property_value": 590818,
+      "avg_council_tax": 2420,
+      "avg_lvt": 3784,
+      "council_tax_pct_of_value": 0.41,
+      "lvt_pct_of_value": 0.64
+    },
+    {
+      "band": "750k-1m",
+      "share_of_households_pct": 3.0,
+      "avg_property_value": 873421,
+      "avg_council_tax": 2552,
+      "avg_lvt": 4807,
+      "council_tax_pct_of_value": 0.292,
+      "lvt_pct_of_value": 0.55
+    },
+    {
+      "band": "1-2m",
+      "share_of_households_pct": 7.1,
+      "avg_property_value": 1414114,
+      "avg_council_tax": 2575,
+      "avg_lvt": 6817,
+      "council_tax_pct_of_value": 0.182,
+      "lvt_pct_of_value": 0.482
+    },
+    {
+      "band": "Over 2m",
+      "share_of_households_pct": 2.1,
+      "avg_property_value": 3589816,
+      "avg_council_tax": 2546,
+      "avg_lvt": 14875,
+      "council_tax_pct_of_value": 0.071,
+      "lvt_pct_of_value": 0.414
+    }
+  ],
+  "progressivity": {
+    "gini_income": 0.3641,
+    "gini_wealth": 0.7038,
+    "note": "Kakwani = concentration index of the tax minus the Gini of the ranking variable; positive is progressive. Suits is computed against cumulative shares of the ranking variable.",
+    "taxes": [
+      {
+        "tax": "Council tax (net of CTR)",
+        "concentration_index_income_rank": 0.1231,
+        "kakwani_income": -0.2411,
+        "suits_income": -0.2562,
+        "concentration_index_wealth_rank": 0.1862,
+        "kakwani_wealth": -0.5176,
+        "suits_wealth": -0.5931
+      },
+      {
+        "tax": "LVT at budget-neutral rate",
+        "concentration_index_income_rank": 0.1595,
+        "kakwani_income": -0.2046,
+        "suits_income": -0.2144,
+        "concentration_index_wealth_rank": 0.6722,
+        "kakwani_wealth": -0.0316,
+        "suits_wealth": -0.0498
+      }
+    ]
+  },
+  "by_tenure": [
+    {
+      "tenure": "OWNED_OUTRIGHT",
+      "share_of_households_pct": 34.3,
+      "avg_land_value": 383751,
+      "avg_council_tax_saved": 2233,
+      "avg_lvt": 2964,
+      "avg_net_change": -731,
+      "pct_winners": 56.7,
+      "share_of_lvt_paid_pct": 56.5,
+      "share_of_land_pct": 56.5,
+      "aggregate_net_change_bn": -8.03
+    },
+    {
+      "tenure": "OWNED_WITH_MORTGAGE",
+      "share_of_households_pct": 26.7,
+      "avg_land_value": 259639,
+      "avg_council_tax_saved": 2059,
+      "avg_lvt": 2005,
+      "avg_net_change": 54,
+      "pct_winners": 69.5,
+      "share_of_lvt_paid_pct": 29.8,
+      "share_of_land_pct": 29.8,
+      "aggregate_net_change_bn": 0.46
+    },
+    {
+      "tenure": "RENT_FROM_COUNCIL",
+      "share_of_households_pct": 8.8,
+      "avg_land_value": 7980,
+      "avg_council_tax_saved": 696,
+      "avg_lvt": 62,
+      "avg_net_change": 634,
+      "pct_winners": 81.7,
+      "share_of_lvt_paid_pct": 0.3,
+      "share_of_land_pct": 0.3,
+      "aggregate_net_change_bn": 1.79
+    },
+    {
+      "tenure": "RENT_FROM_HA",
+      "share_of_households_pct": 8.8,
+      "avg_land_value": 83614,
+      "avg_council_tax_saved": 803,
+      "avg_lvt": 646,
+      "avg_net_change": 158,
+      "pct_winners": 72.4,
+      "share_of_lvt_paid_pct": 3.2,
+      "share_of_land_pct": 3.2,
+      "aggregate_net_change_bn": 0.45
+    },
+    {
+      "tenure": "RENT_PRIVATELY",
+      "share_of_households_pct": 21.4,
+      "avg_land_value": 111154,
+      "avg_council_tax_saved": 1635,
+      "avg_lvt": 858,
+      "avg_net_change": 776,
+      "pct_winners": 77.9,
+      "share_of_lvt_paid_pct": 10.2,
+      "share_of_land_pct": 10.2,
+      "aggregate_net_change_bn": 5.33
+    }
+  ],
+  "decile_uncertainty": {
+    "draws": 500,
+    "seed": 20260724,
+    "by_decile": [
+      {
+        "decile": 1,
+        "avg_net_change": 647,
+        "ci_low": 381,
+        "ci_high": 837,
+        "se": 120,
+        "significant_at_5pct": true
+      },
+      {
+        "decile": 2,
+        "avg_net_change": -163,
+        "ci_low": -862,
+        "ci_high": 444,
+        "se": 340,
+        "significant_at_5pct": false
+      },
+      {
+        "decile": 3,
+        "avg_net_change": 578,
+        "ci_low": 260,
+        "ci_high": 815,
+        "se": 142,
+        "significant_at_5pct": true
+      },
+      {
+        "decile": 4,
+        "avg_net_change": -60,
+        "ci_low": -1092,
+        "ci_high": 695,
+        "se": 482,
+        "significant_at_5pct": false
+      },
+      {
+        "decile": 5,
+        "avg_net_change": 145,
+        "ci_low": -294,
+        "ci_high": 500,
+        "se": 217,
+        "significant_at_5pct": false
+      },
+      {
+        "decile": 6,
+        "avg_net_change": 179,
+        "ci_low": -674,
+        "ci_high": 649,
+        "se": 357,
+        "significant_at_5pct": false
+      },
+      {
+        "decile": 7,
+        "avg_net_change": 455,
+        "ci_low": 88,
+        "ci_high": 813,
+        "se": 179,
+        "significant_at_5pct": true
+      },
+      {
+        "decile": 8,
+        "avg_net_change": 35,
+        "ci_low": -291,
+        "ci_high": 292,
+        "se": 154,
+        "significant_at_5pct": false
+      },
+      {
+        "decile": 9,
+        "avg_net_change": -1016,
+        "ci_low": -1894,
+        "ci_high": -206,
+        "se": 457,
+        "significant_at_5pct": true
+      },
+      {
+        "decile": 10,
+        "avg_net_change": -963,
+        "ci_low": -1327,
+        "ci_high": -559,
+        "se": 193,
+        "significant_at_5pct": true
+      }
+    ]
+  },
+  "losers": {
+    "definition": "Income deciles 1-3 at the budget-neutral rate",
+    "profiles": [
+      {
+        "group": "Losers",
+        "share_of_bottom_three_deciles_pct": 22.1,
+        "avg_net_change": -2285,
+        "avg_land_value": 455995,
+        "avg_property_value": 618983,
+        "pct_with_pensioner": 41.9,
+        "avg_oldest_member_age": 60.1,
+        "tenure_shares_pct": {
+          "OWNED_OUTRIGHT": 41.2,
+          "OWNED_WITH_MORTGAGE": 14.8,
+          "RENT_FROM_COUNCIL": 12.9,
+          "RENT_FROM_HA": 18.6,
+          "RENT_PRIVATELY": 12.5
+        },
+        "top_regions_pct": {
+          "NORTH_WEST": 16.8,
+          "LONDON": 15.9,
+          "SOUTH_EAST": 14.3,
+          "SCOTLAND": 12.1
+        }
+      },
+      {
+        "group": "Gainers",
+        "share_of_bottom_three_deciles_pct": 76.1,
+        "avg_net_change": 1159,
+        "avg_land_value": 50688,
+        "avg_property_value": 73099,
+        "pct_with_pensioner": 32.2,
+        "avg_oldest_member_age": 53.5,
+        "tenure_shares_pct": {
+          "OWNED_OUTRIGHT": 33.5,
+          "OWNED_WITH_MORTGAGE": 14.1,
+          "RENT_FROM_COUNCIL": 16.3,
+          "RENT_FROM_HA": 11.8,
+          "RENT_PRIVATELY": 24.2
+        },
+        "top_regions_pct": {
+          "NORTH_WEST": 16.8,
+          "SOUTH_EAST": 12.5,
+          "WEST_MIDLANDS": 11.1,
+          "YORKSHIRE": 9.9
+        }
+      }
+    ]
+  },
+  "recycling": {
+    "design": "Net revenue above the council tax replacement returned as an equal per-person dividend",
+    "baseline_poverty_bhc": 11.53,
+    "baseline_poverty_ahc": 14.75,
+    "scenarios": [
+      {
+        "rate_pct": 0.77,
+        "net_revenue_recycled_bn": 0.0,
+        "dividend_per_person": 0,
+        "pct_winners": 68.3,
+        "poverty_bhc_change": 0.04,
+        "poverty_ahc_change": -0.7,
+        "gini_change": 0.0003,
+        "decile_1": 650,
+        "decile_10": -953
+      },
+      {
+        "rate_pct": 1.0,
+        "net_revenue_recycled_bn": 17.0,
+        "dividend_per_person": 238,
+        "pct_winners": 71.5,
+        "poverty_bhc_change": 0.22,
+        "poverty_ahc_change": -0.63,
+        "gini_change": 0.0014,
+        "decile_1": 887,
+        "decile_10": -1408
+      },
+      {
+        "rate_pct": 1.5,
+        "net_revenue_recycled_bn": 54.3,
+        "dividend_per_person": 762,
+        "pct_winners": 70.8,
+        "poverty_bhc_change": -0.18,
+        "poverty_ahc_change": -1.1,
+        "gini_change": 0.0048,
+        "decile_1": 1414,
+        "decile_10": -2385
+      },
+      {
+        "rate_pct": 2.0,
+        "net_revenue_recycled_bn": 91.6,
+        "dividend_per_person": 1285,
+        "pct_winners": 69.9,
+        "poverty_bhc_change": -0.05,
+        "poverty_ahc_change": -1.31,
+        "gini_change": 0.0092,
+        "decile_1": 1941,
+        "decile_10": -3361
+      },
+      {
+        "rate_pct": 3.0,
+        "net_revenue_recycled_bn": 166.3,
+        "dividend_per_person": 2332,
+        "pct_winners": 69.3,
+        "poverty_bhc_change": 1.17,
+        "poverty_ahc_change": 0.04,
+        "gini_change": 0.0207,
+        "decile_1": 2995,
+        "decile_10": -5315
+      },
+      {
+        "rate_pct": 5.0,
+        "net_revenue_recycled_bn": 315.5,
+        "dividend_per_person": 4425,
+        "pct_winners": 68.4,
+        "poverty_bhc_change": 0.5,
+        "poverty_ahc_change": 0.77,
+        "gini_change": 0.0513,
+        "decile_1": 5102,
+        "decile_10": -9222
+      }
+    ]
+  },
+  "hvcts": {
+    "design": "England only, 2026 values, flat bands (Autumn Budget 2025); simulated on 2026-27 microdata",
+    "revenue_bn": 0.56,
+    "obr_costing_bn": 0.4,
+    "properties_liable_thousands": 171,
+    "obr_properties_thousands": 165,
+    "share_of_households_pct": 0.533,
+    "avg_charge_if_liable": 3270,
+    "share_of_lvt_revenue_pct": 1.0,
+    "share_borne_by_top_wealth_decile_pct": 100.0,
+    "lvt_share_borne_by_top_wealth_decile_pct": 47.4,
+    "share_borne_by_top_income_decile_pct": 7.4,
+    "avg_charge_top_wealth_decile": 172
+  },
+  "alternative_targets": {
+    "sdlt_revenue_bn": 11.4,
+    "ni_domestic_rates_bn": 0.56,
+    "scenarios": [
+      {
+        "label": "Council tax only (central)",
+        "note": "as in the main results",
+        "revenue_replaced_bn": 57.6,
+        "rate_pct": 0.772,
+        "pct_winners": 68.2,
+        "decile_1": 647,
+        "decile_10": -963,
+        "wealth_decile_10": -5752,
+        "poverty_bhc_change": 0.04,
+        "poverty_ahc_change": -0.7
+      },
+      {
+        "label": "Council tax and stamp duty",
+        "note": "the Mirrlees / Leunig / Muellbauer proposal",
+        "revenue_replaced_bn": 69.1,
+        "rate_pct": 0.925,
+        "pct_winners": 64.9,
+        "decile_1": 566,
+        "decile_10": -641,
+        "wealth_decile_10": -5143,
+        "poverty_bhc_change": 0.42,
+        "poverty_ahc_change": -0.7
+      },
+      {
+        "label": "Council tax and NI domestic rates",
+        "note": "comprehensive UK-wide replacement",
+        "revenue_replaced_bn": 58.2,
+        "rate_pct": 0.78,
+        "pct_winners": 69.8,
+        "decile_1": 662,
+        "decile_10": -990,
+        "wealth_decile_10": -5823,
+        "poverty_bhc_change": 0.03,
+        "poverty_ahc_change": -0.7
+      },
+      {
+        "label": "Council tax, stamp duty and NI rates",
+        "note": "all recurrent and transaction property taxes on dwellings",
+        "revenue_replaced_bn": 69.6,
+        "rate_pct": 0.933,
+        "pct_winners": 66.4,
+        "decile_1": 581,
+        "decile_10": -668,
+        "wealth_decile_10": -5214,
+        "poverty_bhc_change": 0.44,
+        "poverty_ahc_change": -0.7
+      }
+    ]
+  },
+  "exempt_band": [
+    {
+      "exempt_band": 0,
+      "taxable_base_tn": 7.463,
+      "rate_pct": 0.772,
+      "pct_winners": 68.2,
+      "pct_untaxed_households": 17.2,
+      "decile_1": 647,
+      "decile_10": -963,
+      "wealth_decile_10": -5752,
+      "poverty_bhc_change": 0.04,
+      "poverty_ahc_change": -0.7
+    },
+    {
+      "exempt_band": 50000,
+      "taxable_base_tn": 6.433,
+      "rate_pct": 0.896,
+      "pct_winners": 69.5,
+      "pct_untaxed_households": 40.5,
+      "decile_1": 713,
+      "decile_10": -1101,
+      "wealth_decile_10": -6650,
+      "poverty_bhc_change": -0.29,
+      "poverty_ahc_change": -0.57
+    },
+    {
+      "exempt_band": 100000,
+      "taxable_base_tn": 5.571,
+      "rate_pct": 1.035,
+      "pct_winners": 70.7,
+      "pct_untaxed_households": 51.6,
+      "decile_1": 775,
+      "decile_10": -1196,
+      "wealth_decile_10": -7574,
+      "poverty_bhc_change": 0.14,
+      "poverty_ahc_change": -0.59
+    },
+    {
+      "exempt_band": 200000,
+      "taxable_base_tn": 4.25,
+      "rate_pct": 1.356,
+      "pct_winners": 74.9,
+      "pct_untaxed_households": 64.5,
+      "decile_1": 859,
+      "decile_10": -1251,
+      "wealth_decile_10": -9398,
+      "poverty_bhc_change": 0.13,
+      "poverty_ahc_change": -0.03
+    }
+  ]
+}

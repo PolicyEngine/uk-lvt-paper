@@ -56,6 +56,11 @@ pairs to `results/figures/` — no licensed data needed.
 | Income decile 10 average change | −£963/yr |
 | Top wealth decile average change | −£5,752/yr |
 | Share of land held by top wealth decile | 47.4% |
+| Council tax as % of property value | 1.76% (under £150k) → 0.07% (over £2m) |
+| Kakwani index vs wealth | council tax −0.518, LVT −0.032 |
+| Kakwani index vs income | council tax −0.241, LVT −0.205 |
+| Outright owners / renters | −£731 / +£158 to +£776 per year |
+| Constituencies gaining | 323 of 650 (all of Scotland and Wales) |
 
 ## Reproduce
 
@@ -72,6 +77,9 @@ FRS dataset, and policyengine-uk-data for the ONS land targets:
 ```bash
 python -m uk_lvt.pipeline_direct   # regenerates results/lvt_results.json
 python analysis/extensions.py      # robustness, capitalisation, deferral
+python analysis/deep_dive.py       # effective rates, progressivity, tenure,
+                                   # bootstrap CIs, dividend recycling, HVCTS
+python analysis/geo_map.py         # constituency map (solves its own neutral rate)
 ```
 
 `pipeline_direct` runs one baseline simulation and derives every scenario in
