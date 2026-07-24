@@ -4,7 +4,7 @@
 
 \subsection{Impact by income decile at alternative rates}
 
-Table~\ref{tab:rategrid} reports the average net income change by income decile across the full rate grid, with council tax abolished in every scenario. At 0.5 per cent every decile gains on average, the reform reducing net revenue by \pounds 20.3 billion; from 1.5 per cent upwards every decile loses on average, with losses concentrated in deciles 9--10.
+Table~\ref{tab:rategrid} reports the average net income change by income decile across the full rate grid, with council tax abolished in every scenario. At 0.5 per cent every decile gains on average, the reform reducing net revenue by \pounds 20.3 billion; from 1.5 per cent upwards every decile loses on average, with losses concentrated in deciles 9--10. Rates other than 0.77 per cent are not revenue-neutral, so these columns combine the incidence of the swap with that of a net tax cut or rise.
 
 \begin{table}[htbp]
 \centering
@@ -14,16 +14,16 @@ Table~\ref{tab:rategrid} reports the average net income change by income decile 
 \toprule
 Decile & 0.5\% & 0.77\% & 1.0\% & 1.5\% & 2.0\% & 3.0\% & 5.0\% \\
 \midrule
-1  & $+$826   & $+$481  & $+$192   & $-$442    & $-$1{,}076 & $-$2{,}344  & $-$4{,}880 \\
-2  & $+$527   & $+$20   & $-$404   & $-$1{,}335 & $-$2{,}265 & $-$4{,}127  & $-$7{,}850 \\
-3  & $+$563   & $+$59   & $-$362   & $-$1{,}287 & $-$2{,}212 & $-$4{,}063  & $-$7{,}763 \\
-4  & $+$784   & $+$386  & $+$53    & $-$678    & $-$1{,}409 & $-$2{,}870  & $-$5{,}794 \\
-5  & $+$705   & $+$208  & $-$207   & $-$1{,}119 & $-$2{,}031 & $-$3{,}855  & $-$7{,}502 \\
-6  & $+$681   & $+$81   & $-$421   & $-$1{,}523 & $-$2{,}625 & $-$4{,}830  & $-$9{,}238 \\
-7  & $+$1{,}020 & $+$513  & $+$88    & $-$844    & $-$1{,}776 & $-$3{,}640  & $-$7{,}369 \\
-8  & $+$801   & $+$70   & $-$541   & $-$1{,}883 & $-$3{,}225 & $-$5{,}909  & $-$11{,}277 \\
-9  & $+$149   & $-$991  & $-$1{,}944 & $-$4{,}037 & $-$6{,}130 & $-$10{,}317 & $-$18{,}690 \\
-10 & $+$241   & $-$966  & $-$1{,}975 & $-$4{,}191 & $-$6{,}407 & $-$10{,}840 & $-$19{,}704 \\
+1  & $+$907     & $+$647     & $+$430     & $-$46      & $-$523     & $-$1{,}476  & $-$3{,}382 \\
+2  & $+$430     & $-$163     & $-$659     & $-$1{,}747 & $-$2{,}835 & $-$5{,}012  & $-$9{,}364 \\
+3  & $+$893     & $+$578     & $+$315     & $-$264     & $-$842     & $-$1{,}999  & $-$4{,}313 \\
+4  & $+$491     & $-$60      & $-$520     & $-$1{,}532 & $-$2{,}543 & $-$4{,}566  & $-$8{,}611 \\
+5  & $+$682     & $+$145     & $-$304     & $-$1{,}290 & $-$2{,}276 & $-$4{,}247  & $-$8{,}190 \\
+6  & $+$753     & $+$179     & $-$300     & $-$1{,}353 & $-$2{,}406 & $-$4{,}511  & $-$8{,}722 \\
+7  & $+$963     & $+$455     & $+$31      & $-$901     & $-$1{,}833 & $-$3{,}697  & $-$7{,}426 \\
+8  & $+$798     & $+$35      & $-$603     & $-$2{,}004 & $-$3{,}405 & $-$6{,}208  & $-$11{,}812 \\
+9  & $+$132     & $-$1{,}016 & $-$1{,}976 & $-$4{,}084 & $-$6{,}192 & $-$10{,}409 & $-$18{,}842 \\
+10 & $+$243     & $-$963     & $-$1{,}972 & $-$4{,}186 & $-$6{,}401 & $-$10{,}830 & $-$19{,}689 \\
 \bottomrule
 \end{tabular}
 
@@ -37,9 +37,44 @@ Households holding no land --- neither residential property nor corporate wealth
 
 \subsection{Worked single-household example}
 
-Consider a household owning a \pounds 400{,}000 home in a region with a land share of 85 per cent, implying a household land value of \pounds 340{,}000. At the budget-neutral rate of 0.77 per cent, its annual LVT on residential land is $0.0077 \times 340{,}000 = \pounds 2{,}618$; at a 1 per cent rate the liability would be \pounds 3{,}400. If the household also holds \pounds 50{,}000 of corporate wealth, it bears in addition a pro-rata share of the \pounds 2.06 trillion corporate land base --- in the microsimulation, \pounds 50{,}000 multiplied by the ratio of aggregate corporate land to aggregate weighted corporate wealth, corresponding to attributed land on the order of tens of thousands of pounds. Whether the household gains from the reform depends on its abolished council tax liability: with a typical upper-band bill above \pounds 3{,}000, it approximately breaks even at 0.77 per cent.
+Consider a household owning a \pounds 400{,}000 home in London, where the land share is 85 per cent, implying household land of \pounds 340{,}000. If the household also holds \pounds 50{,}000 of corporate wealth, its attributed corporate land is that sum multiplied by the population ratio of aggregate corporate land to aggregate corporate wealth, which the simulation puts at \pounds 0.145 per pound of corporate wealth, or \pounds 7{,}257. Its total land value is therefore \pounds 347{,}257 and its annual liability at the budget-neutral rate is $0.0077 \times 347{,}257 = \pounds 2{,}682$; at a 1 per cent rate it would be \pounds 3{,}473. Whether the household gains depends on the abolished council tax bill: with a typical upper-band London bill of around \pounds 2{,}400 it loses roughly \pounds 280 a year, and it breaks even at a bill of \pounds 2{,}682.
 
-We note that the \texttt{single\_household\_example} block in the accompanying results file reports a corporate land allocation of \pounds 2.06 trillion for this single test household. This figure is an artifact of executing the allocation formula in a one-household simulation, in which the household constitutes the entire population and therefore absorbs the full corporate land base; we accordingly exclude it from the example above.
+The allocation ratio must be computed against the weighted population. Evaluating equation~(\ref{eq:land}) inside a single-household simulation assigns the entire \pounds 2.06 trillion corporate land base to that one record, because it constitutes the whole population; the example above therefore uses the population ratio from the microsimulation.
+
+\subsection{Capitalisation by wealth decile}
+
+Table~\ref{tab:capitalisation} reports the one-off wealth loss implied by full capitalisation of the permanent 0.77 per cent levy, $\Delta W_i = -(r^{*}/\rho) L_i$, at three discount rates. The aggregate loss is \pounds 1.15 trillion at $\rho=5$ per cent, \pounds 1.44 trillion at 4 per cent and \pounds 1.92 trillion at 3 per cent, corresponding to falls in land prices of 15.4, 19.3 and 25.7 per cent. Expressed as a share of total wealth the loss peaks in the middle of the wealth distribution --- deciles 5 and 6, whose wealth is overwhelmingly housing --- while in absolute terms it is concentrated at the top.
+
+\begin{table}[htbp]
+\centering
+\caption{Capitalised one-off wealth loss by wealth decile (\pounds), 0.77\% rate}
+\label{tab:capitalisation}
+\begin{tabular}{lrrrrr}
+\toprule
+Wealth & \multicolumn{2}{c}{$\rho = 3\%$} & \multicolumn{2}{c}{$\rho = 5\%$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+decile & Loss (\pounds) & \% of wealth & Loss (\pounds) & \% of wealth \\
+\midrule
+1  & 0           & ---  & 0           & --- \\
+2  & 8           & 2.9  & 5           & 1.7 \\
+3  & 323         & 3.6  & 194         & 2.2 \\
+4  & 6{,}502     & 8.0  & 3{,}901     & 4.8 \\
+5  & 19{,}746    & 9.7  & 11{,}848    & 5.8 \\
+6  & 35{,}785    & 9.4  & 21{,}471    & 5.6 \\
+7  & 54{,}668    & 8.3  & 32{,}801    & 5.0 \\
+8  & 82{,}760    & 7.9  & 49{,}656    & 4.7 \\
+9  & 116{,}209   & 6.8  & 69{,}725    & 4.1 \\
+10 & 280{,}331   & 6.5  & 168{,}199   & 3.9 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+{\footnotesize\emph{Note:} Loss is $(r^{*}/\rho) L_i$ averaged within decile; ``\% of wealth'' is that loss over average total wealth. Deciles 1--2 hold negligible land. \emph{Source:} Authors' calculations; \texttt{analysis/extensions.py}.}
+\end{table}
+
+\subsection{Deferral for pensioner households}
+
+The liquidity problem the reform creates is concentrated and measurable. Households containing at least one person of state pension age make up 27.2 per cent of the population and would owe \pounds 20.3 billion of the \pounds 57.6 billion total, or 35.1 per cent of the yield, at an average liability of \pounds 2{,}318. A full deferral option for pensioner households --- the liability rolled up with interest against the property, as recommended by \citet{mirrlees2011} --- would therefore postpone rather than forgo roughly a third of receipts in the first year, declining thereafter as deferred estates are settled. This is the scale of the transitional financing problem; it is large but bounded, and it is a cash-flow cost to government rather than a revenue loss.
 
 \subsection{Data and parameter summary}
 
@@ -52,17 +87,26 @@ We note that the \texttt{single\_household\_example} block in the accompanying r
 Item & Value & Source / method \\
 \midrule
 Microdata & EFRS 2023--24 & FRS + SPI quantile-forest enhancement \\
+Model version & policyengine-uk 2.88.20 & Pinned; see replication note below \\
 Simulation year & 2026 & PolicyEngine UK \\
-Council tax, gross & \pounds 61.9bn & Modelled; calibrated to OBR receipts \\
+Households & 32.08m & Weighted EFRS household count \\
+Council tax, gross & \pounds 61.9bn & Modelled liabilities, VOA band calibration \\
 Council tax reduction & \pounds 4.3bn & Modelled \\
 Council tax, net ($R_{\mathrm{CT}}$) & \pounds 57.6bn & Equation~(\ref{eq:ctrev}) \\
-Household land & \pounds 5.40tn & WAS property wealth $\times$ regional land shares \\
-Corporate land & \pounds 2.06tn & ONS NBS; allocated by corporate wealth \\
-Total land base ($L$) & \pounds 7.46tn & ONS NBS 2024 (\pounds 7.10tn), OBR-uprated \\
-Regional land shares & 42\%--85\% & North East to London \\
+Memo: OBR receipts & \pounds 53.7bn & OBR EFO; robustness row \\
+Household land & \pounds 5.40tn & Model output, equation~(\ref{eq:land}) \\
+Corporate land & \pounds 2.06tn & ONS NBS aggregate; allocated by corporate wealth \\
+Total land base ($L$) & \pounds 7.46tn & 105.1\% of un-uprated ONS 2024 (\pounds 7.10tn) \\
+Regional land shares & 42\%--85\% & MHCLG residual method, equation~(\ref{eq:lambda}) \\
 Budget-neutral rate ($r^{*}$) & 0.77\% & $R_{\mathrm{CT}}/L$ \\
 Reform parameters & \texttt{lvt.rate}, & \texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}; \\
  & \texttt{abolish\_ct} & \texttt{gov.contrib.abolish\_council\_tax} \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Replication note}
+
+All results are generated from a single baseline simulation of PolicyEngine UK 2.88.20 on the pinned Enhanced FRS release \texttt{enhanced\_frs\_2023\_24@1.55.10}, together with the closed-form arithmetic validated in Section~\ref{sec:robustness}. The generating script (\texttt{uk\_lvt/pipeline\_direct.py}) re-runs the full model at three rates on every invocation and refuses to write results if the arithmetic and the model disagree by more than \pounds 1 per household or 0.01 percentage points of poverty.
+
+Two caveats on version sensitivity are worth recording. First, poverty \emph{levels} in this model move with the underlying benefit and uprating parameters: an earlier release (2.88.10) put baseline absolute BHC poverty at 12.47 rather than 11.53 per cent, and the estimated change at the budget-neutral rate at $-0.65$ rather than $+0.04$ percentage points. The revenue, land and winner-share results are unaffected, but the sign of the BHC poverty effect is not robust across model versions, which is why we do not report a poverty reduction on that measure. Second, the wealth-decile results depend on how deciles are constructed in the presence of tied zero-wealth households; we construct equal-weight deciles directly rather than using the model's own decile variable.
