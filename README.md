@@ -1,6 +1,6 @@
 # uk-lvt-paper
 
-**Replacing council tax with a 0.77% flat land value tax leaves the average household in the bottom eight income deciles better off, lifts households out of poverty, and raises the same £57.6bn — a revenue-neutral swap simulated household by household in PolicyEngine UK.**
+**Replacing council tax with a 0.77% flat land value tax raises the same £57.6bn, leaves 68% of households better off, and shifts the burden sharply up the wealth distribution — while barely moving income-based inequality or poverty statistics. Simulated household by household in PolicyEngine UK.**
 
 ```
 WAS property values → regional land shares → ONS calibration →
@@ -11,11 +11,15 @@ PolicyEngine microsimulation → revenue-neutral rate → distributional analysi
 
 ### 1. Land values (`uk_lvt/pipeline.py`)
 
-Household land value = WAS property value × regional land share, imputed
-upstream in policyengine-uk-data. Corporate land (£2.06tn) is allocated to
-households in proportion to corporate wealth. Totals are calibrated to the
-ONS National Balance Sheet: £7.46tn in 2026–27, uprated from £7.10tn (2024)
-by OBR per-capita nominal GDP growth.
+Household land value = WAS property value × regional land share + directly
+owned land, computed in policyengine-uk. Land shares (42% North East to 85%
+London) come from the MHCLG residual method; Scotland and Wales are
+interpolated from English regions. Corporate land (£2.06tn, the ONS National
+Balance Sheet aggregate held flat from 2024) is allocated to households in
+proportion to corporate wealth, so that component is pinned to its aggregate
+by construction. Household land is *not* pinned: it comes out at £5.40tn,
+107% of the un-uprated ONS 2024 benchmark, the excess being the property-price
+uprating embodied in the microdata. Total base £7.46tn.
 
 ### 2. Microsimulation (`uk_lvt/pipeline.py`)
 
@@ -44,13 +48,14 @@ pairs to `results/figures/` — no licensed data needed.
 | --- | --- |
 | Budget-neutral LVT rate | 0.77% |
 | Revenue replaced | £57.6bn |
-| Poverty change (BHC) | −0.65pp |
-| Poverty change (AHC) | −1.04pp |
-| Income Gini change | +0.0004 |
-| Households gaining | 68% |
-| Deciles better off on average | 1–8 |
-| Decile 1 average change | +£481/yr |
-| Decile 9 average change | −£991/yr |
+| Poverty change (BHC) | +0.04pp (unchanged) |
+| Poverty change (AHC) | −0.70pp |
+| Income Gini change | +0.0003 (unchanged) |
+| Households gaining | 68.2% |
+| Income decile 1 average change | +£647/yr |
+| Income decile 10 average change | −£963/yr |
+| Top wealth decile average change | −£5,752/yr |
+| Share of land held by top wealth decile | 47.4% |
 
 ## Reproduce
 
@@ -65,17 +70,33 @@ The full simulation pipeline additionally needs `pip install -e
 FRS dataset, and policyengine-uk-data for the ONS land targets:
 
 ```bash
-uk-lvt-build --year 2026          # or: python analysis/run_all.py
+python -m uk_lvt.pipeline_direct   # regenerates results/lvt_results.json
+python analysis/extensions.py      # robustness, capitalisation, deferral
 ```
+
+`pipeline_direct` runs one baseline simulation and derives every scenario in
+closed form, re-running the full model at three rates to verify that the
+arithmetic matches (it refuses to write results if it does not). The older
+`uk-lvt-build` entry point drives the policyengine.py v4 client and runs one
+solver pass per scenario.
 
 ## Known limitations
 
-- Static microsimulation: no behavioural response, no house-price or rent
-  capitalisation effects.
+- Static microsimulation: no behavioural response and no capitalisation in
+  the central results (the paper reports a capitalisation appendix).
 - Land shares are regional averages applied to WAS property values, not
-  property-level land valuations.
+  property-level land valuations; Scotland and Wales are interpolated from
+  English regions.
 - Corporate land is allocated to households in proportion to corporate
-  wealth, a strong incidence assumption.
+  wealth, ignoring foreign ownership — a strong incidence assumption, tested
+  in the robustness table.
+- Poverty *levels* are sensitive to the policyengine-uk version. Results here
+  are pinned to 2.88.20; an earlier release gave a −0.65pp BHC poverty change
+  where this one gives +0.04pp. Revenue, land and winner-share results are
+  not affected.
+- The model's own `household_wealth_decile` is degenerate (decile 1 empty,
+  22.6% of households in decile 2); wealth deciles here are reconstructed as
+  equal-weight deciles.
 
 ## References
 
