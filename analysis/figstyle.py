@@ -127,3 +127,42 @@ def save(fig, path):
 def legend_below(ax, ncol):
     """Legend centred below the axes (house style: legends never sit on data)."""
     ax.legend(ncol=ncol, loc="upper center", bbox_to_anchor=(0.5, -0.18))
+
+
+def pounds(value, _pos=None):
+    """Tick formatter: £250,000 -> £250k; £1,200,000 -> £1.2m."""
+    value = float(value)
+    if abs(value) >= 1e6:
+        text = f"£{value / 1e6:.1f}m".replace(".0m", "m")
+    elif abs(value) >= 1e3:
+        text = f"£{value / 1e3:.0f}k"
+    else:
+        text = f"£{value:.0f}"
+    return text.replace("£-", "-£")
+
+
+def ranked_hbar(ax, labels, values, color=BLUE):
+    """House-style ranked horizontal bar list: sorted by value (largest on
+    top), thin bars, direct end labels in ink, recessive axis chrome."""
+    order = sorted(range(len(values)), key=lambda i: values[i])
+    labels = [labels[i] for i in order]
+    values = [values[i] for i in order]
+    ax.barh(labels, values, color=color, height=0.62)
+    span = max(values)
+    for y, v in enumerate(values):
+        ax.text(
+            v + span * 0.015,
+            y,
+            pounds(v),
+            va="center",
+            ha="left",
+            fontsize=9,
+            color=INK2,
+        )
+    ax.set_xlim(0, span * 1.12)
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(pounds))
+    ax.grid(axis="y", visible=False)
+    ax.grid(axis="x", linewidth=0.5)
+    ax.spines["left"].set_visible(False)
+    ax.tick_params(axis="y", length=0)
+    return labels, values

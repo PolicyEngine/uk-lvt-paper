@@ -59,22 +59,23 @@ def fig2_land_by_income_decile(data: dict) -> None:
 
 
 def fig3_land_by_region(data: dict) -> None:
-    df = pd.DataFrame(data["avg_land_by_region"]).sort_values("avg_land_value")
+    df = pd.DataFrame(data["avg_land_by_region"]).sort_values(
+        "avg_land_value", ascending=False
+    )
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    ax.barh(df["group"], df["avg_land_value"], color=fs.BLUE)
-    ax.set_xlabel("Average household land value (£)")
-    ax.grid(axis="y", visible=False)
+    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]))
+    ax.set_xlabel("Average household land value")
     ax.set_title("Household land value by region")
     _save(fig, df, "fig3_land_by_region")
 
 
 def fig4_land_by_family_type(data: dict) -> None:
-    df = pd.DataFrame(data["avg_land_by_family_type"])
+    df = pd.DataFrame(data["avg_land_by_family_type"]).sort_values(
+        "avg_land_value", ascending=False
+    )
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    ax.barh(df["group"], df["avg_land_value"], color=fs.BLUE)
-    ax.invert_yaxis()
-    ax.set_xlabel("Average household land value (£)")
-    ax.grid(axis="y", visible=False)
+    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]))
+    ax.set_xlabel("Average household land value")
     ax.set_title("Household land value by family type")
     _save(fig, df, "fig4_land_by_family_type")
 
@@ -145,18 +146,37 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
             "rate_pct": float(label.rstrip("%")),
             "poverty_bhc_change": v["poverty_bhc_change"],
             "poverty_ahc_change": v["poverty_ahc_change"],
+            "gini_change": v["gini_change"],
         }
         for label, v in scen.items()
     ]
     df = pd.DataFrame(rows).sort_values("rate_pct")
-    fig, ax = plt.subplots(figsize=fs.SINGLE)
-    ax.plot(df["rate_pct"], df["poverty_bhc_change"], marker="o", color=fs.BLUE, label="Poverty (BHC)")
-    ax.plot(df["rate_pct"], df["poverty_ahc_change"], marker="s", color=fs.TEAL, label="Poverty (AHC)")
-    ax.axhline(0, color=fs.BASELINE, linewidth=0.8)
-    ax.set_xlabel("LVT rate (% of land value), council tax abolished")
-    ax.set_ylabel("Change in poverty rate (pp)")
-    ax.set_title("Poverty impact of the council tax to LVT swap, by rate")
-    ax.legend()
+    neutral = 0.77
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=fs.TWOPANEL)
+
+    ax1.plot(df["rate_pct"], df["poverty_bhc_change"], marker="o", color=fs.BLUE, label="Poverty (BHC)")
+    ax1.plot(df["rate_pct"], df["poverty_ahc_change"], marker="s", color=fs.TEAL, label="Poverty (AHC)")
+    ax1.axhline(0, color=fs.BASELINE, linewidth=0.8)
+    ax1.set_xlabel("LVT rate (% of land value)")
+    ax1.set_ylabel("Change in poverty rate (pp)")
+    ax1.set_title("Poverty")
+    ax1.legend()
+
+    ax2.plot(df["rate_pct"], df["gini_change"], marker="o", color=fs.BLUE)
+    ax2.axhline(0, color=fs.BASELINE, linewidth=0.8)
+    ax2.set_xlabel("LVT rate (% of land value)")
+    ax2.set_ylabel("Change in Gini coefficient")
+    ax2.set_title("Income inequality")
+
+    for ax in (ax1, ax2):
+        ax.axvline(neutral, color=fs.GRAY, linestyle=":", linewidth=1.0)
+        ax.annotate(
+            "budget-neutral\n(0.77%)",
+            xy=(neutral, ax.get_ylim()[1]),
+            xytext=(neutral + 0.12, ax.get_ylim()[1] * 0.86),
+            fontsize=8,
+            color=fs.INK2,
+        )
     _save(fig, df, "fig8_poverty_gini_by_rate")
 
 

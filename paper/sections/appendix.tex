@@ -80,27 +80,35 @@ The liquidity problem the reform creates is concentrated and measurable. Househo
 
 \begin{table}[htbp]
 \centering
+\footnotesize
 \caption{Key data sources and parameters}
 \label{tab:params}
-\begin{tabular}{lll}
+\begin{tabular}{@{}llp{6.4cm}@{}}
 \toprule
 Item & Value & Source / method \\
 \midrule
-Microdata & EFRS 2023--24 & FRS + SPI quantile-forest enhancement \\
-Model version & policyengine-uk 2.88.20 & Pinned; see replication note below \\
-Simulation year & 2026 & PolicyEngine UK \\
-Households & 32.08m & Weighted EFRS household count \\
-Council tax, gross & \pounds 61.9bn & Modelled liabilities, VOA band calibration \\
-Council tax reduction & \pounds 4.3bn & Modelled \\
-Council tax, net ($R_{\mathrm{CT}}$) & \pounds 57.6bn & Equation~(\ref{eq:ctrev}) \\
-Memo: OBR receipts & \pounds 53.7bn & OBR EFO; robustness row \\
-Household land & \pounds 5.40tn & Model output, equation~(\ref{eq:land}) \\
-Corporate land & \pounds 2.06tn & ONS NBS aggregate; allocated by corporate wealth \\
-Total land base ($L$) & \pounds 7.46tn & 105.1\% of un-uprated ONS 2024 (\pounds 7.10tn) \\
-Regional land shares & 42\%--85\% & MHCLG residual method, equation~(\ref{eq:lambda}) \\
-Budget-neutral rate ($r^{*}$) & 0.77\% & $R_{\mathrm{CT}}/L$ \\
-Reform parameters & \texttt{lvt.rate}, & \texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}; \\
- & \texttt{abolish\_ct} & \texttt{gov.contrib.abolish\_council\_tax} \\
+\multicolumn{3}{@{}l}{\emph{Simulation}} \\
+\quad Microdata & EFRS 2023--24 & FRS enhanced with SPI quantile-forest imputation and WAS wealth \\
+\quad Model version & policyengine-uk 2.88.20 & Pinned; see replication note below \\
+\quad Simulation year & 2026--27 & Uprated from the 2023--24 survey \\
+\quad Households & 32.08m & Weighted EFRS household count \\
+\addlinespace
+\multicolumn{3}{@{}l}{\emph{Council tax baseline (replacement target)}} \\
+\quad Gross liabilities & \pounds 61.9bn & Modelled, VOA band calibration \\
+\quad Council tax reduction & \pounds 4.3bn & Modelled \\
+\quad Net revenue ($R_{\mathrm{CT}}$) & \pounds 57.6bn & Equation~(\ref{eq:ctrev}) \\
+\quad \emph{Memo:} OBR receipts & \pounds 53.7bn & OBR EFO; robustness row \\
+\addlinespace
+\multicolumn{3}{@{}l}{\emph{Land base}} \\
+\quad Household land & \pounds 5.40tn & Model output, equation~(\ref{eq:land}) \\
+\quad Corporate land & \pounds 2.06tn & ONS NBS aggregate, allocated by corporate wealth \\
+\quad Total base ($L$) & \pounds 7.46tn & 105.1\% of un-uprated ONS 2024 (\pounds 7.10tn) \\
+\quad Regional land shares ($\lambda_r$) & 0.42--0.85 & MHCLG residual method, equation~(\ref{eq:lambda}) \\
+\addlinespace
+\multicolumn{3}{@{}l}{\emph{Reform}} \\
+\quad Budget-neutral rate ($r^{*}$) & 0.77\% & $R_{\mathrm{CT}}/L$ \\
+\quad LVT parameter & \multicolumn{2}{l}{\texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}} \\
+\quad Abolition parameter & \multicolumn{2}{l}{\texttt{gov.contrib.abolish\_council\_tax}} \\
 \bottomrule
 \end{tabular}
 \end{table}
