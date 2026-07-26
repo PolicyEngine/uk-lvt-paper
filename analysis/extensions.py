@@ -54,6 +54,16 @@ CT_OBR_BN = 53.7  # OBR March 2025 EFO accruals-based council tax receipts
 DISCOUNT_RATES = (0.03, 0.04, 0.05)
 FOREIGN_EQUITY_SHARE = 0.5  # share of UK corporate equity held abroad
 
+# Northern Ireland land-share sensitivity. The central specification assigns
+# NI the population-weighted mean of English regional land shares (0.67),
+# which is implausibly high given NI house prices; the sensitivity instead
+# interpolates NI like Scotland and Wales, from the English regions closest
+# in house price (North East / North West), giving roughly 0.44.
+NI_LAMBDA_CENTRAL = 0.67
+NI_LAMBDA_INTERPOLATED = 0.44
+
+RENT_PASS_THROUGH = 0.5  # share of the LVT on rented dwellings shifted to tenants
+
 
 def _v(sim, name, year=YEAR):
     return np.asarray(sim.calculate(name, year).values, dtype=np.float64)
@@ -112,6 +122,17 @@ def load_baseline():
     }
     df = pd.DataFrame(cols)
     df["country"] = np.asarray(sim.calculate("country", YEAR).values).astype(str)
+    df["region"] = np.asarray(sim.calculate("region", YEAR).values).astype(str)
+    df["tenure"] = np.asarray(sim.calculate("tenure_type", YEAR).values).astype(str)
+    hh_of_person = np.asarray(sim.calculate("household_id", YEAR, map_to="person").values)
+    ids = np.asarray(sim.calculate("household_id", YEAR).values)
+    df["people"] = (
+        pd.Series(1.0, index=hh_of_person).groupby(level=0).sum().reindex(ids).fillna(0).values
+    )
+    # Person weight: poverty is measured as a share of individuals (HBAI
+    # convention) and the income Gini is person-weighted over equivalised
+    # income; the wealth Gini stays household-weighted (ONS WAS convention).
+    df["person_weight"] = df["weight"] * df["people"]
     # The model's own decile variables are degenerate at the bottom of the
     # wealth distribution (large mass of tied zero-wealth households), so we
     # also construct equal-weight deciles and use those for the tables.
@@ -141,32 +162,37 @@ def reform_sim(rate, abolish_ct=True):
 
 
 def poverty_from_change(df, delta):
-    """Poverty rates (%) under a net income change ``delta``, baseline lines."""
+    """Poverty rates (% of individuals) under a net income change ``delta``.
+
+    Weighted by household weight times household size (HBAI convention),
+    against baseline-fixed thresholds.
+    """
     bhc = df["equiv_hbai_bhc"] + delta / df["equivalisation_bhc"]
     ahc = df["equiv_hbai_ahc"] + delta / df["equivalisation_ahc"]
-    w = df["weight"].values
+    pw = df["person_weight"].values
     line_bhc = df["poverty_line_bhc"] / df["equivalisation_bhc"]
     line_ahc = df["poverty_line_ahc"] / df["equivalisation_ahc"]
     return (
-        100 * float(np.sum((bhc.values < line_bhc.values) * w) / np.sum(w)),
-        100 * float(np.sum((ahc.values < line_ahc.values) * w) / np.sum(w)),
+        100 * float(np.sum((bhc.values < line_bhc.values) * pw) / np.sum(pw)),
+        100 * float(np.sum((ahc.values < line_ahc.values) * pw) / np.sum(pw)),
     )
 
 
-def scenario(df, base, ct_saved, revenue_target_bn, label, note=""):
-    """Distributional summary of replacing ``ct_saved`` with an LVT on ``base``."""
-    w = df["weight"].values
-    base_total_bn = float(np.sum(base * w)) / 1e9
-    rate = revenue_target_bn / base_total_bn
-    lvt = rate * base
-    delta = ct_saved - lvt
+def income_gini(df, delta=0.0):
+    """Person-weighted Gini of equivalised HBAI household net income (BHC)."""
+    equiv = df["equiv_hbai_bhc"].values + delta / df["equivalisation_bhc"].values
+    return _gini(equiv, df["person_weight"].values)
 
-    net = df["net_income"].values
-    gini_base = _gini(net, w)
-    gini_reform = _gini(net + delta, w)
+
+def summarise_delta(df, delta, label, note="", **extra):
+    """Distributional summary of an arbitrary net-income change ``delta``."""
+    w = df["weight"].values
+    gini_base = income_gini(df)
+    gini_reform = income_gini(df, delta)
     pov_bhc, pov_ahc = poverty_from_change(df, delta)
-    pov_bhc_base = 100 * float(np.sum(df["in_poverty_bhc"].values * w) / np.sum(w))
-    pov_ahc_base = 100 * float(np.sum(df["in_poverty_ahc"].values * w) / np.sum(w))
+    pw = df["person_weight"].values
+    pov_bhc_base = 100 * float(np.sum(df["in_poverty_bhc"].values * pw) / np.sum(pw))
+    pov_ahc_base = 100 * float(np.sum(df["in_poverty_ahc"].values * pw) / np.sum(pw))
 
     inc_d = df["income_decile"].values  # model equivalised-income deciles
     wealth_d = df["wealth_decile_own"].values
@@ -183,9 +209,7 @@ def scenario(df, base, ct_saved, revenue_target_bn, label, note=""):
     return {
         "label": label,
         "note": note,
-        "base_tn": round(base_total_bn / 1e3, 3),
-        "revenue_target_bn": round(revenue_target_bn, 1),
-        "rate_pct": round(rate * 100, 3),
+        **extra,
         "pct_winners": round(100 * float(np.sum((delta > 1) * w) / np.sum(w)), 1),
         "pct_losers": round(100 * float(np.sum((delta < -1) * w) / np.sum(w)), 1),
         "aggregate_change_bn": round(float(np.sum(delta * w)) / 1e9, 2),
@@ -199,6 +223,23 @@ def scenario(df, base, ct_saved, revenue_target_bn, label, note=""):
         "poverty_ahc_change": round(pov_ahc - pov_ahc_base, 2),
         "gini_change": round(gini_reform - gini_base, 4),
     }
+
+
+def scenario(df, base, ct_saved, revenue_target_bn, label, note=""):
+    """Distributional summary of replacing ``ct_saved`` with an LVT on ``base``."""
+    w = df["weight"].values
+    base_total_bn = float(np.sum(base * w)) / 1e9
+    rate = revenue_target_bn / base_total_bn
+    delta = ct_saved - rate * base
+    return summarise_delta(
+        df,
+        delta,
+        label,
+        note,
+        base_tn=round(base_total_bn / 1e3, 3),
+        revenue_target_bn=round(revenue_target_bn, 1),
+        rate_pct=round(rate * 100, 3),
+    )
 
 
 def build() -> dict:
@@ -245,11 +286,12 @@ def build() -> dict:
     rsim = reform_sim(central_rate)
     model_delta = _v(rsim, "household_net_income") - df["net_income"].values
     arithmetic_delta = ct_saved - central_rate * land
+    pw = df["person_weight"].values
     model_pov_bhc = 100 * float(
-        np.sum(_v(rsim, "in_poverty_bhc") * w) / np.sum(w)
+        np.sum(_v(rsim, "in_poverty_bhc") * pw) / np.sum(pw)
     )
     model_pov_ahc = 100 * float(
-        np.sum(_v(rsim, "in_poverty_ahc") * w) / np.sum(w)
+        np.sum(_v(rsim, "in_poverty_ahc") * pw) / np.sum(pw)
     )
     arith_pov_bhc, arith_pov_ahc = poverty_from_change(df, arithmetic_delta)
 
@@ -327,12 +369,86 @@ def build() -> dict:
             "Land shares +10%", "all regional land shares scaled by 1.1",
         ),
         scenario(
+            df,
+            np.where(
+                df["country"].values == "NORTHERN_IRELAND",
+                hh_land * (NI_LAMBDA_INTERPOLATED / NI_LAMBDA_CENTRAL),
+                hh_land,
+            )
+            + corp_land,
+            ct_saved, ct_model_bn,
+            "NI land share interpolated",
+            "NI land share 0.44 (interpolated from price-similar English "
+            "regions) instead of the central 0.67 (population-weighted mean)",
+        ),
+        scenario(
+            df, hh_land / 1.0712 + corp_land, ct_saved, CT_OBR_BN,
+            "OBR target on ONS-scaled base",
+            "both calibration gaps closed at once: replacement target set to "
+            "OBR receipts and household land rescaled to the un-uprated ONS "
+            "2024 benchmark",
+        ),
+        scenario(
             df, df["property_wealth"].values, ct_saved, ct_model_bn,
             "Proportional property tax",
             "comparator: flat tax on total property value, structures included",
         ),
     ]
     out["robustness"] = scenarios
+
+    # -- incidence variants ---------------------------------------------------
+    # (a) Corporate land charged to wealth, not income: the central rate is
+    # unchanged (levied on the full base), but the corporate component is
+    # treated as a reduction in the household's corporate wealth rather than
+    # a same-year cash charge on disposable income. Poverty/Gini/winner
+    # statistics then reflect only the household-land component of the levy.
+    lvt_corp = central_rate * corp_land
+    delta_corp_as_wealth = ct_saved - central_rate * hh_land
+    corp_as_wealth = summarise_delta(
+        df,
+        delta_corp_as_wealth,
+        "Corporate LVT as wealth charge",
+        "corporate component treated as a stock levy on corporate wealth "
+        "(not a cash charge on current income); income-side statistics "
+        "reflect the household-land component only",
+        rate_pct=round(central_rate * 100, 3),
+        corporate_component_bn=round(float(np.sum(lvt_corp * w)) / 1e9, 1),
+        corporate_component_pct_of_wealth=round(
+            100 * float(np.sum(lvt_corp * w)) / float(np.sum(df["total_wealth"].values * w)),
+            3,
+        ),
+    )
+
+    # (b) Partial rent pass-through: private tenants bear RENT_PASS_THROUGH of
+    # the LVT on the land under their dwelling. Renters' dwelling land is not
+    # observed (the landlord holds it), so each private-renter household is
+    # assigned the regional mean household land of owner households as a
+    # proxy; the same aggregate amount is rebated to owner households in
+    # proportion to their household land, holding total revenue fixed.
+    private_renter = df["tenure"].values == "RENT_PRIVATELY"
+    owner = np.isin(df["tenure"].values, ["OWNED_OUTRIGHT", "OWNED_WITH_MORTGAGE"])
+    proxy = np.zeros(len(df))
+    for region in np.unique(df["region"].values):
+        rmask = df["region"].values == region
+        owners_r = rmask & owner
+        if owners_r.any():
+            proxy[rmask & private_renter] = _wmean(hh_land[owners_r], w[owners_r])
+    tenant_charge = RENT_PASS_THROUGH * central_rate * proxy
+    total_shifted = float(np.sum(tenant_charge * w))
+    owner_land_total = float(np.sum(hh_land[owner] * w[owner]))
+    rebate = np.where(owner, hh_land / owner_land_total * total_shifted, 0.0)
+    delta_pass_through = ct_saved - central_rate * land - tenant_charge + rebate
+    pass_through = summarise_delta(
+        df,
+        delta_pass_through,
+        "50% rent pass-through",
+        "half of the LVT on privately rented dwellings shifted to tenants "
+        "(regional mean owner land as the dwelling-land proxy), rebated to "
+        "owners in proportion to household land; aggregate revenue unchanged",
+        rate_pct=round(central_rate * 100, 3),
+        amount_shifted_to_tenants_bn=round(total_shifted / 1e9, 1),
+    )
+    out["incidence_variants"] = [corp_as_wealth, pass_through]
 
     # -- capitalisation -----------------------------------------------------
     cap_rows = []

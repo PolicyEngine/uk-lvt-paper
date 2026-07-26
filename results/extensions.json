@@ -53,10 +53,10 @@
     "max_abs_delta_gap": 0.25,
     "mean_abs_delta_gap": 0.0025,
     "share_households_with_benefit_interaction": 0.0,
-    "model_poverty_bhc": 11.58,
-    "arithmetic_poverty_bhc": 11.58,
-    "model_poverty_ahc": 14.04,
-    "arithmetic_poverty_ahc": 14.04
+    "model_poverty_bhc": 9.88,
+    "arithmetic_poverty_bhc": 9.88,
+    "model_poverty_ahc": 13.89,
+    "arithmetic_poverty_ahc": 13.89
   },
   "land_decomposition": [
     {
@@ -166,9 +166,9 @@
       "income_decile_10": -963,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5752,
-      "poverty_bhc_change": 0.04,
-      "poverty_ahc_change": -0.7,
-      "gini_change": 0.0003
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.72,
+      "gini_change": -0.0021
     },
     {
       "label": "OBR receipts target",
@@ -185,9 +185,9 @@
       "income_decile_10": -730,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5177,
-      "poverty_bhc_change": -0.25,
-      "poverty_ahc_change": -0.73,
-      "gini_change": -0.0003
+      "poverty_bhc_change": -0.12,
+      "poverty_ahc_change": -0.75,
+      "gini_change": -0.0026
     },
     {
       "label": "Great Britain only",
@@ -204,9 +204,9 @@
       "income_decile_10": -1016,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5747,
-      "poverty_bhc_change": 0.05,
-      "poverty_ahc_change": -0.56,
-      "gini_change": 0.0006
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.65,
+      "gini_change": -0.002
     },
     {
       "label": "Household land only",
@@ -223,9 +223,9 @@
       "income_decile_10": -688,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5364,
-      "poverty_bhc_change": 0.1,
-      "poverty_ahc_change": -0.56,
-      "gini_change": 0.0013
+      "poverty_bhc_change": 0.11,
+      "poverty_ahc_change": -0.64,
+      "gini_change": -0.0005
     },
     {
       "label": "Foreign-owned corporate equity",
@@ -242,9 +242,9 @@
       "income_decile_10": -848,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5589,
-      "poverty_bhc_change": 0.09,
-      "poverty_ahc_change": -0.59,
-      "gini_change": 0.0007
+      "poverty_bhc_change": 0.1,
+      "poverty_ahc_change": -0.67,
+      "gini_change": -0.0015
     },
     {
       "label": "Household land scaled to ONS 2024",
@@ -261,9 +261,9 @@
       "income_decile_10": -977,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5772,
-      "poverty_bhc_change": 0.04,
-      "poverty_ahc_change": -0.71,
-      "gini_change": 0.0003
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.72,
+      "gini_change": -0.0022
     },
     {
       "label": "Land shares -10%",
@@ -280,9 +280,9 @@
       "income_decile_10": -985,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5782,
-      "poverty_bhc_change": 0.04,
-      "poverty_ahc_change": -0.7,
-      "gini_change": 0.0003
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.72,
+      "gini_change": -0.0022
     },
     {
       "label": "Land shares +10%",
@@ -299,9 +299,47 @@
       "income_decile_10": -945,
       "wealth_decile_1": 920,
       "wealth_decile_10": -5726,
-      "poverty_bhc_change": 0.05,
-      "poverty_ahc_change": -0.56,
-      "gini_change": 0.0004
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.65,
+      "gini_change": -0.002
+    },
+    {
+      "label": "NI land share interpolated",
+      "note": "NI land share 0.44 (interpolated from price-similar English regions) instead of the central 0.67 (population-weighted mean)",
+      "base_tn": 7.432,
+      "revenue_target_bn": 57.6,
+      "rate_pct": 0.776,
+      "pct_winners": 68.2,
+      "pct_losers": 30.5,
+      "aggregate_change_bn": 0.0,
+      "income_decile_1": 645,
+      "income_decile_5": 141,
+      "income_decile_9": -1021,
+      "income_decile_10": -976,
+      "wealth_decile_1": 920,
+      "wealth_decile_10": -5752,
+      "poverty_bhc_change": 0.03,
+      "poverty_ahc_change": -0.71,
+      "gini_change": -0.0021
+    },
+    {
+      "label": "OBR target on ONS-scaled base",
+      "note": "both calibration gaps closed at once: replacement target set to OBR receipts and household land rescaled to the un-uprated ONS 2024 benchmark",
+      "base_tn": 7.104,
+      "revenue_target_bn": 53.7,
+      "rate_pct": 0.756,
+      "pct_winners": 69.1,
+      "pct_losers": 29.6,
+      "aggregate_change_bn": 3.94,
+      "income_decile_1": 701,
+      "income_decile_5": 250,
+      "income_decile_9": -799,
+      "income_decile_10": -742,
+      "wealth_decile_1": 920,
+      "wealth_decile_10": -5196,
+      "poverty_bhc_change": -0.12,
+      "poverty_ahc_change": -0.74,
+      "gini_change": -0.0027
     },
     {
       "label": "Proportional property tax",
@@ -318,9 +356,48 @@
       "income_decile_10": -674,
       "wealth_decile_1": 920,
       "wealth_decile_10": -4217,
-      "poverty_bhc_change": -0.07,
-      "poverty_ahc_change": -0.76,
-      "gini_change": -0.0009
+      "poverty_bhc_change": 0.02,
+      "poverty_ahc_change": -0.73,
+      "gini_change": -0.0027
+    }
+  ],
+  "incidence_variants": [
+    {
+      "label": "Corporate LVT as wealth charge",
+      "note": "corporate component treated as a stock levy on corporate wealth (not a cash charge on current income); income-side statistics reflect the household-land component only",
+      "rate_pct": 0.772,
+      "corporate_component_bn": 15.9,
+      "corporate_component_pct_of_wealth": 0.059,
+      "pct_winners": 76.8,
+      "pct_losers": 21.2,
+      "aggregate_change_bn": 15.9,
+      "income_decile_1": 798,
+      "income_decile_5": 549,
+      "income_decile_9": -34,
+      "income_decile_10": 180,
+      "wealth_decile_1": 920,
+      "wealth_decile_10": -3151,
+      "poverty_bhc_change": -0.25,
+      "poverty_ahc_change": -0.82,
+      "gini_change": -0.0028
+    },
+    {
+      "label": "50% rent pass-through",
+      "note": "half of the LVT on privately rented dwellings shifted to tenants (regional mean owner land as the dwelling-land proxy), rebated to owners in proportion to household land; aggregate revenue unchanged",
+      "rate_pct": 0.772,
+      "amount_shifted_to_tenants_bn": 7.8,
+      "pct_winners": 67.3,
+      "pct_losers": 31.8,
+      "aggregate_change_bn": -0.0,
+      "income_decile_1": 538,
+      "income_decile_5": 103,
+      "income_decile_9": -815,
+      "income_decile_10": -954,
+      "wealth_decile_1": 583,
+      "wealth_decile_10": -4727,
+      "poverty_bhc_change": -0.09,
+      "poverty_ahc_change": -0.2,
+      "gini_change": -0.0019
     }
   ],
   "capitalisation": {

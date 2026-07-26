@@ -87,7 +87,10 @@ HVCTS_BANDS = [
 ]
 
 EXEMPT_BANDS = (50_000, 100_000, 200_000)
-DIVIDEND_RATES = (0.0077, 0.01, 0.015, 0.02, 0.03, 0.05)
+# Rates above the budget-neutral rate for the dividend-recycling scenarios;
+# the solved budget-neutral rate itself is prepended at runtime (it is not
+# hard-coded so that it always matches the central scenario exactly).
+DIVIDEND_RATES = (0.01, 0.015, 0.02, 0.03, 0.05)
 
 
 def _v(sim, name, year=YEAR, dtype=np.float64):
@@ -135,15 +138,22 @@ def suits_index(tax, y, w):
 
 
 def poverty_rates(df, delta):
-    w = df["weight"].values
+    """Poverty rates (% of individuals, HBAI convention), baseline-fixed lines."""
+    pw = df["person_weight"].values
     bhc = df["equiv_bhc"].values + delta / df["equivalisation_bhc"].values
     ahc = df["equiv_ahc"].values + delta / df["equivalisation_ahc"].values
     line_bhc = df["poverty_line_bhc"].values / df["equivalisation_bhc"].values
     line_ahc = df["poverty_line_ahc"].values / df["equivalisation_ahc"].values
     return (
-        100 * float(np.sum((bhc < line_bhc) * w) / np.sum(w)),
-        100 * float(np.sum((ahc < line_ahc) * w) / np.sum(w)),
+        100 * float(np.sum((bhc < line_bhc) * pw) / np.sum(pw)),
+        100 * float(np.sum((ahc < line_ahc) * pw) / np.sum(pw)),
     )
+
+
+def income_gini(df, delta=0.0):
+    """Person-weighted Gini of equivalised HBAI household net income (BHC)."""
+    equiv = df["equiv_bhc"].values + delta / df["equivalisation_bhc"].values
+    return gini(equiv, df["person_weight"].values)
 
 
 def equal_weight_deciles(values, weights, n=10):
@@ -201,6 +211,9 @@ def load():
     df["people"] = g["one"].sum().reindex(ids).fillna(0).values
     df["max_age"] = g["age"].max().reindex(ids).fillna(0).values
     df["any_pensioner"] = (g["sp"].max().reindex(ids).fillna(0).values > 0)
+    # Person weight: poverty is a share of individuals (HBAI convention) and
+    # the income Gini is person-weighted over equivalised income.
+    df["person_weight"] = df["weight"] * df["people"]
     return sim, df
 
 
@@ -209,15 +222,17 @@ def load():
 # ---------------------------------------------------------------------------
 
 
-def etr_by_property_value(df, rate):
+def etr_by_property_value(df, rate, value_col="residential_value"):
     """Council tax and LVT as a share of property value, property owners only.
 
     Households owning no residential property are excluded: their council tax
     bill divided by a property value of zero is not an effective rate. They are
-    reported as a separate memo row.
+    reported as a separate memo row. ``value_col`` selects the base:
+    ``residential_value`` (all residential property, including second and let
+    homes) or ``main_residence_value`` (main residence only).
     """
     w = df["weight"].values
-    val = df["residential_value"].values
+    val = df[value_col].values
     ct = df["council_tax_saved"].values
     lvt = rate * df["land"].values
     rows = []
@@ -253,25 +268,67 @@ def etr_by_property_value(df, rate):
     return rows
 
 
+def top_tail_reconciliation(df):
+    """Households above £2m under the two property-value definitions.
+
+    The ETR table uses ``residential_value`` (all residential property,
+    including second and let homes), while the HVCTS comparator and the OBR
+    costing count *main residences* over £2m (England only). This memo makes
+    the gap explicit so the two figures in the paper reconcile.
+    """
+    w = df["weight"].values
+    england = df["country"].values == "ENGLAND"
+
+    def count_k(mask):
+        return round(float(np.sum(w[mask])) / 1e3)
+
+    return {
+        "households_residential_over_2m_thousands": count_k(
+            df["residential_value"].values >= 2_000_000
+        ),
+        "households_main_residence_over_2m_thousands": count_k(
+            df["main_residence_value"].values >= 2_000_000
+        ),
+        "households_main_residence_over_2m_england_thousands": count_k(
+            (df["main_residence_value"].values >= 2_000_000) & england
+        ),
+        "obr_hvcts_properties_thousands": 165,
+        "note": (
+            "residential_value includes second and let homes aggregated to "
+            "the owning household, so it exceeds counts of main residences; "
+            "the OBR HVCTS figure is English main residences only."
+        ),
+    }
+
+
 def progressivity(df, rate):
     w = df["weight"].values
+    pw = df["person_weight"].values
     ct = df["council_tax_saved"].values
     lvt = rate * df["land"].values
-    inc = df["income"].values
+    # Income side: equivalised HBAI net income, person-weighted, matching the
+    # Gini convention used elsewhere in the paper. Wealth side: total
+    # household wealth, household-weighted (ONS WAS convention).
+    inc = df["equiv_bhc"].values
     wealth = df["total_wealth"].values
-    rank_inc = _frac_rank(inc, w)
+    rank_inc = _frac_rank(inc, pw)
     rank_wealth = _frac_rank(wealth, w)
-    g_inc = gini(inc, w)
+    g_inc = gini(inc, pw)
     g_wealth = gini(wealth, w)
+    # Sensitivity: wealth indices are not well defined over negative values,
+    # so recompute with wealth bottom-coded at zero.
+    wealth_bc = np.maximum(wealth, 0.0)
+    rank_wealth_bc = _frac_rank(wealth_bc, w)
+    g_wealth_bc = gini(wealth_bc, w)
 
     def block(tax, label):
         return {
             "tax": label,
             "concentration_index_income_rank": round(
-                concentration_index(tax, rank_inc, w), 4
+                concentration_index(tax, rank_inc, pw), 4
             ),
-            "kakwani_income": round(concentration_index(tax, rank_inc, w) - g_inc, 4),
-            "suits_income": round(suits_index(tax, inc, w), 4),
+            "kakwani_income": round(concentration_index(tax, rank_inc, pw) - g_inc, 4),
+            "suits_income": round(suits_index(tax, inc, pw), 4),
             "concentration_index_wealth_rank": round(
                 concentration_index(tax, rank_wealth, w), 4
             ),
@@ -279,15 +336,25 @@ def progressivity(df, rate):
                 concentration_index(tax, rank_wealth, w) - g_wealth, 4
             ),
             "suits_wealth": round(suits_index(tax, wealth, w), 4),
+            "kakwani_wealth_bottom_coded": round(
+                concentration_index(tax, rank_wealth_bc, w) - g_wealth_bc, 4
+            ),
+            "suits_wealth_bottom_coded": round(suits_index(tax, wealth_bc, w), 4),
         }
 
     return {
         "gini_income": round(g_inc, 4),
         "gini_wealth": round(g_wealth, 4),
+        "gini_wealth_bottom_coded": round(g_wealth_bc, 4),
         "note": (
             "Kakwani = concentration index of the tax minus the Gini of the "
             "ranking variable; positive is progressive. Suits is computed "
-            "against cumulative shares of the ranking variable."
+            "against cumulative shares of the ranking variable. Income side "
+            "uses equivalised HBAI net income, person-weighted; wealth side "
+            "uses total household wealth, household-weighted. Wealth indices "
+            "are also reported with wealth bottom-coded at zero, since "
+            "cumulative-share indices are not well defined over negative "
+            "values."
         ),
         "taxes": [block(ct, "Council tax (net of CTR)"), block(lvt, "LVT at budget-neutral rate")],
     }
@@ -408,20 +475,21 @@ def losers(df, rate):
     }
 
 
-def recycling(df, ct_revenue_bn):
+def recycling(df, ct_revenue_bn, central_rate):
     """LVT with net revenue returned as an equal per-person dividend."""
     w = df["weight"].values
     ct = df["council_tax_saved"].values
     land = df["land"].values
     people = df["people"].values
     total_people = float(np.sum(people * w))
-    base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * w) / np.sum(w))
-    base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * w) / np.sum(w))
-    base_gini = gini(df["income"].values, w)
+    pw = df["person_weight"].values
+    base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * pw) / np.sum(pw))
+    base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * pw) / np.sum(pw))
+    base_gini = income_gini(df)
     dec = df["income_decile"].values
 
     rows = []
-    for rate in DIVIDEND_RATES:
+    for rate in (central_rate,) + DIVIDEND_RATES:
         lvt = rate * land
         net_bn = (float(np.sum(lvt * w)) / 1e9) - ct_revenue_bn
         dividend = max(net_bn, 0.0) * 1e9 / total_people
@@ -435,7 +503,7 @@ def recycling(df, ct_revenue_bn):
                 "pct_winners": round(100 * float(np.sum((delta > 1) * w) / np.sum(w)), 1),
                 "poverty_bhc_change": round(bhc - base_bhc, 2),
                 "poverty_ahc_change": round(ahc - base_ahc, 2),
-                "gini_change": round(gini(df["income"].values + delta, w) - base_gini, 4),
+                "gini_change": round(income_gini(df, delta) - base_gini, 4),
                 "decile_1": round(_wmean(delta[dec == 1], w[dec == 1])),
                 "decile_10": round(_wmean(delta[dec == 10], w[dec == 10])),
             }
@@ -500,8 +568,9 @@ def alternative_targets(df):
         r = target_bn / land_bn
         delta = abolished - r * land
         bhc, ahc = poverty_rates(df, delta)
-        base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * w) / np.sum(w))
-        base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * w) / np.sum(w))
+        pw = df["person_weight"].values
+        base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * pw) / np.sum(pw))
+        base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * pw) / np.sum(pw))
         return {
             "label": label,
             "note": note,
@@ -545,8 +614,9 @@ def exempt_band(df, ct_revenue_bn):
     ct = df["council_tax_saved"].values
     dec = df["income_decile"].values
     wd = df["wealth_decile"].values
-    base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * w) / np.sum(w))
-    base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * w) / np.sum(w))
+    pw = df["person_weight"].values
+    base_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * pw) / np.sum(pw))
+    base_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * pw) / np.sum(pw))
     rows = []
     for allowance in (0,) + EXEMPT_BANDS:
         base = np.maximum(land - allowance, 0)
@@ -583,11 +653,15 @@ def build():
     return {
         "budget_neutral_rate_pct": round(rate * 100, 3),
         "etr_by_property_value": etr_by_property_value(df, rate),
+        "etr_by_main_residence_value": etr_by_property_value(
+            df, rate, value_col="main_residence_value"
+        ),
+        "top_tail_reconciliation": top_tail_reconciliation(df),
         "progressivity": progressivity(df, rate),
         "by_tenure": by_tenure(df, rate),
         "decile_uncertainty": decile_uncertainty(df, rate),
         "losers": losers(df, rate),
-        "recycling": recycling(df, ct_revenue_bn),
+        "recycling": recycling(df, ct_revenue_bn, rate),
         "hvcts": hvcts(df, rate),
         "alternative_targets": alternative_targets(df),
         "exempt_band": exempt_band(df, ct_revenue_bn),

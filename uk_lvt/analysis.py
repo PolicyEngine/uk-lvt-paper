@@ -7,6 +7,9 @@ import numpy as np
 import pandas as pd
 
 DEFAULT_LVT_RATES = (0.005, 0.01, 0.015, 0.02, 0.03, 0.05)
+# A household counts as a winner (loser) only if its net income change is
+# more than £1 above (below) zero; changes within ±£1 count as unchanged.
+WINNER_THRESHOLD_GBP = 1.0
 COUNTRY_ORDER = ("ENGLAND", "SCOTLAND", "WALES", "NORTHERN_IRELAND")
 REGION_ORDER = (
     "NORTH_EAST",
@@ -44,6 +47,8 @@ def weighted_mean(values: pd.Series, weights: pd.Series) -> float:
 
 
 def weighted_median(values: pd.Series, weights: pd.Series) -> float:
+    # Lower weighted median: returns the first value whose cumulative weight
+    # reaches half the total, with no interpolation between adjacent values.
     ordered = (
         pd.DataFrame({"value": values.astype(float), "weight": weights.astype(float)})
         .sort_values("value")
@@ -211,9 +216,13 @@ def build_impact_scenario_table(
     df: pd.DataFrame, decile_col: str = "income_decile"
 ) -> list[dict]:
     filtered = df[df[decile_col] > 0].copy()
-    filtered["is_winner"] = (filtered["income_change"] > 0).astype(float)
-    filtered["is_loser"] = (filtered["income_change"] < 0).astype(float)
-    filtered["is_unchanged"] = (filtered["income_change"] == 0).astype(float)
+    # Winners/losers use a ±£1 dead-band so the definition matches
+    # analysis/deep_dive.py and analysis/extensions.py exactly.
+    filtered["is_winner"] = (filtered["income_change"] > WINNER_THRESHOLD_GBP).astype(float)
+    filtered["is_loser"] = (filtered["income_change"] < -WINNER_THRESHOLD_GBP).astype(float)
+    filtered["is_unchanged"] = (
+        filtered["income_change"].abs() <= WINNER_THRESHOLD_GBP
+    ).astype(float)
 
     rows = []
     for decile in sorted(filtered[decile_col].unique()):
@@ -229,9 +238,10 @@ def build_impact_scenario_table(
                     weighted_mean(subset["council_tax_saved"], weights)
                 ),
                 "avg_net_change": round(avg_income_change),
-                "avg_income_change_pct": round(
-                    avg_income_change / max(avg_baseline_income, 1) * 100,
-                    1,
+                "avg_income_change_pct": (
+                    round(avg_income_change / avg_baseline_income * 100, 1)
+                    if avg_baseline_income > 0
+                    else None
                 ),
                 "avg_land_value": round(weighted_mean(subset["land_value"], weights)),
                 "pct_winners": round(weighted_mean(subset["is_winner"], weights) * 100, 1),
@@ -260,7 +270,7 @@ def build_landless_summary(df: pd.DataFrame) -> dict:
     if total_weight == 0 or landless_weight == 0:
         return {"share_pct": 0.0, "avg_net_change": 0, "pct_winners": 0.0}
     weights = landless["weight"]
-    is_winner = (landless["income_change"] > 0).astype(float)
+    is_winner = (landless["income_change"] > WINNER_THRESHOLD_GBP).astype(float)
     return {
         "share_pct": round(landless_weight / total_weight * 100, 1),
         "avg_net_change": round(weighted_mean(landless["income_change"], weights)),
@@ -285,7 +295,11 @@ def build_council_tax_vs_lvt_table(
                 "avg_council_tax": round(avg_council_tax),
                 "avg_lvt": round(avg_lvt),
                 "difference": round(difference),
-                "change_pct": round(difference / max(avg_council_tax, 1) * 100, 1),
+                "change_pct": (
+                    round(difference / avg_council_tax * 100, 1)
+                    if avg_council_tax > 0
+                    else None
+                ),
             }
         )
     return rows

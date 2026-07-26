@@ -30,6 +30,14 @@ equivalised net income). Wealth deciles are reconstructed as equal-weight
 deciles of total wealth: the model's ``household_wealth_decile`` leaves decile
 one empty and places 22.6 per cent of households in decile two, because
 households with zero or negative net wealth are tied.
+
+Statistical conventions
+-----------------------
+Poverty rates are shares of *individuals* (household poverty status weighted
+by household weight times household size), matching the HBAI convention. The
+income Gini is computed on *equivalised* HBAI household net income (BHC),
+person-weighted. The wealth Gini is computed on total household wealth,
+household-weighted, matching the ONS WAS convention.
 """
 
 from __future__ import annotations
@@ -127,6 +135,14 @@ def load_baseline():
     df["wealth_decile"] = equal_weight_deciles(
         df["total_wealth"].values, df["weight"].values
     )
+    hh_of_person = np.asarray(sim.calculate("household_id", YEAR, map_to="person").values)
+    ids = np.asarray(sim.calculate("household_id", YEAR).values)
+    df["people"] = (
+        pd.Series(1.0, index=hh_of_person).groupby(level=0).sum().reindex(ids).fillna(0).values
+    )
+    # Person weight: poverty rates are shares of individuals (HBAI convention)
+    # and the income Gini is person-weighted over equivalised income.
+    df["person_weight"] = df["weight"] * df["people"]
     return sim, df
 
 
@@ -141,21 +157,33 @@ def reform_run(rate, abolish_ct=True):
 
 
 def poverty_rates(df, delta):
-    """Poverty rates (%) under net income change ``delta``, baseline lines."""
-    w = df["weight"].values
+    """Poverty rates (% of individuals) under net income change ``delta``.
+
+    Household poverty status is weighted by household weight times household
+    size, giving the share of people in poor households (HBAI convention),
+    against baseline-fixed thresholds.
+    """
+    pw = df["person_weight"].values
     bhc = df["equiv_bhc"].values + delta / df["equivalisation_bhc"].values
     ahc = df["equiv_ahc"].values + delta / df["equivalisation_ahc"].values
     line_bhc = df["poverty_line_bhc"].values / df["equivalisation_bhc"].values
     line_ahc = df["poverty_line_ahc"].values / df["equivalisation_ahc"].values
     return (
-        100 * float(np.sum((bhc < line_bhc) * w) / np.sum(w)),
-        100 * float(np.sum((ahc < line_ahc) * w) / np.sum(w)),
+        100 * float(np.sum((bhc < line_bhc) * pw) / np.sum(pw)),
+        100 * float(np.sum((ahc < line_ahc) * pw) / np.sum(pw)),
     )
+
+
+def income_gini(df, delta=0.0):
+    """Person-weighted Gini of equivalised HBAI household net income (BHC)."""
+    equiv = df["equiv_bhc"].values + delta / df["equivalisation_bhc"].values
+    return _gini(equiv, df["person_weight"].values)
 
 
 def validate(df) -> dict:
     """Check linearity, absence of benefit interactions, and poverty replication."""
     w = df["weight"].values
+    pw = df["person_weight"].values
     land = df["land_value"].values
     ct = df["council_tax_saved"].values
     checks = []
@@ -165,8 +193,8 @@ def validate(df) -> dict:
         model_delta = _v(sim, "household_net_income") - df["income"].values
         arith_delta = ct - rate * land
         pov_bhc, pov_ahc = poverty_rates(df, arith_delta)
-        model_bhc = 100 * float(np.sum(_v(sim, "in_poverty_bhc") * w) / np.sum(w))
-        model_ahc = 100 * float(np.sum(_v(sim, "in_poverty_ahc") * w) / np.sum(w))
+        model_bhc = 100 * float(np.sum(_v(sim, "in_poverty_bhc") * pw) / np.sum(pw))
+        model_ahc = 100 * float(np.sum(_v(sim, "in_poverty_ahc") * pw) / np.sum(pw))
         check = {
             "rate": rate,
             "max_abs_lvt_gap": float(np.max(np.abs(model_lvt - rate * land))),
@@ -278,9 +306,10 @@ def build_results(uk_data_root: Path | None = None) -> dict:
         ],
     )
 
-    baseline_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * w) / np.sum(w))
-    baseline_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * w) / np.sum(w))
-    baseline_gini = _gini(df["income"].values, w)
+    pw = df["person_weight"].values
+    baseline_bhc = 100 * float(np.sum(df["in_poverty_bhc"].values * pw) / np.sum(pw))
+    baseline_ahc = 100 * float(np.sum(df["in_poverty_ahc"].values * pw) / np.sum(pw))
+    baseline_gini = income_gini(df)
     baseline_wealth_gini = _gini(df["total_wealth"].values, w)
 
     results["impact_scenarios"] = {}
@@ -301,7 +330,7 @@ def build_results(uk_data_root: Path | None = None) -> dict:
         lvt = rate * land
         delta = ct - lvt
         pov_bhc, pov_ahc = poverty_rates(df, delta)
-        gini = _gini(df["income"].values + delta, w)
+        gini = income_gini(df, delta)
         results["poverty_gini"]["scenarios"][label] = {
             "poverty_bhc": round(pov_bhc, 2),
             "poverty_ahc": round(pov_ahc, 2),
