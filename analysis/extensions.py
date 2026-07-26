@@ -105,6 +105,7 @@ def load_baseline():
         "council_tax": _v(sim, "council_tax"),
         "council_tax_less_benefit": _v(sim, "council_tax_less_benefit"),
         "household_land": _v(sim, "household_land_value"),
+        "owned_land": _v(sim, "owned_land"),
         "corporate_land": _v(sim, "corporate_land_value"),
         "land": _v(sim, "land_value"),
         "property_wealth": _v(sim, "property_wealth"),
@@ -380,6 +381,12 @@ def build() -> dict:
             "NI land share interpolated",
             "NI land share 0.44 (interpolated from price-similar English "
             "regions) instead of the central 0.67 (population-weighted mean)",
+        ),
+        scenario(
+            df, hh_land - df["owned_land"].values + corp_land, ct_saved, ct_model_bn,
+            "Excluding directly owned land",
+            "WAS directly owned land (12% of household land, unstable across "
+            "data releases) removed from the base",
         ),
         scenario(
             df, hh_land / 1.0712 + corp_land, ct_saved, CT_OBR_BN,
