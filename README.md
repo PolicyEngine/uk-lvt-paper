@@ -48,9 +48,9 @@ pairs to `results/figures/` — no licensed data needed.
 | --- | --- |
 | Budget-neutral LVT rate | 0.77% |
 | Revenue replaced | £57.6bn |
-| Poverty change (BHC) | +0.04pp (unchanged) |
-| Poverty change (AHC) | −0.70pp |
-| Income Gini change | +0.0003 (unchanged) |
+| Poverty change (BHC, individuals) | +0.03pp (unchanged) |
+| Poverty change (AHC, individuals) | −0.72pp |
+| Income Gini change (equivalised, person-weighted) | −0.0021 (essentially unchanged) |
 | Households gaining | 68.2% |
 | Income decile 1 average change | +£647/yr |
 | Income decile 10 average change | −£963/yr |
@@ -58,7 +58,7 @@ pairs to `results/figures/` — no licensed data needed.
 | Share of land held by top wealth decile | 47.4% |
 | Council tax as % of property value | 1.76% (under £150k) → 0.07% (over £2m) |
 | Kakwani index vs wealth | council tax −0.518, LVT −0.032 |
-| Kakwani index vs income | council tax −0.241, LVT −0.205 |
+| Kakwani index vs income | council tax −0.195, LVT −0.086 |
 | Outright owners / renters | −£731 / +£158 to +£776 per year |
 | Constituencies gaining | 323 of 650 (all of Scotland and Wales) |
 
@@ -99,9 +99,12 @@ solver pass per scenario.
   wealth, ignoring foreign ownership — a strong incidence assumption, tested
   in the robustness table.
 - Poverty *levels* are sensitive to the policyengine-uk version. Results here
-  are pinned to 2.88.20; an earlier release gave a −0.65pp BHC poverty change
-  where this one gives +0.04pp. Revenue, land and winner-share results are
+  are pinned to 2.88.20; an earlier release gave a negative BHC poverty change
+  where this one gives +0.03pp. Revenue, land and winner-share results are
   not affected.
+- Poverty is reported as the share of *individuals* (HBAI convention) and the
+  income Gini is person-weighted over equivalised income; winners/losers use
+  a ±£1 dead-band.
 - The model's own `household_wealth_decile` is degenerate (decile 1 empty,
   22.6% of households in decile 2); wealth deciles here are reconstructed as
   equal-weight deciles.

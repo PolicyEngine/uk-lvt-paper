@@ -28,6 +28,15 @@ Reform levers
 All simulation work goes through ``policyengine.py`` (the v4 client). The
 committed ``results/lvt_results.json`` lets figures and the paper reproduce
 without licensed data access.
+
+.. note::
+   ``uk_lvt/pipeline_direct.py`` is the canonical generator of
+   ``results/lvt_results.json`` (single validated baseline run plus exact
+   closed-form arithmetic, HBAI person-weighted poverty and equivalised
+   person-weighted Gini). This module is retained as an independent
+   cross-check through the policyengine.py v4 client; its poverty and Gini
+   outputs are household-weighted and unequivalised and should not be
+   quoted in the paper.
 """
 
 from __future__ import annotations
@@ -325,6 +334,15 @@ def _household_family_types(person_df: pd.DataFrame, household_ids: pd.Series) -
     ]
 
 
+def _equal_weight_deciles(values: np.ndarray, weights: np.ndarray, n: int = 10) -> np.ndarray:
+    order = np.argsort(values, kind="stable")
+    cw = np.cumsum(weights[order]) / np.sum(weights)
+    d = np.searchsorted(np.arange(1, n) / n, cw, side="left") + 1
+    out = np.empty(len(values), dtype=int)
+    out[order] = np.minimum(d, n)
+    return out
+
+
 def _df_to_pandas(microdf, columns: Iterable[str]) -> pd.DataFrame:
     """Pull selected columns out of a MicroDataFrame as a plain DataFrame."""
     return pd.DataFrame({col: np.asarray(microdf[col]) for col in columns})
@@ -344,7 +362,12 @@ def build_results(
     weight_values = np.asarray(household["household_weight"])
     land_values = np.asarray(household["land_value"])
     income_decile = np.asarray(household["household_income_decile"])
-    wealth_decile = np.asarray(household["household_wealth_decile"])
+    # Equal-weight wealth deciles constructed directly: the model's own
+    # household_wealth_decile is degenerate at the bottom (households with
+    # zero or negative net wealth are tied, leaving decile 1 empty).
+    wealth_decile = _equal_weight_deciles(
+        np.asarray(household["total_wealth"], dtype=float), weight_values
+    )
 
     baseline_df = pd.DataFrame(
         {
@@ -552,37 +575,10 @@ def build_results(
             )
         )
 
-    # Single-household worked example
-    pe, *_ = _import_pe()
-    extras_hh = [
-        "property_wealth",
-        "household_land_value",
-        "corporate_land_value",
-        "land_value",
-        "LVT",
-    ]
-    base_hh = pe.uk.calculate_household(
-        people=[{"age": 40, "employment_income": 50_000}],
-        household={"main_residence_value": 400_000, "corporate_wealth": 50_000},
-        year=year,
-        extra_variables=extras_hh,
-    )
-    lvt_hh = pe.uk.calculate_household(
-        people=[{"age": 40, "employment_income": 50_000}],
-        household={"main_residence_value": 400_000, "corporate_wealth": 50_000},
-        year=year,
-        reform={"gov.contrib.ubi_center.land_value_tax.rate": 0.01},
-        extra_variables=extras_hh,
-    )
-    results["single_household_example"] = {
-        "property_value": 400_000,
-        "corporate_wealth": 50_000,
-        "property_wealth": round(float(base_hh.household.property_wealth)),
-        "household_land_value": round(float(base_hh.household.household_land_value)),
-        "corporate_land_value": round(float(base_hh.household.corporate_land_value)),
-        "total_land_value": round(float(base_hh.household.land_value)),
-        "lvt_liability_1pct": round(float(lvt_hh.household.LVT)),
-    }
+    # The single-household worked example is intentionally NOT computed here:
+    # a one-household simulation allocates the entire corporate land base to
+    # that single record. pipeline_direct.py computes it correctly against
+    # population aggregates.
 
     return results
 
