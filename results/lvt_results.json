@@ -1,5 +1,5 @@
 {
-  "model_version": "2.89.3+git.3fbcb067",
+  "model_version": "2.89.4",
   "dataset": "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14",
   "validation": {
     "tolerance_gbp": 1.0,
