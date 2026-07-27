@@ -98,9 +98,7 @@ solver pass per scenario.
 - Corporate land is allocated to households in proportion to corporate
   wealth, ignoring foreign ownership — a strong incidence assumption, tested
   in the robustness table.
-- Results use policyengine-uk 2.89.3 plus merged commit `3fbcb067` (the NI land
-  intensity fix) and Enhanced FRS 2023–24 release 1.56.14. The model commit is
-  recorded explicitly because it has not yet received a package release tag.
+- Results use policyengine-uk 2.89.4 and Enhanced FRS 2023–24 release 1.56.14.
 - Poverty is reported as the share of *individuals* (HBAI convention) and the
   income Gini is person-weighted over equivalised income; winners/losers use
   a ±£1 dead-band.
