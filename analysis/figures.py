@@ -19,8 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results" / "lvt_results.json"
 OUTDIR = ROOT / "results" / "figures"
 
-NEUTRAL_RATE = "0.77%"
-COUNCIL_TAX_BN = 57.6
+NEUTRAL_RATE = ""
+COUNCIL_TAX_BN = 0.0
 
 fs.apply_style()
 OUTDIR.mkdir(parents=True, exist_ok=True)
@@ -151,7 +151,7 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
         for label, v in scen.items()
     ]
     df = pd.DataFrame(rows).sort_values("rate_pct")
-    neutral = 0.77
+    neutral = data["council_tax_replacement"]["required_lvt_rate_pct"]
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=fs.TWOPANEL)
 
     ax1.plot(df["rate_pct"], df["poverty_bhc_change"], marker="o", color=fs.BLUE, label="Poverty (BHC)")
@@ -171,7 +171,7 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
     for ax in (ax1, ax2):
         ax.axvline(neutral, color=fs.GRAY, linestyle=":", linewidth=1.0)
         ax.annotate(
-            "budget-neutral\n(0.77%)",
+            f"budget-neutral\n({neutral:.2f}%)",
             xy=(neutral, ax.get_ylim()[1]),
             xytext=(neutral + 0.12, ax.get_ylim()[1] * 0.86),
             fontsize=8,
@@ -181,7 +181,12 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
 
 
 def main() -> None:
+    global COUNCIL_TAX_BN, NEUTRAL_RATE
+
     data = json.loads(RESULTS.read_text())
+    replacement = data["council_tax_replacement"]
+    COUNCIL_TAX_BN = replacement["council_tax_revenue_bn"]
+    NEUTRAL_RATE = f"{replacement['required_lvt_rate_pct']:.2f}%"
     fig1_net_change_by_income_decile(data)
     fig2_land_by_income_decile(data)
     fig3_land_by_region(data)

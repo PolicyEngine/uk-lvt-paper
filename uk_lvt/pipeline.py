@@ -16,7 +16,7 @@ Land values
 
 Revenue-neutral rate
     The budget-neutral flat LVT rate equals total net council tax revenue
-    (``council_tax_less_benefit``, £57.6bn) divided by total land value
+    (gross council tax less council tax benefit) divided by total land value
     (£7,463bn), giving 0.77%.
 
 Reform levers
@@ -73,7 +73,7 @@ from .analysis import (
 DEFAULT_YEAR = 2026
 DEFAULT_OUTPUT_PATH = Path("results/lvt_results.json")
 DEFAULT_TARGET_YEAR = 2024
-DATASET_URL = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.55.10"
+DATASET_URL = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
 DATASET_CACHE = Path(os.getenv("PE_UK_DATA_FOLDER", "/tmp/pe_data"))
 
 
@@ -415,8 +415,9 @@ def build_results(
     baseline_total_wealth_microseries = household["total_wealth"]
     baseline_in_poverty_bhc = household["in_poverty_bhc"]
     baseline_in_poverty_ahc = household["in_poverty_ahc"]
-    council_tax_baseline_values = np.asarray(household["council_tax_less_benefit"])
-    council_tax_revenue_bn = float(household["council_tax_less_benefit"].sum()) / 1e9
+    council_tax_net = household["council_tax"] - household["council_tax_benefit"]
+    council_tax_baseline_values = np.asarray(council_tax_net)
+    council_tax_revenue_bn = float(council_tax_net.sum()) / 1e9
     council_tax_gross_bn = float(household["council_tax"].sum()) / 1e9
     council_tax_benefit_bn = float(household["council_tax_benefit"].sum()) / 1e9
 

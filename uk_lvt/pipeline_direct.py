@@ -43,6 +43,7 @@ household-weighted, matching the ONS WAS convention.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -64,7 +65,7 @@ from .analysis import (
     make_rate_grid,
 )
 
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.55.10"
+DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
 YEAR = 2026
 OUTPUT = Path("results/lvt_results.json")
 VALIDATION_RATES = (0.005, 0.01, 0.02)
@@ -113,7 +114,6 @@ def load_baseline():
                 sim.calculate("council_tax_benefit", YEAR, map_to="household").values,
                 dtype=np.float64,
             ),
-            "council_tax_saved": _v(sim, "council_tax_less_benefit"),
             "hh_land": _v(sim, "household_land_value"),
             "corp_land": _v(sim, "corporate_land_value"),
             "land_value": _v(sim, "land_value"),
@@ -129,6 +129,9 @@ def load_baseline():
             "poverty_line_bhc": _v(sim, "poverty_line_bhc"),
             "poverty_line_ahc": _v(sim, "poverty_line_ahc"),
         }
+    )
+    df["council_tax_saved"] = (
+        df["council_tax"] - df["council_tax_benefit"]
     )
     df["country"] = np.asarray(sim.calculate("country", YEAR).values).astype(str)
     df["region"] = np.asarray(sim.calculate("region", YEAR).values).astype(str)
@@ -433,7 +436,9 @@ def build_results(uk_data_root: Path | None = None) -> dict:
 def _model_version() -> str:
     import importlib.metadata as md
 
-    return md.version("policyengine-uk")
+    version = os.environ.get("POLICYENGINE_UK_VERSION", md.version("policyengine-uk"))
+    commit = os.environ.get("POLICYENGINE_UK_COMMIT")
+    return f"{version}+git.{commit[:8]}" if commit else version
 
 
 def main() -> None:

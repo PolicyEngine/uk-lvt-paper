@@ -43,7 +43,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.55.10"
+DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
 YEAR = 2026
 OUTPUT = ROOT / "results" / "extensions.json"
 
@@ -54,13 +54,11 @@ CT_OBR_BN = 53.7  # OBR March 2025 EFO accruals-based council tax receipts
 DISCOUNT_RATES = (0.03, 0.04, 0.05)
 FOREIGN_EQUITY_SHARE = 0.5  # share of UK corporate equity held abroad
 
-# Northern Ireland land-share sensitivity. The central specification assigns
-# NI the population-weighted mean of English regional land shares (0.67),
-# which is implausibly high given NI house prices; the sensitivity instead
-# interpolates NI like Scotland and Wales, from the English regions closest
-# in house price (North East / North West), giving roughly 0.44.
-NI_LAMBDA_CENTRAL = 0.67
-NI_LAMBDA_INTERPOLATED = 0.44
+# Northern Ireland is now interpolated from price-similar North East / North
+# West regions (0.44). Retain the superseded 0.67 English population-weighted
+# assignment as a backward-looking sensitivity.
+NI_LAMBDA_CENTRAL = 0.44
+NI_LAMBDA_LEGACY = 0.67
 
 RENT_PASS_THROUGH = 0.5  # share of the LVT on rented dwellings shifted to tenants
 
@@ -103,7 +101,12 @@ def load_baseline():
         "weight": _v(sim, "household_weight"),
         "net_income": _v(sim, "household_net_income"),
         "council_tax": _v(sim, "council_tax"),
-        "council_tax_less_benefit": _v(sim, "council_tax_less_benefit"),
+        "council_tax_benefit": np.asarray(
+            sim.calculate(
+                "council_tax_benefit", YEAR, map_to="household"
+            ).values,
+            dtype=np.float64,
+        ),
         "household_land": _v(sim, "household_land_value"),
         "owned_land": _v(sim, "owned_land"),
         "corporate_land": _v(sim, "corporate_land_value"),
@@ -122,6 +125,7 @@ def load_baseline():
         "poverty_line_ahc": _v(sim, "poverty_line_ahc"),
     }
     df = pd.DataFrame(cols)
+    df["council_tax_net"] = df["council_tax"] - df["council_tax_benefit"]
     df["country"] = np.asarray(sim.calculate("country", YEAR).values).astype(str)
     df["region"] = np.asarray(sim.calculate("region", YEAR).values).astype(str)
     df["tenure"] = np.asarray(sim.calculate("tenure_type", YEAR).values).astype(str)
@@ -246,7 +250,7 @@ def scenario(df, base, ct_saved, revenue_target_bn, label, note=""):
 def build() -> dict:
     sim, df = load_baseline()
     w = df["weight"].values
-    ct_saved = df["council_tax_less_benefit"].values
+    ct_saved = df["council_tax_net"].values
     ct_model_bn = float(np.sum(ct_saved * w)) / 1e9
     land = df["land"].values
     hh_land = df["household_land"].values
@@ -338,7 +342,14 @@ def build() -> dict:
     # -- robustness ---------------------------------------------------------
     gb = (df["country"].values != "NORTHERN_IRELAND").astype(float)
     scenarios = [
-        scenario(df, land, ct_saved, ct_model_bn, "Central", "0.77% on all land"),
+        scenario(
+            df,
+            land,
+            ct_saved,
+            ct_model_bn,
+            "Central",
+            f"{central_rate:.2%} on all land",
+        ),
         scenario(
             df, land, ct_saved, CT_OBR_BN, "OBR receipts target",
             "replacement target set to OBR council tax receipts",
@@ -373,14 +384,14 @@ def build() -> dict:
             df,
             np.where(
                 df["country"].values == "NORTHERN_IRELAND",
-                hh_land * (NI_LAMBDA_INTERPOLATED / NI_LAMBDA_CENTRAL),
+                hh_land * (NI_LAMBDA_LEGACY / NI_LAMBDA_CENTRAL),
                 hh_land,
             )
             + corp_land,
             ct_saved, ct_model_bn,
-            "NI land share interpolated",
-            "NI land share 0.44 (interpolated from price-similar English "
-            "regions) instead of the central 0.67 (population-weighted mean)",
+            "NI legacy land share",
+            "superseded NI land share 0.67 (English population-weighted mean) "
+            "instead of the corrected central 0.44 interpolation",
         ),
         scenario(
             df, hh_land - df["owned_land"].values + corp_land, ct_saved, ct_model_bn,
