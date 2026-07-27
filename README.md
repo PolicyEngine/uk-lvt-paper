@@ -1,6 +1,6 @@
 # uk-lvt-paper
 
-**Replacing council tax with a 0.77% flat land value tax raises the same £57.6bn, leaves 68% of households better off, and shifts the burden sharply up the wealth distribution — while barely moving income-based inequality or poverty statistics. Simulated household by household in PolicyEngine UK.**
+**Replacing council tax with a 0.79% flat land value tax raises the same £58.5bn, leaves 67% of households better off, and shifts the burden sharply up the wealth distribution. Simulated household by household in PolicyEngine UK.**
 
 ```
 WAS property values → regional land shares → ONS calibration →
@@ -19,7 +19,7 @@ Balance Sheet aggregate held flat from 2024) is allocated to households in
 proportion to corporate wealth, so that component is pinned to its aggregate
 by construction. Household land is *not* pinned: it comes out at £5.40tn,
 107% of the un-uprated ONS 2024 benchmark, the excess being the property-price
-uprating embodied in the microdata. Total base £7.46tn.
+uprating embodied in the microdata. Total base £7.44tn.
 
 ### 2. Microsimulation (`uk_lvt/pipeline.py`)
 
@@ -29,8 +29,8 @@ household_rate, corporate_rate}` and `gov.contrib.abolish_council_tax`.
 
 ### 3. Revenue-neutral rate (`uk_lvt/pipeline.py`)
 
-Rate = net council tax revenue / total land value = £57.6bn / £7,463bn =
-**0.77%**.
+Rate = net council tax revenue / total land value = £58.5bn / £7,436bn =
+**0.79%**.
 
 ### 4. Table builders (`uk_lvt/analysis.py`)
 
@@ -46,21 +46,21 @@ pairs to `results/figures/` — no licensed data needed.
 
 | Measure | Value |
 | --- | --- |
-| Budget-neutral LVT rate | 0.77% |
-| Revenue replaced | £57.6bn |
-| Poverty change (BHC, individuals) | +0.03pp (unchanged) |
-| Poverty change (AHC, individuals) | −0.72pp |
-| Income Gini change (equivalised, person-weighted) | −0.0021 (essentially unchanged) |
-| Households gaining | 68.2% |
-| Income decile 1 average change | +£647/yr |
-| Income decile 10 average change | −£963/yr |
-| Top wealth decile average change | −£5,752/yr |
-| Share of land held by top wealth decile | 47.4% |
+| Budget-neutral LVT rate | 0.79% |
+| Revenue replaced | £58.5bn |
+| Poverty change (BHC, individuals) | −0.23pp |
+| Poverty change (AHC, individuals) | −0.69pp |
+| Income Gini change (equivalised, person-weighted) | −0.0025 (essentially unchanged) |
+| Households gaining | 67.4% |
+| Income decile 1 average change | +£584/yr |
+| Income decile 10 average change | −£1,429/yr |
+| Top wealth decile average change | −£5,871/yr |
+| Share of land held by top wealth decile | 47.5% |
 | Council tax as % of property value | 1.76% (under £150k) → 0.07% (over £2m) |
-| Kakwani index vs wealth | council tax −0.518, LVT −0.032 |
-| Kakwani index vs income | council tax −0.195, LVT −0.086 |
-| Outright owners / renters | −£731 / +£158 to +£776 per year |
-| Constituencies gaining | 323 of 650 (all of Scotland and Wales) |
+| Kakwani index vs wealth | council tax −0.523, LVT −0.032 |
+| Kakwani index vs income | council tax −0.201, LVT −0.084 |
+| Outright owners / renters | −£755 / +£235 to +£773 per year |
+| Constituencies gaining | 327 of 650 (all of Scotland and Wales) |
 
 ## Reproduce
 
@@ -98,10 +98,9 @@ solver pass per scenario.
 - Corporate land is allocated to households in proportion to corporate
   wealth, ignoring foreign ownership — a strong incidence assumption, tested
   in the robustness table.
-- Poverty *levels* are sensitive to the policyengine-uk version. Results here
-  are pinned to 2.88.20; an earlier release gave a negative BHC poverty change
-  where this one gives +0.03pp. Revenue, land and winner-share results are
-  not affected.
+- Results use policyengine-uk 2.89.3 plus merged commit `3fbcb067` (the NI land
+  intensity fix) and Enhanced FRS 2023–24 release 1.56.14. The model commit is
+  recorded explicitly because it has not yet received a package release tag.
 - Poverty is reported as the share of *individuals* (HBAI convention) and the
   income Gini is person-weighted over equivalised income; winners/losers use
   a ±£1 dead-band.

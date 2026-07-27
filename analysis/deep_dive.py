@@ -58,7 +58,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.55.10"
+DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
 YEAR = 2026
 OUTPUT = ROOT / "results" / "deep_dive.json"
 
@@ -173,7 +173,13 @@ def load():
         {
             "weight": _v(sim, "household_weight"),
             "income": _v(sim, "household_net_income"),
-            "council_tax_saved": _v(sim, "council_tax_less_benefit"),
+            "council_tax": _v(sim, "council_tax"),
+            "council_tax_benefit": np.asarray(
+                sim.calculate(
+                    "council_tax_benefit", YEAR, map_to="household"
+                ).values,
+                dtype=np.float64,
+            ),
             "domestic_rates": _v(sim, "domestic_rates"),
             "sdlt": _v(sim, "stamp_duty_land_tax"),
             "land": _v(sim, "land_value"),
@@ -192,6 +198,9 @@ def load():
             "poverty_line_bhc": _v(sim, "poverty_line_bhc"),
             "poverty_line_ahc": _v(sim, "poverty_line_ahc"),
         }
+    )
+    df["council_tax_saved"] = (
+        df["council_tax"] - df["council_tax_benefit"]
     )
     df["country"] = np.asarray(sim.calculate("country", YEAR).values).astype(str)
     df["region"] = np.asarray(sim.calculate("region", YEAR).values).astype(str)

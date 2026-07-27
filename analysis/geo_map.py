@@ -1,4 +1,4 @@
-"""Constituency map of the council-tax -> 0.77% LVT swap.
+"""Constituency map of the council-tax-to-budget-neutral-LVT swap.
 
 Runs baseline and reform PolicyEngine UK simulations on the Enhanced FRS
 2023-24 microdata, computes each household's net income change, and averages
@@ -35,7 +35,7 @@ from matplotlib.colors import TwoSlopeNorm  # noqa: E402
 YEAR = 2026
 WEIGHTS_YEAR = 2025  # only year present in the weights file
 # The budget-neutral rate is solved on whichever dataset this script runs on.
-# Hard-coding the headline 0.77% from the paper's dataset produced a map on
+# Hard-coding the headline rate from the paper's dataset produced a map on
 # which almost every constituency lost, because the swap was not revenue
 # neutral on this one.
 LVT_RATE: float | None = None
@@ -52,7 +52,7 @@ BOUNDARIES = Path(
 
 # The constituency weight matrix (650 x 52576) was calibrated against the
 # enhanced_frs_2024_25 dataset in the same policyengine-uk-data checkout;
-# the pinned HF enhanced_frs_2023_24@1.55.10 has 53508 households and does
+# the pinned HF enhanced_frs_2023_24@1.56.14 has 53508 households and does
 # NOT match, so we run on the matching local dataset to keep household
 # ordering consistent with the weights.
 DATASET_PATH = UK_DATA_STORAGE / "enhanced_frs_2024_25.h5"
@@ -70,7 +70,12 @@ def budget_neutral_rate(baseline) -> float:
     """Net council tax revenue divided by total land value, on this dataset."""
     w = np.asarray(baseline.calculate("household_weight", YEAR).values, dtype=np.float64)
     ct = np.asarray(
-        baseline.calculate("council_tax_less_benefit", YEAR).values, dtype=np.float64
+        baseline.calculate("council_tax", YEAR).values, dtype=np.float64
+    ) - np.asarray(
+        baseline.calculate(
+            "council_tax_benefit", YEAR, map_to="household"
+        ).values,
+        dtype=np.float64,
     )
     land = np.asarray(baseline.calculate("land_value", YEAR).values, dtype=np.float64)
     return float(np.sum(ct * w) / np.sum(land * w))

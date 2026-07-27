@@ -29,10 +29,10 @@ def ext():
 
 
 def test_budget_neutral_rate_consistent(lvt, deep, ext):
-    assert lvt["council_tax_replacement"]["required_lvt_rate_pct"] == 0.77
-    assert deep["budget_neutral_rate_pct"] == pytest.approx(0.772, abs=0.001)
+    assert lvt["council_tax_replacement"]["required_lvt_rate_pct"] == 0.79
+    assert deep["budget_neutral_rate_pct"] == pytest.approx(0.786, abs=0.001)
     central = next(r for r in ext["robustness"] if r["label"] == "Central")
-    assert central["rate_pct"] == pytest.approx(0.772, abs=0.001)
+    assert central["rate_pct"] == pytest.approx(0.786, abs=0.001)
 
 
 def test_validation_passed(lvt, ext):
@@ -48,18 +48,18 @@ def test_validation_passed(lvt, ext):
 def test_poverty_gini_conventions(lvt):
     pg = lvt["poverty_gini"]
     # Person-level HBAI poverty and equivalised person-weighted Gini.
-    assert pg["baseline_poverty_bhc"] == pytest.approx(9.85, abs=0.01)
-    assert pg["baseline_poverty_ahc"] == pytest.approx(14.61, abs=0.01)
-    assert pg["baseline_gini"] == pytest.approx(0.2979, abs=0.0005)
+    assert pg["baseline_poverty_bhc"] == pytest.approx(9.43, abs=0.01)
+    assert pg["baseline_poverty_ahc"] == pytest.approx(14.63, abs=0.01)
+    assert pg["baseline_gini"] == pytest.approx(0.2972, abs=0.0005)
     assert pg["baseline_wealth_gini"] == pytest.approx(0.7038, abs=0.0005)
-    central = pg["scenarios"]["0.77%"]
-    assert central["poverty_ahc_change"] == pytest.approx(-0.72, abs=0.01)
+    central = pg["scenarios"]["0.79%"]
+    assert central["poverty_ahc_change"] == pytest.approx(-0.69, abs=0.01)
     assert abs(central["gini_change"]) < 0.005
 
 
 def test_winner_share_central(ext):
     central = next(r for r in ext["robustness"] if r["label"] == "Central")
-    assert central["pct_winners"] == pytest.approx(68.2, abs=0.1)
+    assert central["pct_winners"] == pytest.approx(67.4, abs=0.1)
     # Revenue neutrality: aggregate change ~ 0.
     assert abs(central["aggregate_change_bn"]) < 0.05
 
@@ -76,7 +76,7 @@ def test_recycling_first_row_is_central_rate(deep):
 def test_progressivity_table(deep):
     prog = deep["progressivity"]
     ct, lvt_tax = prog["taxes"]
-    assert ct["kakwani_wealth"] == pytest.approx(-0.518, abs=0.005)
+    assert ct["kakwani_wealth"] == pytest.approx(-0.523, abs=0.005)
     assert lvt_tax["kakwani_wealth"] == pytest.approx(-0.032, abs=0.005)
     # Bottom-coded sensitivity present and close to headline values.
     for t in (ct, lvt_tax):
@@ -109,7 +109,7 @@ def test_robustness_rows_present(ext):
         "OBR receipts target",
         "Great Britain only",
         "Household land only",
-        "NI land share interpolated",
+        "NI legacy land share",
         "OBR target on ONS-scaled base",
         "Proportional property tax",
     } <= labels

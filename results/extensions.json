@@ -2,16 +2,16 @@
   "decile_integrity": {
     "model_income_decile_population_share_pct": {
       "-1": 0.2,
-      "1": 11.4,
-      "2": 9.4,
+      "1": 11.6,
+      "2": 9.1,
       "3": 10.0,
       "4": 10.8,
       "5": 10.6,
-      "6": 9.4,
+      "6": 9.1,
       "7": 10.1,
-      "8": 9.0,
-      "9": 9.7,
-      "10": 9.4
+      "8": 9.2,
+      "9": 9.5,
+      "10": 9.7
     },
     "model_wealth_decile_population_share_pct": {
       "2": 22.6,
@@ -41,391 +41,391 @@
   "aggregates": {
     "households_m": 32.08,
     "council_tax_gross_bn": 61.9,
-    "council_tax_net_bn": 57.6,
+    "council_tax_net_bn": 58.5,
     "council_tax_obr_bn": 53.7,
-    "household_land_tn": 5.404,
+    "household_land_tn": 5.378,
     "corporate_land_tn": 2.059,
-    "total_land_tn": 7.463,
+    "total_land_tn": 7.436,
     "property_wealth_tn": 7.905
   },
   "validation": {
-    "central_rate_pct": 0.772,
+    "central_rate_pct": 0.786,
     "max_abs_delta_gap": 0.25,
-    "mean_abs_delta_gap": 0.0025,
+    "mean_abs_delta_gap": 0.0024,
     "share_households_with_benefit_interaction": 0.0,
-    "model_poverty_bhc": 9.88,
-    "arithmetic_poverty_bhc": 9.88,
-    "model_poverty_ahc": 13.89,
-    "arithmetic_poverty_ahc": 13.89
+    "model_poverty_bhc": 9.2,
+    "arithmetic_poverty_bhc": 9.2,
+    "model_poverty_ahc": 13.93,
+    "arithmetic_poverty_ahc": 13.93
   },
   "land_decomposition": [
     {
       "decile": 1,
-      "avg_household_land": 75848,
-      "avg_corporate_land": 19454,
-      "avg_total_land": 95302,
-      "avg_property_wealth": 106712,
-      "household_land_share_of_property_pct": 71.1,
-      "share_of_total_land_pct": 4.7
+      "avg_household_land": 86284,
+      "avg_corporate_land": 26071,
+      "avg_total_land": 112355,
+      "avg_property_wealth": 123508,
+      "household_land_share_of_property_pct": 69.9,
+      "share_of_total_land_pct": 5.6
     },
     {
       "decile": 2,
-      "avg_household_land": 171344,
-      "avg_corporate_land": 46300,
-      "avg_total_land": 217644,
-      "avg_property_wealth": 198309,
-      "household_land_share_of_property_pct": 86.4,
-      "share_of_total_land_pct": 8.8
+      "avg_household_land": 165548,
+      "avg_corporate_land": 38990,
+      "avg_total_land": 204538,
+      "avg_property_wealth": 190189,
+      "household_land_share_of_property_pct": 87.0,
+      "share_of_total_land_pct": 8.1
     },
     {
       "decile": 3,
-      "avg_household_land": 89340,
-      "avg_corporate_land": 26362,
-      "avg_total_land": 115702,
-      "avg_property_wealth": 144651,
-      "household_land_share_of_property_pct": 61.8,
-      "share_of_total_land_pct": 5.0
+      "avg_household_land": 77422,
+      "avg_corporate_land": 23480,
+      "avg_total_land": 100901,
+      "avg_property_wealth": 124226,
+      "household_land_share_of_property_pct": 62.3,
+      "share_of_total_land_pct": 4.3
     },
     {
       "decile": 4,
-      "avg_household_land": 152099,
-      "avg_corporate_land": 50164,
-      "avg_total_land": 202263,
-      "avg_property_wealth": 204378,
-      "household_land_share_of_property_pct": 74.4,
-      "share_of_total_land_pct": 9.3
+      "avg_household_land": 138699,
+      "avg_corporate_land": 41941,
+      "avg_total_land": 180640,
+      "avg_property_wealth": 181346,
+      "household_land_share_of_property_pct": 76.5,
+      "share_of_total_land_pct": 8.4
     },
     {
       "decile": 5,
-      "avg_household_land": 144852,
-      "avg_corporate_land": 52305,
-      "avg_total_land": 197157,
-      "avg_property_wealth": 213009,
-      "household_land_share_of_property_pct": 68.0,
-      "share_of_total_land_pct": 9.0
+      "avg_household_land": 163955,
+      "avg_corporate_land": 62907,
+      "avg_total_land": 226863,
+      "avg_property_wealth": 245660,
+      "household_land_share_of_property_pct": 66.7,
+      "share_of_total_land_pct": 10.4
     },
     {
       "decile": 6,
-      "avg_household_land": 160086,
-      "avg_corporate_land": 50458,
-      "avg_total_land": 210544,
-      "avg_property_wealth": 231152,
-      "household_land_share_of_property_pct": 69.3,
+      "avg_household_land": 162225,
+      "avg_corporate_land": 53141,
+      "avg_total_land": 215366,
+      "avg_property_wealth": 239736,
+      "household_land_share_of_property_pct": 67.7,
       "share_of_total_land_pct": 8.5
     },
     {
       "decile": 7,
-      "avg_household_land": 138281,
-      "avg_corporate_land": 48129,
-      "avg_total_land": 186410,
-      "avg_property_wealth": 221029,
-      "household_land_share_of_property_pct": 62.6,
-      "share_of_total_land_pct": 8.1
+      "avg_household_land": 143075,
+      "avg_corporate_land": 47821,
+      "avg_total_land": 190896,
+      "avg_property_wealth": 224979,
+      "household_land_share_of_property_pct": 63.6,
+      "share_of_total_land_pct": 8.3
     },
     {
       "decile": 8,
-      "avg_household_land": 191548,
-      "avg_corporate_land": 88673,
-      "avg_total_land": 280220,
-      "avg_property_wealth": 308960,
-      "household_land_share_of_property_pct": 62.0,
-      "share_of_total_land_pct": 10.9
+      "avg_household_land": 174345,
+      "avg_corporate_land": 81906,
+      "avg_total_land": 256250,
+      "avg_property_wealth": 288363,
+      "household_land_share_of_property_pct": 60.5,
+      "share_of_total_land_pct": 10.2
     },
     {
       "decile": 9,
-      "avg_household_land": 294523,
-      "avg_corporate_land": 127118,
-      "avg_total_land": 421641,
-      "avg_property_wealth": 451521,
-      "household_land_share_of_property_pct": 65.2,
-      "share_of_total_land_pct": 17.5
+      "avg_household_land": 247985,
+      "avg_corporate_land": 120878,
+      "avg_total_land": 368863,
+      "avg_property_wealth": 404732,
+      "household_land_share_of_property_pct": 61.3,
+      "share_of_total_land_pct": 15.1
     },
     {
       "decile": 10,
-      "avg_household_land": 294942,
-      "avg_corporate_land": 147992,
-      "avg_total_land": 442935,
-      "avg_property_wealth": 429497,
-      "household_land_share_of_property_pct": 68.7,
-      "share_of_total_land_pct": 18.0
+      "avg_household_land": 340804,
+      "avg_corporate_land": 156414,
+      "avg_total_land": 497218,
+      "avg_property_wealth": 479920,
+      "household_land_share_of_property_pct": 71.0,
+      "share_of_total_land_pct": 20.8
     }
   ],
   "robustness": [
     {
       "label": "Central",
-      "note": "0.77% on all land",
-      "base_tn": 7.463,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.772,
-      "pct_winners": 68.2,
-      "pct_losers": 30.4,
-      "aggregate_change_bn": -0.0,
-      "income_decile_1": 647,
-      "income_decile_5": 145,
-      "income_decile_9": -1016,
-      "income_decile_10": -963,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5752,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.72,
-      "gini_change": -0.0021
+      "note": "0.79% on all land",
+      "base_tn": 7.436,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.786,
+      "pct_winners": 67.4,
+      "pct_losers": 29.9,
+      "aggregate_change_bn": 0.0,
+      "income_decile_1": 584,
+      "income_decile_5": -87,
+      "income_decile_9": -668,
+      "income_decile_10": -1429,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5871,
+      "poverty_bhc_change": -0.23,
+      "poverty_ahc_change": -0.69,
+      "gini_change": -0.0025
     },
     {
       "label": "OBR receipts target",
       "note": "replacement target set to OBR council tax receipts",
-      "base_tn": 7.463,
+      "base_tn": 7.436,
       "revenue_target_bn": 53.7,
-      "rate_pct": 0.72,
-      "pct_winners": 69.1,
-      "pct_losers": 29.5,
-      "aggregate_change_bn": 3.94,
-      "income_decile_1": 698,
-      "income_decile_5": 249,
-      "income_decile_9": -794,
-      "income_decile_10": -730,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5177,
-      "poverty_bhc_change": -0.12,
-      "poverty_ahc_change": -0.75,
-      "gini_change": -0.0026
+      "rate_pct": 0.722,
+      "pct_winners": 68.6,
+      "pct_losers": 28.7,
+      "aggregate_change_bn": 4.75,
+      "income_decile_1": 656,
+      "income_decile_5": 58,
+      "income_decile_9": -433,
+      "income_decile_10": -1111,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5178,
+      "poverty_bhc_change": -0.39,
+      "poverty_ahc_change": -0.79,
+      "gini_change": -0.003
     },
     {
       "label": "Great Britain only",
       "note": "Northern Ireland excluded from the LVT base",
       "base_tn": 7.338,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.786,
-      "pct_winners": 67.9,
-      "pct_losers": 29.4,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.797,
+      "pct_winners": 66.7,
+      "pct_losers": 29.1,
       "aggregate_change_bn": 0.0,
-      "income_decile_1": 639,
-      "income_decile_5": 132,
-      "income_decile_9": -1042,
-      "income_decile_10": -1016,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5747,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.65,
-      "gini_change": -0.002
+      "income_decile_1": 575,
+      "income_decile_5": -101,
+      "income_decile_9": -685,
+      "income_decile_10": -1477,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5861,
+      "poverty_bhc_change": -0.06,
+      "poverty_ahc_change": -0.67,
+      "gini_change": -0.0024
     },
     {
       "label": "Household land only",
       "note": "corporate land excluded from the base",
-      "base_tn": 5.404,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 1.067,
-      "pct_winners": 69.6,
-      "pct_losers": 28.5,
-      "aggregate_change_bn": 0.0,
-      "income_decile_1": 574,
-      "income_decile_5": 123,
-      "income_decile_9": -901,
-      "income_decile_10": -688,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5364,
-      "poverty_bhc_change": 0.11,
-      "poverty_ahc_change": -0.64,
-      "gini_change": -0.0005
+      "base_tn": 5.378,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 1.087,
+      "pct_winners": 68.6,
+      "pct_losers": 27.4,
+      "aggregate_change_bn": -0.0,
+      "income_decile_1": 529,
+      "income_decile_5": -86,
+      "income_decile_9": -465,
+      "income_decile_10": -1225,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5478,
+      "poverty_bhc_change": 0.44,
+      "poverty_ahc_change": -0.69,
+      "gini_change": -0.0009
     },
     {
       "label": "Foreign-owned corporate equity",
       "note": "half of corporate land assumed foreign-owned and outside the household base",
-      "base_tn": 6.434,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.896,
-      "pct_winners": 68.0,
-      "pct_losers": 30.6,
+      "base_tn": 6.407,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.912,
+      "pct_winners": 67.2,
+      "pct_losers": 29.9,
       "aggregate_change_bn": -0.0,
-      "income_decile_1": 617,
-      "income_decile_5": 136,
-      "income_decile_9": -968,
-      "income_decile_10": -848,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5589,
-      "poverty_bhc_change": 0.1,
-      "poverty_ahc_change": -0.67,
-      "gini_change": -0.0015
+      "income_decile_1": 561,
+      "income_decile_5": -87,
+      "income_decile_9": -583,
+      "income_decile_10": -1343,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5706,
+      "poverty_bhc_change": -0.03,
+      "poverty_ahc_change": -0.69,
+      "gini_change": -0.0018
     },
     {
       "label": "Household land scaled to ONS 2024",
       "note": "household land rescaled to the un-uprated ONS benchmark",
-      "base_tn": 7.104,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.811,
-      "pct_winners": 68.2,
-      "pct_losers": 30.4,
-      "aggregate_change_bn": -0.0,
-      "income_decile_1": 651,
-      "income_decile_5": 146,
-      "income_decile_9": -1022,
-      "income_decile_10": -977,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5772,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.72,
-      "gini_change": -0.0022
+      "base_tn": 7.079,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.826,
+      "pct_winners": 67.4,
+      "pct_losers": 29.9,
+      "aggregate_change_bn": 0.0,
+      "income_decile_1": 587,
+      "income_decile_5": -87,
+      "income_decile_9": -679,
+      "income_decile_10": -1439,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5891,
+      "poverty_bhc_change": -0.24,
+      "poverty_ahc_change": -0.75,
+      "gini_change": -0.0025
     },
     {
       "label": "Land shares -10%",
       "note": "all regional land shares scaled by 0.9",
-      "base_tn": 6.923,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.833,
-      "pct_winners": 68.2,
-      "pct_losers": 30.5,
+      "base_tn": 6.898,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.847,
+      "pct_winners": 67.3,
+      "pct_losers": 29.8,
       "aggregate_change_bn": -0.0,
-      "income_decile_1": 653,
-      "income_decile_5": 147,
-      "income_decile_9": -1025,
-      "income_decile_10": -985,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5782,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.72,
-      "gini_change": -0.0022
+      "income_decile_1": 588,
+      "income_decile_5": -87,
+      "income_decile_9": -684,
+      "income_decile_10": -1445,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5902,
+      "poverty_bhc_change": -0.24,
+      "poverty_ahc_change": -0.75,
+      "gini_change": -0.0026
     },
     {
       "label": "Land shares +10%",
       "note": "all regional land shares scaled by 1.1",
-      "base_tn": 8.003,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.72,
-      "pct_winners": 68.2,
-      "pct_losers": 30.5,
-      "aggregate_change_bn": 0.0,
-      "income_decile_1": 642,
-      "income_decile_5": 143,
-      "income_decile_9": -1008,
-      "income_decile_10": -945,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5726,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.65,
-      "gini_change": -0.002
+      "base_tn": 7.974,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.733,
+      "pct_winners": 67.3,
+      "pct_losers": 30.0,
+      "aggregate_change_bn": -0.0,
+      "income_decile_1": 580,
+      "income_decile_5": -87,
+      "income_decile_9": -655,
+      "income_decile_10": -1415,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5845,
+      "poverty_bhc_change": -0.06,
+      "poverty_ahc_change": -0.69,
+      "gini_change": -0.0024
     },
     {
-      "label": "NI land share interpolated",
-      "note": "NI land share 0.44 (interpolated from price-similar English regions) instead of the central 0.67 (population-weighted mean)",
-      "base_tn": 7.432,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.776,
-      "pct_winners": 68.2,
-      "pct_losers": 30.5,
+      "label": "NI legacy land share",
+      "note": "superseded NI land share 0.67 (English population-weighted mean) instead of the corrected central 0.44 interpolation",
+      "base_tn": 7.469,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.783,
+      "pct_winners": 67.4,
+      "pct_losers": 29.9,
       "aggregate_change_bn": 0.0,
-      "income_decile_1": 645,
-      "income_decile_5": 141,
-      "income_decile_9": -1021,
-      "income_decile_10": -976,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5752,
-      "poverty_bhc_change": 0.03,
-      "poverty_ahc_change": -0.71,
-      "gini_change": -0.0021
+      "income_decile_1": 587,
+      "income_decile_5": -82,
+      "income_decile_9": -664,
+      "income_decile_10": -1413,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5874,
+      "poverty_bhc_change": -0.24,
+      "poverty_ahc_change": -0.69,
+      "gini_change": -0.0025
     },
     {
       "label": "Excluding directly owned land",
       "note": "WAS directly owned land (12% of household land, unstable across data releases) removed from the base",
-      "base_tn": 6.792,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.849,
-      "pct_winners": 66.3,
-      "pct_losers": 32.3,
-      "aggregate_change_bn": -0.0,
-      "income_decile_1": 675,
-      "income_decile_5": 78,
-      "income_decile_9": -1227,
-      "income_decile_10": -1177,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -5128,
-      "poverty_bhc_change": -0.03,
-      "poverty_ahc_change": -0.77,
-      "gini_change": -0.0041
+      "base_tn": 6.765,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.864,
+      "pct_winners": 65.4,
+      "pct_losers": 31.8,
+      "aggregate_change_bn": 0.0,
+      "income_decile_1": 603,
+      "income_decile_5": -175,
+      "income_decile_9": -839,
+      "income_decile_10": -1695,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -5236,
+      "poverty_bhc_change": -0.15,
+      "poverty_ahc_change": -0.8,
+      "gini_change": -0.0045
     },
     {
       "label": "OBR target on ONS-scaled base",
       "note": "both calibration gaps closed at once: replacement target set to OBR receipts and household land rescaled to the un-uprated ONS 2024 benchmark",
-      "base_tn": 7.104,
+      "base_tn": 7.079,
       "revenue_target_bn": 53.7,
-      "rate_pct": 0.756,
-      "pct_winners": 69.1,
-      "pct_losers": 29.6,
-      "aggregate_change_bn": 3.94,
-      "income_decile_1": 701,
-      "income_decile_5": 250,
-      "income_decile_9": -799,
-      "income_decile_10": -742,
-      "wealth_decile_1": 920,
+      "rate_pct": 0.759,
+      "pct_winners": 68.6,
+      "pct_losers": 28.7,
+      "aggregate_change_bn": 4.75,
+      "income_decile_1": 658,
+      "income_decile_5": 58,
+      "income_decile_9": -442,
+      "income_decile_10": -1121,
+      "wealth_decile_1": 972,
       "wealth_decile_10": -5196,
-      "poverty_bhc_change": -0.12,
-      "poverty_ahc_change": -0.74,
-      "gini_change": -0.0027
+      "poverty_bhc_change": -0.39,
+      "poverty_ahc_change": -0.78,
+      "gini_change": -0.0031
     },
     {
       "label": "Proportional property tax",
       "note": "comparator: flat tax on total property value, structures included",
       "base_tn": 7.905,
-      "revenue_target_bn": 57.6,
-      "rate_pct": 0.729,
-      "pct_winners": 64.4,
-      "pct_losers": 33.7,
+      "revenue_target_bn": 58.5,
+      "rate_pct": 0.739,
+      "pct_winners": 63.4,
+      "pct_losers": 32.6,
       "aggregate_change_bn": -0.0,
-      "income_decile_1": 605,
-      "income_decile_5": 115,
-      "income_decile_9": -1052,
-      "income_decile_10": -674,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -4217,
-      "poverty_bhc_change": 0.02,
-      "poverty_ahc_change": -0.73,
-      "gini_change": -0.0027
+      "income_decile_1": 554,
+      "income_decile_5": -120,
+      "income_decile_9": -762,
+      "income_decile_10": -1069,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -4310,
+      "poverty_bhc_change": -0.1,
+      "poverty_ahc_change": -0.77,
+      "gini_change": -0.0031
     }
   ],
   "incidence_variants": [
     {
       "label": "Corporate LVT as wealth charge",
       "note": "corporate component treated as a stock levy on corporate wealth (not a cash charge on current income); income-side statistics reflect the household-land component only",
-      "rate_pct": 0.772,
-      "corporate_component_bn": 15.9,
-      "corporate_component_pct_of_wealth": 0.059,
-      "pct_winners": 76.8,
-      "pct_losers": 21.2,
-      "aggregate_change_bn": 15.9,
-      "income_decile_1": 798,
-      "income_decile_5": 549,
-      "income_decile_9": -34,
-      "income_decile_10": 180,
-      "wealth_decile_1": 920,
-      "wealth_decile_10": -3151,
-      "poverty_bhc_change": -0.25,
-      "poverty_ahc_change": -0.82,
-      "gini_change": -0.0028
+      "rate_pct": 0.786,
+      "corporate_component_bn": 16.2,
+      "corporate_component_pct_of_wealth": 0.06,
+      "pct_winners": 75.8,
+      "pct_losers": 20.2,
+      "aggregate_change_bn": 16.18,
+      "income_decile_1": 789,
+      "income_decile_5": 407,
+      "income_decile_9": 282,
+      "income_decile_10": -200,
+      "wealth_decile_1": 972,
+      "wealth_decile_10": -3224,
+      "poverty_bhc_change": -0.52,
+      "poverty_ahc_change": -0.85,
+      "gini_change": -0.0031
     },
     {
       "label": "50% rent pass-through",
       "note": "half of the LVT on privately rented dwellings shifted to tenants (regional mean owner land as the dwelling-land proxy), rebated to owners in proportion to household land; aggregate revenue unchanged",
-      "rate_pct": 0.772,
-      "amount_shifted_to_tenants_bn": 7.8,
-      "pct_winners": 67.3,
-      "pct_losers": 31.8,
-      "aggregate_change_bn": -0.0,
-      "income_decile_1": 538,
-      "income_decile_5": 103,
-      "income_decile_9": -815,
-      "income_decile_10": -954,
-      "wealth_decile_1": 583,
-      "wealth_decile_10": -4727,
-      "poverty_bhc_change": -0.09,
-      "poverty_ahc_change": -0.2,
-      "gini_change": -0.0019
+      "rate_pct": 0.786,
+      "amount_shifted_to_tenants_bn": 8.0,
+      "pct_winners": 66.8,
+      "pct_losers": 31.0,
+      "aggregate_change_bn": 0.0,
+      "income_decile_1": 494,
+      "income_decile_5": -90,
+      "income_decile_9": -557,
+      "income_decile_10": -1318,
+      "wealth_decile_1": 631,
+      "wealth_decile_10": -4832,
+      "poverty_bhc_change": -0.34,
+      "poverty_ahc_change": -0.23,
+      "gini_change": -0.0022
     }
   ],
   "capitalisation": {
-    "rate_pct": 0.772,
+    "rate_pct": 0.786,
     "scenarios": [
       {
         "discount_rate": 0.03,
-        "land_price_fall_pct": 25.7,
-        "aggregate_loss_tn": 1.92,
+        "land_price_fall_pct": 26.2,
+        "aggregate_loss_tn": 1.95,
         "by_wealth_decile": [
           {
             "decile": 1,
@@ -439,50 +439,50 @@
           },
           {
             "decile": 3,
-            "capitalised_land_loss": 323,
-            "pct_of_total_wealth": 3.6
+            "capitalised_land_loss": 329,
+            "pct_of_total_wealth": 3.7
           },
           {
             "decile": 4,
-            "capitalised_land_loss": 6502,
-            "pct_of_total_wealth": 8.0
+            "capitalised_land_loss": 6574,
+            "pct_of_total_wealth": 8.1
           },
           {
             "decile": 5,
-            "capitalised_land_loss": 19746,
-            "pct_of_total_wealth": 9.7
+            "capitalised_land_loss": 20017,
+            "pct_of_total_wealth": 9.8
           },
           {
             "decile": 6,
-            "capitalised_land_loss": 35785,
-            "pct_of_total_wealth": 9.4
+            "capitalised_land_loss": 36301,
+            "pct_of_total_wealth": 9.5
           },
           {
             "decile": 7,
-            "capitalised_land_loss": 54668,
-            "pct_of_total_wealth": 8.3
+            "capitalised_land_loss": 55369,
+            "pct_of_total_wealth": 8.4
           },
           {
             "decile": 8,
-            "capitalised_land_loss": 82760,
-            "pct_of_total_wealth": 7.9
+            "capitalised_land_loss": 83911,
+            "pct_of_total_wealth": 8.0
           },
           {
             "decile": 9,
-            "capitalised_land_loss": 116209,
-            "pct_of_total_wealth": 6.8
+            "capitalised_land_loss": 117776,
+            "pct_of_total_wealth": 6.9
           },
           {
             "decile": 10,
-            "capitalised_land_loss": 280331,
-            "pct_of_total_wealth": 6.5
+            "capitalised_land_loss": 284431,
+            "pct_of_total_wealth": 6.6
           }
         ]
       },
       {
         "discount_rate": 0.04,
-        "land_price_fall_pct": 19.3,
-        "aggregate_loss_tn": 1.44,
+        "land_price_fall_pct": 19.7,
+        "aggregate_loss_tn": 1.46,
         "by_wealth_decile": [
           {
             "decile": 1,
@@ -492,54 +492,54 @@
           {
             "decile": 2,
             "capitalised_land_loss": 6,
-            "pct_of_total_wealth": 2.1
+            "pct_of_total_wealth": 2.2
           },
           {
             "decile": 3,
-            "capitalised_land_loss": 242,
-            "pct_of_total_wealth": 2.7
+            "capitalised_land_loss": 246,
+            "pct_of_total_wealth": 2.8
           },
           {
             "decile": 4,
-            "capitalised_land_loss": 4876,
-            "pct_of_total_wealth": 6.0
+            "capitalised_land_loss": 4930,
+            "pct_of_total_wealth": 6.1
           },
           {
             "decile": 5,
-            "capitalised_land_loss": 14809,
-            "pct_of_total_wealth": 7.3
+            "capitalised_land_loss": 15012,
+            "pct_of_total_wealth": 7.4
           },
           {
             "decile": 6,
-            "capitalised_land_loss": 26839,
-            "pct_of_total_wealth": 7.1
+            "capitalised_land_loss": 27225,
+            "pct_of_total_wealth": 7.2
           },
           {
             "decile": 7,
-            "capitalised_land_loss": 41001,
-            "pct_of_total_wealth": 6.2
+            "capitalised_land_loss": 41527,
+            "pct_of_total_wealth": 6.3
           },
           {
             "decile": 8,
-            "capitalised_land_loss": 62070,
-            "pct_of_total_wealth": 5.9
+            "capitalised_land_loss": 62934,
+            "pct_of_total_wealth": 6.0
           },
           {
             "decile": 9,
-            "capitalised_land_loss": 87156,
-            "pct_of_total_wealth": 5.1
+            "capitalised_land_loss": 88332,
+            "pct_of_total_wealth": 5.2
           },
           {
             "decile": 10,
-            "capitalised_land_loss": 210248,
-            "pct_of_total_wealth": 4.9
+            "capitalised_land_loss": 213323,
+            "pct_of_total_wealth": 5.0
           }
         ]
       },
       {
         "discount_rate": 0.05,
-        "land_price_fall_pct": 15.4,
-        "aggregate_loss_tn": 1.15,
+        "land_price_fall_pct": 15.7,
+        "aggregate_loss_tn": 1.17,
         "by_wealth_decile": [
           {
             "decile": 1,
@@ -553,43 +553,43 @@
           },
           {
             "decile": 3,
-            "capitalised_land_loss": 194,
+            "capitalised_land_loss": 197,
             "pct_of_total_wealth": 2.2
           },
           {
             "decile": 4,
-            "capitalised_land_loss": 3901,
-            "pct_of_total_wealth": 4.8
+            "capitalised_land_loss": 3944,
+            "pct_of_total_wealth": 4.9
           },
           {
             "decile": 5,
-            "capitalised_land_loss": 11848,
-            "pct_of_total_wealth": 5.8
+            "capitalised_land_loss": 12010,
+            "pct_of_total_wealth": 5.9
           },
           {
             "decile": 6,
-            "capitalised_land_loss": 21471,
-            "pct_of_total_wealth": 5.6
+            "capitalised_land_loss": 21780,
+            "pct_of_total_wealth": 5.7
           },
           {
             "decile": 7,
-            "capitalised_land_loss": 32801,
-            "pct_of_total_wealth": 5.0
+            "capitalised_land_loss": 33222,
+            "pct_of_total_wealth": 5.1
           },
           {
             "decile": 8,
-            "capitalised_land_loss": 49656,
-            "pct_of_total_wealth": 4.7
+            "capitalised_land_loss": 50347,
+            "pct_of_total_wealth": 4.8
           },
           {
             "decile": 9,
-            "capitalised_land_loss": 69725,
+            "capitalised_land_loss": 70666,
             "pct_of_total_wealth": 4.1
           },
           {
             "decile": 10,
-            "capitalised_land_loss": 168199,
-            "pct_of_total_wealth": 3.9
+            "capitalised_land_loss": 170659,
+            "pct_of_total_wealth": 4.0
           }
         ]
       }
@@ -597,9 +597,9 @@
   },
   "pensioner_deferral": {
     "pensioner_household_share_pct": 27.2,
-    "lvt_deferred_bn": 20.3,
-    "share_of_lvt_deferred_pct": 35.1,
-    "avg_deferred_liability": 2318
+    "lvt_deferred_bn": 20.6,
+    "share_of_lvt_deferred_pct": 35.2,
+    "avg_deferred_liability": 2354
   },
   "single_household": {
     "property_value": 400000,
@@ -609,6 +609,6 @@
     "corporate_land_per_pound_of_corporate_wealth": 0.145,
     "allocated_corporate_land": 7257,
     "total_land_value": 347257,
-    "lvt_at_central_rate": 2682
+    "lvt_at_central_rate": 2730
   }
 }
