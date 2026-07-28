@@ -256,25 +256,25 @@ That the winner share is high while the average income-decile effects are small 
 
 Table~\ref{tab:tenure} splits the central result by tenure, which matters for two reasons: it is the margin on which the fixed-rent assumption bites, and it shows where the burden actually lands once land ownership rather than income is the organising variable.
 
-Outright owners, 34.3 per cent of households, hold 56.5 per cent of the land and pay 56.5 per cent of the tax; they lose \pounds 731 a year on average, an aggregate of \pounds 8.0 billion. Households buying with a mortgage are almost exactly neutral (\pounds 54), holding 29.8 per cent of the land against a similar share of council tax. All three renting groups gain: private renters by \pounds 776, council tenants by \pounds 634 and housing association tenants by \pounds 158. Renters are not untaxed --- they pay 13.7 per cent of the levy between them, entirely through attributed corporate land held in pensions and other financial wealth --- but they retain most of an abolished council tax bill while owning almost no residential land.
+Outright owners, 34.3 per cent of households, hold 56.6 per cent of the land and pay 56.6 per cent of the tax; they lose \pounds 755 a year on average, an aggregate of \pounds 8.3 billion. Households buying with a mortgage are almost exactly neutral (\pounds 28), holding 29.8 per cent of the land against a similar share of council tax. All three renting groups gain: private renters by \pounds 773, council tenants by \pounds 737 and housing association tenants by \pounds 235. Renters are not untaxed --- they pay 13.7 per cent of the levy between them, entirely through attributed corporate land held in pensions and other financial wealth --- but they retain most of an abolished council tax bill while owning almost no residential land.
 
-The transfer is therefore, in the first instance, from outright owners to renters, with mortgagors in between. That is an intuitive description of a tax on unencumbered land ownership, and it is also where the incidence assumption does the most work. Under the pass-through mechanism that \citet{nielsson2024} document for Denmark, some of the \pounds 8.0 billion borne by owners would be recovered from tenants in higher rents, and the \pounds 7.6 billion gain accruing to the three renting groups would shrink correspondingly. The UK has no statutory mechanism of that kind, but the magnitudes in Table~\ref{tab:tenure} are what a reader should scale if they believe partial pass-through occurs.
+The transfer is therefore, in the first instance, from outright owners to renters, with mortgagors in between. That is an intuitive description of a tax on unencumbered land ownership, and it is also where the incidence assumption does the most work. Under the pass-through mechanism that \citet{nielsson2024} document for Denmark, some of the \pounds 8.3 billion borne by owners would be recovered from tenants in higher rents, and the \pounds 8.1 billion gain accruing to the three renting groups would shrink correspondingly. The UK has no statutory mechanism of that kind, but the magnitudes in Table~\ref{tab:tenure} are what a reader should scale if they believe partial pass-through occurs.
 
 \begin{table}[htbp]
 \centering
 \footnotesize
-\caption{Impact of the 0.77\% budget-neutral LVT by tenure}
+\caption{Impact of the 0.79\% budget-neutral LVT by tenure}
 \label{tab:tenure}
 \begin{tabular}{lrrrrrrr}
 \toprule
  & Share of & Avg.\ land & Avg.\ CT & Avg.\ & Avg.\ net & Winners & Share of \\
 Tenure & households (\%) & value (\pounds) & saved (\pounds) & LVT (\pounds) & change (\pounds) & (\%) & LVT (\%) \\
 \midrule
-Owned outright        & 34.3 & 383{,}751 & 2{,}233 & 2{,}964 & $-$731 & 56.7 & 56.5 \\
-Owned with mortgage   & 26.7 & 259{,}639 & 2{,}059 & 2{,}005 & $+$54  & 69.5 & 29.8 \\
-Rented privately      & 21.4 & 111{,}154 & 1{,}635 & 858     & $+$776 & 77.9 & 10.2 \\
-Rented from council   & 8.8  & 7{,}980   & 696     & 62      & $+$634 & 81.7 & 0.3 \\
-Rented from HA        & 8.8  & 83{,}614  & 803     & 646     & $+$158 & 72.4 & 3.2 \\
+Owned outright        & 34.3 & 382{,}634 & 2{,}253 & 3{,}008 & $-$755 & 57.2 & 56.6 \\
+Owned with mortgage   & 26.7 & 258{,}520 & 2{,}060 & 2{,}032 & $+$28  & 69.1 & 29.8 \\
+Rented privately      & 21.4 & 110{,}855 & 1{,}644 & 871     & $+$773 & 76.4 & 10.2 \\
+Rented from council   & 8.8  & 7{,}904   & 799     & 62      & $+$737 & 81.0 & 0.3 \\
+Rented from HA        & 8.8  & 82{,}635  & 884     & 650     & $+$235 & 65.7 & 3.2 \\
 \bottomrule
 \end{tabular}
 
@@ -285,7 +285,16 @@ Rented from HA        & 8.8  & 83{,}614  & 803     & 646     & $+$158 & 72.4 & 3
 \subsection{Geographic incidence}
 \label{sec:geography}
 
-Land value is the most spatially concentrated tax base in the UK, so the reform redistributes across places at least as much as across households. Figure~\ref{fig:map} maps the average net income change by Westminster constituency.\footnote{The constituency weights available to us are calibrated against a later release of the microdata than the one used elsewhere in the paper, so this map is computed on that release, with the rate re-solved for revenue neutrality on it (0.69 rather than 0.77 per cent). The pattern is comparable; the levels are not directly comparable with the tables above.}
+Land value is the most spatially concentrated tax base in the UK, so the reform redistributes across places at least as much as across households. Figure~\ref{fig:region_effect} reports household-weighted average effects for the nine English statistical regions and three devolved nations, using the same microdata and 0.79 per cent budget-neutral rate as the household tables. Wales gains \pounds 608 per household on average, Scotland \pounds 435, the North East \pounds 420, and Yorkshire and the Humber \pounds 393. London loses \pounds 1{,}125 per household, while the East of England and South East record much smaller average losses of \pounds 96 and \pounds 83. Northern Ireland loses \pounds 1{,}026 because the central specification adds LVT without abolishing domestic rates. The regional aggregate changes sum to zero, as required by UK-wide revenue neutrality.
+
+\begin{figure}[htbp]
+\centering
+\safefig{../results/figures/fig9_net_change_by_region.png}
+\caption{Household-weighted average net income change by UK region at the 0.79 per cent budget-neutral rate. \emph{Note:} positive values indicate an average gain. Northern Ireland's domestic rates are unchanged in the central specification. \emph{Source:} Authors' calculations using PolicyEngine UK 2.89.4 and Enhanced FRS 2023--24 release 1.56.14; \texttt{analysis/figures.py}.}
+\label{fig:region_effect}
+\end{figure}
+
+Figure~\ref{fig:map} maps the average net income change by Westminster constituency.\footnote{The constituency weights available to us are calibrated against a later release of the microdata than the one used elsewhere in the paper, so this map is computed on that release, with the rate re-solved for revenue neutrality on it (0.69 rather than 0.79 per cent). The pattern is comparable; the levels are not directly comparable with the tables above.}
 
 The split is almost exactly even --- 323 of 650 constituencies gain and 327 lose --- but the geography is highly systematic. Every Scottish and Welsh constituency gains, by an average of \pounds 392 and \pounds 346 respectively, because land shares and land values are lower there while council tax bills are not proportionately lower. English constituencies lose \pounds 44 on average, with the losses concentrated in inner London and its commuter belt: Chelsea and Fulham ($-$\pounds 1{,}269), Battersea ($-$\pounds 1{,}117), Kensington and Bayswater ($-$\pounds 1{,}058) and Hampstead and Highgate ($-$\pounds 1{,}054). The largest gains are in Orkney and Shetland ($+$\pounds 776), Dumfries and Galloway ($+$\pounds 686) and the Glasgow seats. The full range is \pounds 2{,}044 a year between the most and least favoured constituency.
 

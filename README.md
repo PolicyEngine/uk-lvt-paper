@@ -39,7 +39,7 @@ winner/loser shares, poverty and Gini changes, revenue-by-rate grids.
 
 ### 5. Figures (`analysis/figures.py`)
 
-Reads the committed `results/lvt_results.json` and writes eight PNG + CSV
+Reads the committed `results/lvt_results.json` and writes nine PNG + CSV
 pairs to `results/figures/` — no licensed data needed.
 
 ## Headline results

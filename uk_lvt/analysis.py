@@ -255,6 +255,61 @@ def build_impact_scenario_table(
     return rows
 
 
+def build_regional_impact_table(df: pd.DataFrame) -> list[dict]:
+    """Summarise the central reform by standard UK region.
+
+    All averages and shares are household-weighted. Scotland, Wales, and
+    Northern Ireland appear alongside the nine English statistical regions.
+    """
+    total_weight = float(df["weight"].sum())
+    rows = []
+    for region in REGION_ORDER:
+        subset = df[df["region"] == region].copy()
+        if subset.empty:
+            continue
+        weights = subset["weight"]
+        region_weight = float(weights.sum())
+        subset["is_winner"] = (
+            subset["income_change"] > WINNER_THRESHOLD_GBP
+        ).astype(float)
+        subset["is_loser"] = (
+            subset["income_change"] < -WINNER_THRESHOLD_GBP
+        ).astype(float)
+        label = region.replace("_", " ").title()
+        if label == "East Of England":
+            label = "East of England"
+        if label == "Yorkshire":
+            label = "Yorkshire and the Humber"
+        avg_change = weighted_mean(subset["income_change"], weights)
+        avg_income = weighted_mean(subset["baseline_income"], weights)
+        rows.append(
+            {
+                "region": label,
+                "household_share_pct": round(region_weight / total_weight * 100, 1),
+                "avg_council_tax_saved": round(
+                    weighted_mean(subset["council_tax_saved"], weights)
+                ),
+                "avg_lvt": round(weighted_mean(subset["lvt"], weights)),
+                "avg_net_change": round(avg_change),
+                "avg_income_change_pct": (
+                    round(avg_change / avg_income * 100, 1)
+                    if avg_income > 0
+                    else None
+                ),
+                "pct_winners": round(
+                    weighted_mean(subset["is_winner"], weights) * 100, 1
+                ),
+                "pct_losers": round(
+                    weighted_mean(subset["is_loser"], weights) * 100, 1
+                ),
+                "aggregate_net_change_bn": round(
+                    weighted_sum(subset["income_change"], weights) / 1e9, 2
+                ),
+            }
+        )
+    return rows
+
+
 def build_landless_summary(df: pd.DataFrame) -> dict:
     """Summarise households that own no land (``land_value <= 0``).
 

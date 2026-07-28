@@ -1924,6 +1924,140 @@
       }
     ]
   },
+  "impact_by_region": [
+    {
+      "region": "North East",
+      "household_share_pct": 4.2,
+      "avg_council_tax_saved": 1628,
+      "avg_lvt": 1208,
+      "avg_net_change": 420,
+      "avg_income_change_pct": 0.8,
+      "pct_winners": 79.5,
+      "pct_losers": 19.4,
+      "aggregate_net_change_bn": 0.57
+    },
+    {
+      "region": "North West",
+      "household_share_pct": 11.3,
+      "avg_council_tax_saved": 1587,
+      "avg_lvt": 1460,
+      "avg_net_change": 128,
+      "avg_income_change_pct": 0.3,
+      "pct_winners": 68.1,
+      "pct_losers": 25.9,
+      "aggregate_net_change_bn": 0.46
+    },
+    {
+      "region": "Yorkshire and the Humber",
+      "household_share_pct": 8.4,
+      "avg_council_tax_saved": 1725,
+      "avg_lvt": 1332,
+      "avg_net_change": 393,
+      "avg_income_change_pct": 0.8,
+      "pct_winners": 82.3,
+      "pct_losers": 16.6,
+      "aggregate_net_change_bn": 1.05
+    },
+    {
+      "region": "East Midlands",
+      "household_share_pct": 7.3,
+      "avg_council_tax_saved": 1878,
+      "avg_lvt": 1640,
+      "avg_net_change": 238,
+      "avg_income_change_pct": 0.4,
+      "pct_winners": 64.1,
+      "pct_losers": 35.1,
+      "aggregate_net_change_bn": 0.56
+    },
+    {
+      "region": "West Midlands",
+      "household_share_pct": 8.6,
+      "avg_council_tax_saved": 1804,
+      "avg_lvt": 1525,
+      "avg_net_change": 278,
+      "avg_income_change_pct": 0.5,
+      "pct_winners": 78.0,
+      "pct_losers": 20.7,
+      "aggregate_net_change_bn": 0.77
+    },
+    {
+      "region": "East of England",
+      "household_share_pct": 9.4,
+      "avg_council_tax_saved": 2042,
+      "avg_lvt": 2138,
+      "avg_net_change": -96,
+      "avg_income_change_pct": -0.2,
+      "pct_winners": 67.8,
+      "pct_losers": 31.8,
+      "aggregate_net_change_bn": -0.29
+    },
+    {
+      "region": "London",
+      "household_share_pct": 12.6,
+      "avg_council_tax_saved": 1782,
+      "avg_lvt": 2907,
+      "avg_net_change": -1125,
+      "avg_income_change_pct": -1.5,
+      "pct_winners": 43.9,
+      "pct_losers": 54.4,
+      "aggregate_net_change_bn": -4.55
+    },
+    {
+      "region": "South East",
+      "household_share_pct": 13.6,
+      "avg_council_tax_saved": 2168,
+      "avg_lvt": 2250,
+      "avg_net_change": -83,
+      "avg_income_change_pct": -0.2,
+      "pct_winners": 63.2,
+      "pct_losers": 36.0,
+      "aggregate_net_change_bn": -0.36
+    },
+    {
+      "region": "South West",
+      "household_share_pct": 8.9,
+      "avg_council_tax_saved": 2076,
+      "avg_lvt": 1933,
+      "avg_net_change": 144,
+      "avg_income_change_pct": 0.3,
+      "pct_winners": 74.3,
+      "pct_losers": 24.8,
+      "aggregate_net_change_bn": 0.41
+    },
+    {
+      "region": "Wales",
+      "household_share_pct": 4.9,
+      "avg_council_tax_saved": 2025,
+      "avg_lvt": 1417,
+      "avg_net_change": 608,
+      "avg_income_change_pct": 1.2,
+      "pct_winners": 84.0,
+      "pct_losers": 15.6,
+      "aggregate_net_change_bn": 0.96
+    },
+    {
+      "region": "Scotland",
+      "household_share_pct": 8.6,
+      "avg_council_tax_saved": 1689,
+      "avg_lvt": 1254,
+      "avg_net_change": 435,
+      "avg_income_change_pct": 0.8,
+      "pct_winners": 80.4,
+      "pct_losers": 15.2,
+      "aggregate_net_change_bn": 1.19
+    },
+    {
+      "region": "Northern Ireland",
+      "household_share_pct": 2.4,
+      "avg_council_tax_saved": 0,
+      "avg_lvt": 1026,
+      "avg_net_change": -1026,
+      "avg_income_change_pct": -1.9,
+      "pct_winners": 0.0,
+      "pct_losers": 61.1,
+      "aggregate_net_change_bn": -0.77
+    }
+  ],
   "landless_summary": {
     "0.5%": {
       "share_pct": 17.2,

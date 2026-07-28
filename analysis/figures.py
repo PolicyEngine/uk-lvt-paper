@@ -180,6 +180,33 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
     _save(fig, df, "fig8_poverty_gini_by_rate")
 
 
+def fig9_net_change_by_region(data: dict) -> None:
+    """Average central-reform effect across standard UK regions."""
+    df = pd.DataFrame(data["impact_by_region"]).sort_values("avg_net_change")
+    fig, ax = plt.subplots(figsize=fs.SINGLE)
+    colors = _gain_colors(df["avg_net_change"])
+    ax.barh(df["region"], df["avg_net_change"], color=colors, height=0.62)
+    ax.axvline(0, color=fs.BASELINE, linewidth=0.8)
+    span = max(abs(df["avg_net_change"].min()), abs(df["avg_net_change"].max()))
+    for y, value in enumerate(df["avg_net_change"]):
+        offset = span * 0.025
+        ax.text(
+            value + (offset if value >= 0 else -offset),
+            y,
+            f"{value:+,.0f}".replace("+", "+£").replace("-", "−£"),
+            va="center",
+            ha="left" if value >= 0 else "right",
+            fontsize=9,
+            color=fs.INK2,
+        )
+    ax.set_xlim(-span * 1.25, span * 1.25)
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(fs.pounds))
+    ax.set_xlabel("Average net income change (£/year)")
+    ax.set_title(f"Council tax to LVT swap by region at the {NEUTRAL_RATE} rate")
+    ax.grid(axis="y", visible=False)
+    _save(fig, df, "fig9_net_change_by_region")
+
+
 def main() -> None:
     global COUNCIL_TAX_BN, NEUTRAL_RATE
 
@@ -195,6 +222,7 @@ def main() -> None:
     fig6_winners_losers_by_decile(data)
     fig7_revenue_by_rate(data)
     fig8_poverty_gini_by_rate(data)
+    fig9_net_change_by_region(data)
 
 
 if __name__ == "__main__":

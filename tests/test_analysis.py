@@ -6,6 +6,7 @@ from uk_lvt.analysis import (
     build_council_tax_vs_lvt_table,
     build_distribution_by_decile,
     build_impact_scenario_table,
+    build_regional_impact_table,
     build_ons_comparison,
     classify_family_type,
     format_rate_label,
@@ -170,6 +171,55 @@ def test_average_land_tables_preserve_expected_labels():
     assert avg_by_family_type == [
         {"group": "Couple, no children", "avg_land_value": 300000},
         {"group": "Single pensioner", "avg_land_value": 100000},
+    ]
+
+
+def test_regional_impact_table_uses_household_weights_and_expected_labels():
+    df = pd.DataFrame(
+        {
+            "region": ["LONDON", "LONDON", "EAST_OF_ENGLAND", "SCOTLAND"],
+            "council_tax_saved": [1000, 2000, 1200, 1000],
+            "lvt": [3000, 1000, 900, 500],
+            "income_change": [-2000, 1000, 300, 500],
+            "baseline_income": [50000, 50000, 30000, 25000],
+            "weight": [1, 3, 2, 4],
+        }
+    )
+
+    assert build_regional_impact_table(df) == [
+        {
+            "region": "East of England",
+            "household_share_pct": 20.0,
+            "avg_council_tax_saved": 1200,
+            "avg_lvt": 900,
+            "avg_net_change": 300,
+            "avg_income_change_pct": 1.0,
+            "pct_winners": 100.0,
+            "pct_losers": 0.0,
+            "aggregate_net_change_bn": 0.0,
+        },
+        {
+            "region": "London",
+            "household_share_pct": 40.0,
+            "avg_council_tax_saved": 1750,
+            "avg_lvt": 1500,
+            "avg_net_change": 250,
+            "avg_income_change_pct": 0.5,
+            "pct_winners": 75.0,
+            "pct_losers": 25.0,
+            "aggregate_net_change_bn": 0.0,
+        },
+        {
+            "region": "Scotland",
+            "household_share_pct": 40.0,
+            "avg_council_tax_saved": 1000,
+            "avg_lvt": 500,
+            "avg_net_change": 500,
+            "avg_income_change_pct": 2.0,
+            "pct_winners": 100.0,
+            "pct_losers": 0.0,
+            "aggregate_net_change_bn": 0.0,
+        },
     ]
 
 
