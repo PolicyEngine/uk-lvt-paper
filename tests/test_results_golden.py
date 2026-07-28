@@ -64,6 +64,18 @@ def test_winner_share_central(ext):
     assert abs(central["aggregate_change_bn"]) < 0.05
 
 
+def test_regional_impacts_reconcile_to_uk_total(lvt):
+    regions = {row["region"]: row for row in lvt["impact_by_region"]}
+    assert len(regions) == 12
+    assert regions["Wales"]["avg_net_change"] == 608
+    assert regions["Scotland"]["avg_net_change"] == 435
+    assert regions["London"]["avg_net_change"] == -1125
+    assert regions["East of England"]["avg_net_change"] == -96
+    assert sum(row["aggregate_net_change_bn"] for row in regions.values()) == (
+        pytest.approx(0.0, abs=0.05)
+    )
+
+
 def test_recycling_first_row_is_central_rate(deep):
     first = deep["recycling"]["scenarios"][0]
     assert first["rate_pct"] == pytest.approx(

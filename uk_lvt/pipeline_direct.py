@@ -58,6 +58,7 @@ from .analysis import (
     build_impact_scenario_table,
     build_landless_summary,
     build_ons_comparison,
+    build_regional_impact_table,
     build_revenue_by_rate,
     build_revenue_by_scope,
     classify_family_type,
@@ -317,6 +318,7 @@ def build_results(uk_data_root: Path | None = None) -> dict:
 
     results["impact_scenarios"] = {}
     results["impact_scenarios_by_wealth"] = {}
+    results["impact_by_region"] = []
     results["landless_summary"] = {}
     results["council_tax_vs_lvt_scenarios"] = {}
     results["council_tax_vs_lvt_scenarios_by_wealth"] = {}
@@ -354,6 +356,7 @@ def build_results(uk_data_root: Path | None = None) -> dict:
                 "income_change": delta,
                 "baseline_income": df["income"].values,
                 "land_value": land,
+                "region": df["region"].values,
                 "weight": w,
             }
         )
@@ -361,6 +364,8 @@ def build_results(uk_data_root: Path | None = None) -> dict:
         results["impact_scenarios_by_wealth"][label] = build_impact_scenario_table(
             impact_df, decile_col="wealth_decile"
         )
+        if np.isclose(rate, required_rate, atol=1e-6):
+            results["impact_by_region"] = build_regional_impact_table(impact_df)
         results["landless_summary"][label] = build_landless_summary(impact_df)
 
         ct_vs_lvt = pd.DataFrame(

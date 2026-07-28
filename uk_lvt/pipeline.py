@@ -63,6 +63,7 @@ from .analysis import (
     build_impact_scenario_table,
     build_landless_summary,
     build_ons_comparison,
+    build_regional_impact_table,
     build_revenue_by_rate,
     build_revenue_by_scope,
     classify_family_type,
@@ -453,6 +454,7 @@ def build_results(
 
     results["impact_scenarios"] = {}
     results["impact_scenarios_by_wealth"] = {}
+    results["impact_by_region"] = []
     results["landless_summary"] = {}
     results["poverty_gini"] = {
         "baseline_poverty_bhc": round(baseline_poverty_bhc, 2),
@@ -507,6 +509,7 @@ def build_results(
                 "income_change": income_change,
                 "baseline_income": baseline_net_income_values,
                 "land_value": land_values,
+                "region": np.asarray(household["region"]),
                 "weight": weight_values,
             }
         )
@@ -514,6 +517,8 @@ def build_results(
         results["impact_scenarios_by_wealth"][rate_label] = build_impact_scenario_table(
             impact_df, decile_col="wealth_decile"
         )
+        if np.isclose(rate, required_rate, atol=1e-6):
+            results["impact_by_region"] = build_regional_impact_table(impact_df)
         results["landless_summary"][rate_label] = build_landless_summary(impact_df)
 
     # Scope sensitivity at 1% (all / household-only / corporate-only)
