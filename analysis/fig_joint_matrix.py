@@ -32,8 +32,10 @@ def main():
     change_masked = np.where(share < 0.1, np.nan, change)
 
     fig, ax = plt.subplots(figsize=(8.0, 6.0))
-    vmax = np.nanmax(np.abs(change_masked))
-    norm = TwoSlopeNorm(vmin=-vmax, vcenter=0, vmax=vmax)
+    # Asymmetric scale: gains top out near +2,000 while losses reach -13,000,
+    # so a symmetric norm would wash out the entire gain side.
+    norm = TwoSlopeNorm(vmin=float(np.nanmin(change_masked)), vcenter=0,
+                        vmax=2000)
     im = ax.imshow(change_masked, cmap=fs.DIVERGING, norm=norm, aspect="auto",
                    origin="lower")
     ax.set_xticks(range(10), [str(i) for i in range(1, 11)])
@@ -45,8 +47,10 @@ def main():
             v = change_masked[i, j]
             if np.isnan(v):
                 continue
+            dark = v > 1300 or v < -8000
             ax.text(j, i, f"{v:+,.0f}".replace(",", " "),
-                    ha="center", va="center", fontsize=6.5, color=fs.INK)
+                    ha="center", va="center", fontsize=6.5,
+                    color="white" if dark else fs.INK)
     cbar = fig.colorbar(im, ax=ax, shrink=0.85)
     cbar.set_label("Mean net income change (£/year)")
     ax.set_title("Mean net income change by income and wealth decile,\n"
