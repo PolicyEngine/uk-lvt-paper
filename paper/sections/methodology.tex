@@ -57,7 +57,7 @@ Northern Ireland    & 0.44 & Interpolated (North East / North West) \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Source:} Equation~(\ref{eq:lambda}), MHCLG \emph{Land Value Estimates for Policy Appraisal 2023} central scenario and UK House Price Index; implemented in PolicyEngine UK as \texttt{household.wealth.land.intensity.property\_wealth\_by\_region}.}
+{\footnotesize\emph{Source:} Equation~(\ref{eq:lambda}), MHCLG \emph{Land Value Estimates for Policy Appraisal 2023} central scenario and UK House Price Index.}
 \end{table}
 
 \paragraph{Aggregates.} The corporate aggregate $L^{\mathrm{corp}}$ is taken from the sectoral tables underlying the ONS National Balance Sheet \citep{ons2025}, which give UK land of \pounds 7.10 trillion at end-2024, split \pounds 5.04 trillion household and \pounds 2.06 trillion corporate. (These derived series differ from the headline bulletin presentation, which reports household non-produced assets of approximately \pounds 4.6 trillion in 2024 on a different sectoral grouping; the household/corporate split is applied using the last directly observed sectoral shares, from 2020.) The corporate series is held at its 2024 level for 2025 and 2026, so $L^{\mathrm{corp}} = \pounds 2.06$ trillion enters the simulation unchanged.
@@ -76,7 +76,7 @@ or 104.8 per cent of the un-uprated 2024 ONS total. We report this as a model ou
 
 \subsection{The reform scenarios and the reference rate}
 
-Every scenario we simulate (i) abolishes council tax in Great Britain and (ii) levies a flat annual tax at rate $r$ on each household's land value $L_i$, implemented in PolicyEngine UK via the parameters \texttt{gov.contrib.ubi\_center.land\_value\_tax.rate} and \texttt{gov.contrib.abolish\_council\_tax}; scenarios differ in the rate $r$, in what is done with any revenue beyond the council tax replacement (Section~\ref{sec:recycling}), in exemptions (Section~\ref{sec:exemptband}), and in the set of taxes replaced (Section~\ref{sec:broader}). The budget-neutral reference rate equates LVT revenue with net council tax revenue:
+Every scenario we simulate (i) abolishes council tax in Great Britain and (ii) levies a flat annual tax at rate $r$ on each household's land value $L_i$, implemented in PolicyEngine UK; scenarios differ in the rate $r$, in what is done with any revenue beyond the council tax replacement (Section~\ref{sec:recycling}), in exemptions (Section~\ref{sec:exemptband}), and in the set of taxes replaced (Section~\ref{sec:broader}). The budget-neutral reference rate equates LVT revenue with net council tax revenue:
 \begin{equation}
 r^{*} \;=\; \frac{R_{\mathrm{CT}}}{L} \;=\; \frac{58.5}{7{,}436} \;=\; 0.79\%.
 \label{eq:rate}

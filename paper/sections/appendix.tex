@@ -28,7 +28,7 @@ Decile & 0.5\% & 0.79\% & 1.0\% & 1.5\% & 2.0\% & 3.0\% & 5.0\% \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Rates above 0.79\% raise net revenue that is not recycled; rates below it reduce net revenue. \emph{Source:} Authors' calculations using PolicyEngine UK.}
+{\footnotesize\emph{Note:} Rates above 0.79\% raise net revenue that is not recycled; rates below it reduce net revenue.}
 \end{table}
 
 \subsection{Landless households}
@@ -43,13 +43,13 @@ The allocation ratio must be computed against the weighted population. Evaluatin
 
 \subsection{Capitalisation by wealth decile}
 
-Table~\ref{tab:capitalisation} reports the one-off wealth loss implied by full capitalisation of the permanent 0.79 per cent levy, $\Delta W_i = -(r^{*}/\rho) L_i$, at three discount rates. The aggregate loss is \pounds 1.17 trillion at $\rho=5$ per cent, \pounds 1.46 trillion at 4 per cent and \pounds 1.95 trillion at 3 per cent, corresponding to falls in land prices of 15.7, 19.7 and 26.2 per cent. Expressed as a share of total wealth the loss peaks in the middle of the wealth distribution --- deciles 5 and 6, whose wealth is overwhelmingly housing --- while in absolute terms it is concentrated at the top.
+Table~\ref{tab:capitalisation} reports the one-off wealth loss implied by full capitalisation of the permanent 0.79 per cent levy, $\Delta W_i = -(r^{*}/\rho) L_i$, at 3 and 5 per cent discount rates. The aggregate loss is \pounds 1.17 trillion at $\rho=5$ per cent, \pounds 1.46 trillion at 4 per cent and \pounds 1.95 trillion at 3 per cent, corresponding to falls in land prices of 15.7, 19.7 and 26.2 per cent. Expressed as a share of total wealth the loss peaks in the middle of the wealth distribution --- deciles 5 and 6, whose wealth is overwhelmingly housing --- while in absolute terms it is concentrated at the top.
 
 \begin{table}[htbp]
 \centering
 \caption{Capitalised one-off wealth loss by wealth decile (\pounds), 0.79\% rate}
 \label{tab:capitalisation}
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrrr}
 \toprule
 Wealth & \multicolumn{2}{c}{$\rho = 3\%$} & \multicolumn{2}{c}{$\rho = 5\%$} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
@@ -69,7 +69,7 @@ decile & Loss (\pounds) & \% of wealth & Loss (\pounds) & \% of wealth \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Loss is $(r^{*}/\rho) L_i$ averaged within decile; ``\% of wealth'' is that loss over average total wealth. Deciles 1--2 hold negligible land. \emph{Source:} Authors' calculations; \texttt{analysis/extensions.py}.}
+{\footnotesize\emph{Note:} Loss is $(r^{*}/\rho) L_i$ averaged within decile; ``\% of wealth'' is that loss over average total wealth. Deciles 1--2 hold negligible land.py}.}
 \end{table}
 
 \subsection{Deferral for pensioner households}
@@ -107,8 +107,6 @@ Item & Value & Source / method \\
 \addlinespace
 \multicolumn{3}{@{}l}{\emph{Reform}} \\
 \quad Budget-neutral rate ($r^{*}$) & 0.79\% & $R_{\mathrm{CT}}/L$ \\
-\quad LVT parameter & \multicolumn{2}{l}{\texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}} \\
-\quad Abolition parameter & \multicolumn{2}{l}{\texttt{gov.contrib.abolish\_council\_tax}} \\
 \bottomrule
 \end{tabular}
 \end{table}

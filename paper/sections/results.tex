@@ -12,6 +12,8 @@ The land value tax is close to flat on the same axis, ranging between 0.42 and 0
 \centering
 \caption{Council tax and LVT as a share of property value, property owners}
 \label{tab:etr}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrrr}
 \toprule
 Property & Share of & Avg.\ property & Avg.\ council & \multicolumn{2}{c}{As \% of property value} \\
@@ -33,7 +35,7 @@ Over \pounds 2m       & 2.1  & 3{,}589{,}816 & 2{,}554 & 0.07 & 0.42 \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Households owning no residential property are excluded from the rate columns, since council tax over a property value of zero is not an effective rate; they are shown as a memo row and pay LVT only on attributed corporate land (\pounds 138 on average). \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} Households owning no residential property are excluded from the rate columns, since council tax over a property value of zero is not an effective rate; they are shown as a memo row and pay LVT only on attributed corporate land (\pounds 138 on average).}
 \end{table}
 
 \subsection{Where land value sits}
@@ -47,6 +49,8 @@ Table~\ref{tab:land_income} separates the two components of the base, which are 
 \centering
 \caption{Land value and property wealth by decile of equivalised household net income, 2026--27}
 \label{tab:land_income}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrrrr}
 \toprule
 Income & Avg.\ income & Avg.\ household & Avg.\ corporate & Avg.\ total & Avg.\ property & Share of \\
@@ -65,8 +69,6 @@ decile & (\pounds/yr) & land (\pounds) & land (\pounds) & land (\pounds) & wealt
 \bottomrule
 \end{tabular}
 
-\medskip
-{\footnotesize\emph{Source:} Authors' calculations using PolicyEngine UK.}
 \end{table}
 
 Regional variation is at least as pronounced as variation by income. Average household land value is \pounds 369{,}802 in London and \pounds 286{,}311 in the South East, compared with \pounds 153{,}631 in the North East and \pounds 159{,}535 in Scotland (Figure~\ref{fig:land_region}) --- a ratio of 2.4 to 1 that reflects both higher property prices and higher land shares of those prices in the South. Across household types, pensioner couples hold the most land on average (\pounds 431{,}211), followed by working-age couples without children (\pounds 302{,}350); lone parents, who are predominantly renters, hold very little (\pounds 7{,}790) (Figure~\ref{fig:land_famtype}). Ranked by total wealth rather than income, concentration is far greater: the bottom three wealth deciles hold essentially no land, while the top wealth decile averages \pounds 1{,}085{,}567 --- 47.5 per cent of all land (Table~\ref{tab:wealth_impact} below). Overall, 17.2 per cent of households hold no land.
@@ -116,7 +118,7 @@ Rate & LVT revenue & Council tax & Net revenue & Avg.\ LVT per \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Net revenue is LVT revenue less replaced council tax revenue. \emph{Source:} Authors' calculations using PolicyEngine UK.}
+{\footnotesize\emph{Note:} Net revenue is LVT revenue less replaced council tax revenue.}
 \end{table}
 
 \begin{figure}[htbp]
@@ -159,7 +161,7 @@ decile & change (\pounds) & Low & High & from zero \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} 500 bootstrap draws, households resampled with replacement, deciles held at their full-sample definition. The intervals capture sampling variability only: the WAS-to-FRS wealth imputation, the regional land shares and the survey's clustered design are held fixed across draws, so total uncertainty is understated. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} 500 bootstrap draws, households resampled with replacement, deciles held at their full-sample definition. The intervals capture sampling variability only: the WAS-to-FRS wealth imputation, the regional land shares and the survey's clustered design are held fixed across draws, so total uncertainty is understated.}
 \end{table}
 
 We stress that the middle of this profile is not precisely estimated. The differences between adjacent deciles in the range 2--8 are of the order of a few hundred pounds a year on average net incomes of \pounds 32{,}000--\pounds 69{,}000, and they rest on imputed land values whose decile means are visibly noisy. The result that should be read from Table~\ref{tab:income_impact} is that the reform is roughly distributionally neutral across the bottom eight deciles taken together and clearly costly to the top two --- not that any particular middle decile gains or loses.
@@ -187,7 +189,7 @@ decile & (\pounds) & saved (\pounds) & change (\pounds) & income & (\%) & (\%) \
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} ``CT saved'' denotes the abolished council tax liability net of council tax reduction. A winner (loser) is a household whose net income changes by more than $\pm$\pounds 1 a year; winners and losers do not sum to 100 per cent because the remainder are unaffected. \emph{Source:} Authors' calculations using PolicyEngine UK.}
+{\footnotesize\emph{Note:} ``CT saved'' denotes the abolished council tax liability net of council tax reduction. A winner (loser) is a household whose net income changes by more than $\pm$\pounds 1 a year; winners and losers do not sum to 100 per cent because the remainder are unaffected.}
 \end{table}
 
 \begin{figure}[htbp]
@@ -200,7 +202,7 @@ decile & (\pounds) & saved (\pounds) & change (\pounds) & income & (\%) & (\%) \
 \subsection{Distributional impact by wealth decile}
 \label{sec:wealth_impact}
 
-Table~\ref{tab:wealth_impact} and Figure~\ref{fig:net_wealth} report the corresponding results when households are ranked by total wealth rather than income.\footnote{We construct equal-weight wealth deciles directly. PolicyEngine UK's own \texttt{household\_wealth\_decile} variable is degenerate at the bottom of the distribution --- the mass of households with zero or negative net wealth is tied, leaving decile one empty and placing 22.6 per cent of households in decile two --- which would make the decile averages in this table incomparable.} The gradient here is monotonic and steep, in sharp contrast to the income ranking. The bottom two wealth deciles own essentially no land and retain their council tax savings in full, gaining \pounds 952 and \pounds 959 per year; deciles 3--7 gain between \pounds 540 and \pounds 1{,}453; decile 8 loses \pounds 261; decile 9 loses \pounds 1{,}111; and the top wealth decile --- averaging \pounds 1.09 million of land --- loses \pounds 5{,}871 per year, or 8.9 per cent of its net income, with an average LVT liability of \pounds 8{,}533 against council tax savings of \pounds 2{,}662. In the top wealth decile 98.4 per cent of households lose; in each of the bottom seven, roughly 80 per cent or more gain. The incidence of the reform tracks land wealth almost mechanically, which is exactly what the instrument is designed to do.\footnote{Revenue neutrality holds in aggregate --- LVT revenue equals abolished council tax revenue at \pounds 58.5 billion --- so the population-weighted average net-income change is zero. It is identical whether households are grouped by income or by wealth decile, since the two tables show the same households re-sorted; the per-decile averages need not sum to zero because decile group sizes are equal in population but not in the underlying quantities.}
+Table~\ref{tab:wealth_impact} and Figure~\ref{fig:net_wealth} report the corresponding results when households are ranked by total wealth rather than income.\footnote{We construct equal-weight wealth deciles directly. PolicyEngine UK's own wealth-decile variable is degenerate at the bottom of the distribution --- the mass of households with zero or negative net wealth is tied, leaving decile one empty and placing 22.6 per cent of households in decile two --- which would make the decile averages in this table incomparable.} The gradient here is monotonic and steep, in sharp contrast to the income ranking. The bottom two wealth deciles own essentially no land and retain their council tax savings in full, gaining \pounds 952 and \pounds 959 per year; deciles 3--7 gain between \pounds 540 and \pounds 1{,}453; decile 8 loses \pounds 261; decile 9 loses \pounds 1{,}111; and the top wealth decile --- averaging \pounds 1.09 million of land --- loses \pounds 5{,}871 per year, or 8.9 per cent of its net income, with an average LVT liability of \pounds 8{,}533 against council tax savings of \pounds 2{,}662. In the top wealth decile 98.4 per cent of households lose; in each of the bottom seven, roughly 80 per cent or more gain. The incidence of the reform tracks land wealth almost mechanically, which is exactly what the instrument is designed to do.\footnote{Revenue neutrality holds in aggregate --- LVT revenue equals abolished council tax revenue at \pounds 58.5 billion --- so the population-weighted average net-income change is zero. It is identical whether households are grouped by income or by wealth decile, since the two tables show the same households re-sorted; the per-decile averages need not sum to zero because decile group sizes are equal in population but not in the underlying quantities.}
 
 \begin{table}[htbp]
 \centering
@@ -225,7 +227,7 @@ decile & value (\pounds) & (\pounds) & saved (\pounds) & change (\pounds) & (\%)
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Deciles of total household wealth. \emph{Source:} Authors' calculations using PolicyEngine UK.}
+{\footnotesize\emph{Note:} Deciles of total household wealth.}
 \end{table}
 
 \begin{figure}[htbp]
@@ -243,16 +245,16 @@ The contrast between the two preceding tables is resolved by crossing them. Figu
 \begin{figure}[htbp]
 \centering
 \safefig{../results/figures/fig_joint_income_wealth.png}
-\caption{Mean household net income change by income decile (rows) and wealth decile (columns) at the budget-neutral 0.79 per cent rate. \emph{Note:} income deciles are the model's equivalised-income deciles; wealth deciles are equal-weight total-wealth deciles; cells holding under 0.1 per cent of households are blank. \emph{Source:} Authors' calculations; \texttt{analysis/submission\_extras.py}.}
+\caption{Mean household net income change by income decile (rows) and wealth decile (columns) at the budget-neutral 0.79 per cent rate. \emph{Note:} income deciles are the model's equivalised-income deciles; wealth deciles are equal-weight total-wealth deciles; cells holding under 0.1 per cent of households are blank.}
 \label{fig:joint}
 \end{figure}
 
 \subsection{Winners and losers within deciles}
 \label{sec:winners}
 
-Decile averages conceal substantial within-decile variation, because land holdings vary widely within any given income band: an outright owner-occupier in London and a private renter in the North East may occupy the same income decile. At the budget-neutral rate, 67.4 per cent of all households gain. The share of gaining households stays between 64 and 78 per cent through deciles 1--8 before falling to just under one half in deciles 9--10 (Figure~\ref{fig:winners}). Even in the top income decile, 45.4 per cent of households gain --- predominantly high earners who rent or own property of modest value --- while 18.2 per cent of bottom-decile households lose, typically low-income owners of valuable land. Sorted by wealth, the gradient is considerably steeper: the share of gaining households is roughly 80 per cent or more in each of the bottom seven wealth deciles and falls to 1.6 per cent in the top decile. The 17.2 per cent of households holding no land gain \pounds 885 per year on average, and 77.1 per cent of them gain; the remainder are largely households whose council tax was already fully offset by council tax reduction.
+Decile averages conceal substantial within-decile variation, because land holdings vary widely within any given income band: an outright owner-occupier in London and a private renter in the North East may occupy the same income decile. At the budget-neutral rate, 67.4 per cent of all households gain. The share of gaining households stays between 63 and 78 per cent through deciles 1--8 before falling to just under one half in deciles 9--10 (Figure~\ref{fig:winners}). Even in the top income decile, 45.4 per cent of households gain --- predominantly high earners who rent or own property of modest value --- while 18.2 per cent of bottom-decile households lose, typically low-income owners of valuable land. Sorted by wealth, the gradient is considerably steeper: the share of gaining households is roughly 80 per cent or more in each of the bottom seven wealth deciles and falls to 1.6 per cent in the top decile. The 17.2 per cent of households holding no land gain \pounds 885 per year on average, and 77.1 per cent of them gain; the remainder are largely households whose council tax was already fully offset by council tax reduction.
 
-The losers in the bottom of the income distribution are a recognisable group. Among households in income deciles 1--3, the 19.2 per cent that lose hold average land of \pounds 502{,}000 and property worth \pounds 685{,}000, against \pounds 52{,}000 and \pounds 77{,}000 for the 75.6 per cent that gain; 41.7 per cent contain someone of state pension age against 29.8 per cent of gainers, their oldest member averages 59.9 years against 52.7, and 43.0 per cent own outright against 33.9 per cent. They are disproportionately in London, which accounts for 18.3 per cent of these losers against 12.6 per cent of households overall. Their average loss is \pounds 2{,}536 a year. This is precisely the asset-rich, income-poor household of the policy debate, it is concentrated enough to be addressed by targeted transition relief, and Section~\ref{sec:packages} quantifies two such reliefs.
+The losers in the bottom of the income distribution are a recognisable group. Among households in income deciles 1--3, the 19.2 per cent that lose hold average land of \pounds 502{,}000 and property worth \pounds 685{,}000, against \pounds 52{,}000 and \pounds 77{,}000 for the 75.6 per cent that gain; 41.7 per cent contain someone of state pension age against 29.8 per cent of gainers, their oldest member averages 59.9 years against 52.7, and 43.0 per cent own outright against 33.9 per cent. They are disproportionately in London, which accounts for 18.3 per cent of these losers against 12.6 per cent of households overall. Their average loss is \pounds 2{,}536 a year. This is precisely the asset-rich, income-poor household of the policy debate; it is concentrated enough to be addressed by targeted transition relief, and Section~\ref{sec:packages} quantifies two such reliefs.
 
 That the winner share is high while the average income-decile effects are small is not a contradiction. The reform moves a fixed \pounds 58.5 billion from a base that is broad and shallow (council tax, capped at the top) to one that is narrow and deep (land, highly concentrated). Most households pay a little less; a small minority pay a great deal more. This is visible in the wealth ranking and almost invisible in the income ranking.
 
@@ -277,6 +279,8 @@ The transfer is therefore, in the first instance, from outright owners to renter
 \footnotesize
 \caption{Impact of the 0.79\% budget-neutral LVT by tenure}
 \label{tab:tenure}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrrrrr}
 \toprule
  & Share of & Avg.\ land & Avg.\ CT & Avg.\ & Avg.\ net & Winners & Share of \\
@@ -291,7 +295,7 @@ Rented from HA        & 8.8  & 82{,}635  & 884     & 650     & $+$235 & 65.7 & 3
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Renters' land holdings and LVT liabilities are attributed corporate land, held through pensions and other financial wealth. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} Renters' land holdings and LVT liabilities are attributed corporate land, held through pensions and other financial wealth.}
 \end{table}
 
 \subsection{Geographic incidence}
@@ -342,13 +346,13 @@ Baseline & 9.43  & ---      & 14.63 & ---      & --- \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Absolute poverty against baseline-fixed thresholds, before (BHC) and after (AHC) housing costs, as shares of individuals (HBAI convention). Gini refers to equivalised household net income, person-weighted; baseline value 0.2972. Rates above 0.79\% raise net revenue that is not recycled in the simulation. \emph{Source:} Authors' calculations using PolicyEngine UK 2.89.4 and Enhanced FRS 2023--24 release 1.56.14.}
+{\footnotesize\emph{Note:} Absolute poverty against baseline-fixed thresholds, before (BHC) and after (AHC) housing costs, as shares of individuals (HBAI convention). Gini refers to equivalised household net income, person-weighted; baseline value 0.2972. Rates above 0.79\% raise net revenue that is not recycled in the simulation.}
 \end{table}
 
 \begin{figure}[htbp]
 \centering
 \safefig{../results/figures/fig8_poverty_gini_by_rate.png}
-\caption{Poverty and Gini changes across the LVT rate grid. \emph{Note:} council tax abolished throughout; rates above the budget-neutral 0.79 per cent raise net revenue that is not recycled, so the upper grid shows the gross incidence of the levy rather than a complete reform package. \emph{Source:} Authors' calculations using PolicyEngine UK 2.89.4 and Enhanced FRS 2023--24 release 1.56.14; \texttt{analysis/figures.py}.}
+\caption{Poverty and Gini changes across the LVT rate grid. \emph{Note:} council tax abolished throughout; rates above the budget-neutral 0.79 per cent raise net revenue that is not recycled, so the upper grid shows the gross incidence of the levy rather than a complete reform package.}
 \label{fig:povgini}
 \end{figure}
 
@@ -385,7 +389,7 @@ LVT at 0.79\%            & $-$0.084 & $-$0.086 & $-$0.032 & $-$0.050 \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Kakwani $=$ concentration index of the tax less the Gini of the ranking variable; positive indicates progressivity. Income-ranked indices use equivalised net income, person-weighted; wealth-ranked indices use total household wealth, household-weighted. Wealth-ranked indices are unchanged to four decimal places when wealth is bottom-coded at zero. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} Kakwani $=$ concentration index of the tax less the Gini of the ranking variable; positive indicates progressivity. Income-ranked indices use equivalised net income, person-weighted; wealth-ranked indices use total household wealth, household-weighted. Wealth-ranked indices are unchanged to four decimal places when wealth is bottom-coded at zero.}
 \end{table}
 
 \subsection{Validation and robustness}
@@ -417,10 +421,10 @@ Kakwani (wealth), LVT                    & $-$0.032 & 0.007 & [$-$0.044, $-$0.01
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} 1{,}000 replicates; each multiplies every household weight by an independent Poisson(1) draw and re-solves the budget-neutral rate. Percentile intervals. Sampling variation only --- the land-value imputation is fixed across replicates. \emph{Source:} Authors' calculations; \texttt{analysis/bootstrap\_ci.py}.}
+{\footnotesize\emph{Note:} 1{,}000 replicates; each multiplies every household weight by an independent Poisson(1) draw and re-solves the budget-neutral rate. Percentile intervals. Sampling variation only --- the land-value imputation is fixed across replicates.}
 \end{table}
 
-\paragraph{Robustness.} Table~\ref{tab:robustness} varies the replacement target, the composition of the base and the instrument. The qualitative results are stable. The share of households gaining stays within a 65--70 per cent band across every specification. The budget-neutral rate ranges from 0.72 to 1.09 per cent, the top of that range being the household-land-only base, which is 28 per cent smaller. Calibrating the replacement target to OBR receipts rather than modelled liabilities lowers the rate to 0.72 per cent and, mechanically, makes every group better off --- it is a \pounds 4.8 billion net tax cut rather than a neutral swap, and we therefore treat it as a bound rather than a competing central case. Excluding Northern Ireland, whose households would otherwise pay the land tax on top of domestic rates, raises the rate to 0.80 per cent and leaves the distribution essentially unchanged. Assuming half of corporate equity is foreign-owned and therefore outside the household base raises the required rate to 0.91 per cent, the largest single sensitivity in the table, but still leaves 67.2 per cent of households gaining. Perturbing every regional land share by $\pm 10$ per cent, or rescaling household land to the un-uprated ONS 2024 benchmark, changes the rate by at most 0.06 percentage points and the decile effects by tens of pounds. Within-region heterogeneity in land shares, which the single $\lambda_r$ suppresses, is bounded by a Monte Carlo exercise: drawing an independent mean-preserving lognormal land share for every household, at coefficients of variation of 0.1, 0.2 and 0.3 around the regional value, and re-solving the rate on each of 100 draws, moves the budget-neutral rate by at most 0.01 percentage points, the winner share by half a percentage point, and the top wealth decile's loss by under \pounds 100 at even the widest dispersion (\texttt{analysis/lambda\_mc.py}). Decile-level results are insensitive to within-region land-share heterogeneity because the noise averages out within cells; individual liabilities, of course, do not. Assigning Northern Ireland the superseded population-weighted English mean land share (0.67) rather than the central interpolation from the price-similar English regions (0.44, as for Scotland and Wales) grows the base by only \pounds 0.03 trillion --- Northern Ireland is 2.7 per cent of households --- and leaves every summary statistic essentially unchanged, although it raises Northern Irish liabilities by roughly a half. Excluding directly owned land ($A_i$ in equation~\ref{eq:land}) --- the component flagged in Section~\ref{sec:landvalues} as unstable across data releases --- removes \pounds 0.67 trillion from the base, raises the rate to 0.86 per cent, and leaves 65.4 per cent of households gaining; the qualitative results survive the most conservative treatment of that component. Finally, because the two calibration gaps discussed in Section~\ref{sec:methodology} --- the council tax overshoot relative to OBR receipts and the household-land overshoot relative to the un-uprated ONS benchmark --- push the required rate in the same direction, we close both at once: targeting OBR receipts on the ONS-scaled base gives a rate of 0.76 per cent and results between the two single-adjustment rows.
+\paragraph{Robustness.} Table~\ref{tab:robustness} varies the replacement target, the composition of the base and the instrument. The qualitative results are stable. The share of households gaining stays within a 65--70 per cent band across every specification. The budget-neutral rate ranges from 0.72 to 1.09 per cent, the top of that range being the household-land-only base, which is 28 per cent smaller. Calibrating the replacement target to OBR receipts rather than modelled liabilities lowers the rate to 0.72 per cent and, mechanically, makes every group better off --- it is a \pounds 4.8 billion net tax cut rather than a neutral swap, and we therefore treat it as a bound rather than a competing central case. Excluding Northern Ireland, whose households would otherwise pay the land tax on top of domestic rates, raises the rate to 0.80 per cent and leaves the distribution essentially unchanged. Assuming half of corporate equity is foreign-owned and therefore outside the household base raises the required rate to 0.91 per cent, the largest single sensitivity in the table, but still leaves 67.2 per cent of households gaining. Perturbing every regional land share by $\pm 10$ per cent, or rescaling household land to the un-uprated ONS 2024 benchmark, changes the rate by at most 0.06 percentage points and the decile effects by tens of pounds. Within-region heterogeneity in land shares, which the single $\lambda_r$ suppresses, is bounded by a Monte Carlo exercise: drawing an independent mean-preserving lognormal land share for every household, at coefficients of variation of 0.1, 0.2 and 0.3 around the regional value, and re-solving the rate on each of 100 draws, moves the budget-neutral rate by at most 0.01 percentage points, the winner share by half a percentage point, and the top wealth decile's loss by under \pounds 100 at even the widest dispersion. Decile-level results are insensitive to within-region land-share heterogeneity because the noise averages out within cells; individual liabilities, of course, do not. Assigning Northern Ireland the superseded population-weighted English mean land share (0.67) rather than the central interpolation from the price-similar English regions (0.44, as for Scotland and Wales) grows the base by only \pounds 0.03 trillion --- Northern Ireland is 2.7 per cent of households --- and leaves every summary statistic essentially unchanged, although it raises Northern Irish liabilities by roughly a half. Excluding directly owned land ($A_i$ in equation~\ref{eq:land}) --- the component flagged in Section~\ref{sec:landvalues} as unstable across data releases --- removes \pounds 0.67 trillion from the base, raises the rate to 0.86 per cent, and leaves 65.4 per cent of households gaining; the qualitative results survive the most conservative treatment of that component. Finally, because the two calibration gaps discussed in Section~\ref{sec:methodology} --- the council tax overshoot relative to OBR receipts and the household-land overshoot relative to the un-uprated ONS benchmark --- push the required rate in the same direction, we close both at once: targeting OBR receipts on the ONS-scaled base gives a rate of 0.76 per cent and results between the two single-adjustment rows.
 
 The final row of Table~\ref{tab:robustness} is a comparator rather than a robustness check: a proportional tax on total property value, structures included, at the 0.74 per cent rate that raises the same revenue. It is less progressive on the wealth ranking --- the top wealth decile loses \pounds 4{,}310 rather than \pounds 5{,}871 --- and it produces fewer winners (63.4 against 67.4 per cent), because the base is spread more evenly across the property-owning population instead of being concentrated where location value is highest. That difference is the quantitative content of the land/structures distinction.
 
@@ -444,7 +448,7 @@ $\theta$ & Shifted to & Winners & Private renter & $\Delta$ Poverty & $\Delta$ P
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Budget-neutral 0.79 per cent rate throughout; the amount shifted to tenants is rebated to owner households in proportion to household land, so aggregate revenue is unchanged. ``Private renter mean'' is the mean net income change of private-renter households. \emph{Source:} Authors' calculations; \texttt{analysis/submission\_extras.py}.}
+{\footnotesize\emph{Note:} Budget-neutral 0.79 per cent rate throughout; the amount shifted to tenants is rebated to owner households in proportion to household land, so aggregate revenue is unchanged. ``Private renter mean'' is the mean net income change of private-renter households.}
 \end{table}
 
 \begin{table}[htbp]
@@ -452,6 +456,8 @@ $\theta$ & Shifted to & Winners & Private renter & $\Delta$ Poverty & $\Delta$ P
 \footnotesize
 \caption{Robustness: revenue-neutral rate and distributional summary under alternative assumptions}
 \label{tab:robustness}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrrrrr}
 \toprule
  & Base & Rate & Winners & Decile 1 & Decile 10 & Wealth 10 & $\Delta$ Poverty \\
@@ -474,7 +480,7 @@ OBR target on ONS-scaled base        & 7.08 & 0.76 & 68.6 & $+$658 & $-$1{,}121 
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Each row sets the rate so that revenue equals the replacement target on that row's base. ``Decile 1'' and ``Decile 10'' are average net income changes by income decile; ``Wealth 10'' is the top wealth decile. \emph{Source:} Authors' calculations using PolicyEngine UK; \texttt{analysis/extensions.py}.}
+{\footnotesize\emph{Note:} Each row sets the rate so that revenue equals the replacement target on that row's base. ``Decile 1'' and ``Decile 10'' are average net income changes by income decile; ``Wealth 10'' is the top wealth decile.}
 \end{table}
 
 \paragraph{Capitalisation.} The central results are flow accounting and assume no capitalisation. If instead the levy is fully anticipated and permanent, it capitalises into land prices in the manner first documented empirically by \citet{oates1969}: a rate $r$ discounted at $\rho$ implies a proportional fall of $r/\rho$ in land values. At $\rho = 5$ per cent the 0.79 per cent rate implies a 15.7 per cent fall in land prices and an aggregate wealth loss of \pounds 1.17 trillion; at $\rho = 3$ per cent, a 26.2 per cent fall and \pounds 1.95 trillion. This is a transfer to the state of an asset value that was itself partly the capitalisation of past public investment, and under the textbook assumption it lands overwhelmingly on existing owners at announcement rather than on subsequent purchasers. Whether it does so in practice is contested: \citet{hoj2018} find full capitalisation in Danish data, whereas \citet{nielsson2024} cannot reject zero and argue the burden is shared with tenants and future buyers. We report the arithmetic under full capitalisation because it bounds the wealth effect, not because the evidence compels it. Table~\ref{tab:capitalisation} in the appendix reports the implied one-off wealth loss by wealth decile: at $\rho=3$ per cent the top wealth decile loses \pounds 284{,}431 of land value, 6.6 per cent of its total wealth, against \pounds 329 for decile 3. Two points follow. First, the wealth-decile gradient of the reform is steeper still on a stock than on a flow basis. Second, the flow results in Sections~\ref{sec:income_impact}--\ref{sec:wealth_impact} should be read as impact incidence in the first years, before the announcement effect on prices works through.

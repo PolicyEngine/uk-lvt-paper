@@ -52,7 +52,7 @@ def fig1_net_change_by_income_decile(data: dict) -> None:
 def fig2_land_by_income_decile(data: dict) -> None:
     df = pd.DataFrame(data["distribution_by_decile"])[["decile", "avg_land_value"]]
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    ax.bar(df["decile"], df["avg_land_value"], color=fs.BLUE)
+    ax.bar(df["decile"], df["avg_land_value"], color=fs.TEAL)
     fs.decile_ax(ax, "Average household land value (£)")
     ax.set_title("Household land value by income decile")
     _save(fig, df, "fig2_land_by_income_decile")
@@ -63,7 +63,7 @@ def fig3_land_by_region(data: dict) -> None:
         "avg_land_value", ascending=False
     )
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]))
+    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]), color=fs.GREEN)
     ax.set_xlabel("Average household land value")
     ax.set_title("Household land value by region")
     _save(fig, df, "fig3_land_by_region")
@@ -74,7 +74,7 @@ def fig4_land_by_family_type(data: dict) -> None:
         "avg_land_value", ascending=False
     )
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]))
+    fs.ranked_hbar(ax, list(df["group"]), list(df["avg_land_value"]), color=fs.YELLOW)
     ax.set_xlabel("Average household land value")
     ax.set_title("Household land value by family type")
     _save(fig, df, "fig4_land_by_family_type")
@@ -123,7 +123,7 @@ def fig7_revenue_by_rate(data: dict) -> None:
     df = pd.DataFrame(data["revenue_by_rate"])[["rate", "lvt_revenue_bn"]]
     df["rate_pct"] = df["rate"] * 100
     fig, ax = plt.subplots(figsize=fs.SINGLE)
-    ax.plot(df["rate_pct"], df["lvt_revenue_bn"], marker="o", color=fs.BLUE, label="LVT revenue")
+    ax.plot(df["rate_pct"], df["lvt_revenue_bn"], marker="o", color=fs.GREEN, label="LVT revenue")
     ax.axhline(
         COUNCIL_TAX_BN,
         color=fs.GRAY,
