@@ -1,0 +1,89 @@
+{
+ "central": {
+  "rate_pct": 0.786,
+  "pct_winners": 67.4,
+  "income_decile_1_mean": 584.2,
+  "wealth_decile_10_mean": -5871.3
+ },
+ "note": "mean-preserving lognormal perturbation of household land shares, truncated to [0.05, 0.95]; residential component only",
+ "cv_results": {
+  "0.1": {
+   "rate_pct": {
+    "mean": 0.79,
+    "sd": 0.0,
+    "p2.5": 0.78,
+    "p97.5": 0.79
+   },
+   "pct_winners": {
+    "mean": 67.2,
+    "sd": 0.27,
+    "p2.5": 66.75,
+    "p97.5": 67.72
+   },
+   "income_decile_1_mean": {
+    "mean": 583.16,
+    "sd": 12.64,
+    "p2.5": 560.76,
+    "p97.5": 608.39
+   },
+   "wealth_decile_10_mean": {
+    "mean": -5875.61,
+    "sd": 37.5,
+    "p2.5": -5948.01,
+    "p97.5": -5810.01
+   }
+  },
+  "0.2": {
+   "rate_pct": {
+    "mean": 0.79,
+    "sd": 0.01,
+    "p2.5": 0.78,
+    "p97.5": 0.8
+   },
+   "pct_winners": {
+    "mean": 67.32,
+    "sd": 0.45,
+    "p2.5": 66.38,
+    "p97.5": 68.04
+   },
+   "income_decile_1_mean": {
+    "mean": 580.26,
+    "sd": 22.76,
+    "p2.5": 538.97,
+    "p97.5": 622.01
+   },
+   "wealth_decile_10_mean": {
+    "mean": -5868.18,
+    "sd": 76.57,
+    "p2.5": -6012.95,
+    "p97.5": -5721.2
+   }
+  },
+  "0.3": {
+   "rate_pct": {
+    "mean": 0.8,
+    "sd": 0.01,
+    "p2.5": 0.78,
+    "p97.5": 0.82
+   },
+   "pct_winners": {
+    "mean": 67.38,
+    "sd": 0.53,
+    "p2.5": 66.32,
+    "p97.5": 68.46
+   },
+   "income_decile_1_mean": {
+    "mean": 582.67,
+    "sd": 30.97,
+    "p2.5": 525.65,
+    "p97.5": 641.55
+   },
+   "wealth_decile_10_mean": {
+    "mean": -5884.73,
+    "sd": 92.19,
+    "p2.5": -6058.76,
+    "p97.5": -5704.43
+   }
+  }
+ }
+}

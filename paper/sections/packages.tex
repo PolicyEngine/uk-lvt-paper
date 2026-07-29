@@ -1,16 +1,16 @@
 \section{Reform packages and comparators}
 \label{sec:packages}
 
-The central scenario is a bare swap: council tax out, land value tax in, nothing else. Real proposals are rarely bare. This section simulates four departures --- recycling the proceeds of a higher rate, exempting a band of land value, broadening the set of taxes replaced, and the instrument the government has actually chosen --- on the same microdata and with the same arithmetic.
+The budget-neutral reference scenario is a bare swap: council tax out, land value tax in, nothing else. Real proposals are rarely bare, and the framework is not restricted to revenue neutrality. This section simulates four scenarios beyond the reference point --- recycling the proceeds of a higher rate, exempting a band of land value, broadening the set of taxes replaced, and the instrument the government has actually chosen --- on the same microdata and with the same arithmetic.
 
 \subsection{Recycling: a land value tax with a citizen's dividend}
 \label{sec:recycling}
 
-The rate grid in Section~\ref{sec:poverty} levies rates above 0.77 per cent without spending the proceeds, which is why poverty rises so steeply across it. That is not a proposal anyone has made. \citet{george1879} argued for taxing land in order to fund public provision and to displace other taxes, and the modern Georgist formulation returns the surplus as a universal payment. Table~\ref{tab:recycling} therefore repeats the grid with the net revenue above the council tax replacement returned as an equal per-person dividend.
+The rate grid in Section~\ref{sec:poverty} levies rates above 0.79 per cent without spending the proceeds, which is why poverty rises so steeply across it. That is not a proposal anyone has made. \citet{george1879} argued for taxing land in order to fund public provision and to displace other taxes, and the modern Georgist formulation returns the surplus as a universal payment. Table~\ref{tab:recycling} therefore repeats the grid with the net revenue above the council tax replacement returned as an equal per-person dividend.
 
-The change is substantial. At 2 per cent, the unrecycled levy raised before-housing-cost poverty by 3.59 percentage points; recycled, it \emph{reduces} it by 1.15 points and reduces after-housing-cost poverty by 3.21 points, while paying a dividend of \pounds 1{,}285 per person and leaving 69.9 per cent of households better off. At 1.5 per cent the package reduces poverty on both measures (BHC $-0.95$, AHC $-1.91$) and gives the poorest income decile \pounds 1{,}414 a year. The reason is mechanical but worth stating: the levy is drawn from a base concentrated at the top of the wealth distribution and returned on a per-head basis, so the net transfer runs down the distribution even though the tax itself is only proportional to wealth.
+The change is substantial. At 2 per cent, the unrecycled levy raised before-housing-cost poverty by 2.98 percentage points; recycled, it \emph{reduces} it by 0.80 points and reduces after-housing-cost poverty by 2.79 points, while paying a dividend of \pounds 1{,}266 per person and leaving 70.4 per cent of households better off. At 1.5 per cent the package reduces poverty on both measures (BHC $-0.75$, AHC $-2.22$) and gives the poorest income decile \pounds 1{,}181 a year. The reason is mechanical but worth stating: the levy is drawn from a base concentrated at the top of the wealth distribution and returned on a per-head basis, so the net transfer runs down the distribution even though the tax itself is only proportional to wealth.
 
-Two qualifications. First, the dividend is a flat cash payment and we do not model any interaction with means-tested benefits, so these figures overstate the gain for households whose entitlements would taper. Second, the poverty gains do not grow monotonically with the rate: they peak around 2 per cent and shrink at 3 and 5 per cent (BHC $-0.27$ and $-0.61$), and measured income inequality turns up at 5 per cent (Gini $+0.015$), because the liabilities falling on asset-rich, income-poor households increasingly offset a per-head payment. The recycled package improves on the unrecycled one at every rate, but the improvement is not unbounded in the rate.
+Two qualifications. First, the dividend is a flat cash payment and we do not model any interaction with means-tested benefits, so these figures overstate the gain for households whose entitlements would taper. Second, the poverty gains do not grow monotonically with the rate: the before-housing-cost gain peaks around 2 per cent and shrinks at 3 and 5 per cent (BHC $-0.42$ and $-0.20$), and measured income inequality turns up at 5 per cent (Gini $+0.014$), because the liabilities falling on asset-rich, income-poor households increasingly offset a per-head payment. The recycled package improves on the unrecycled one at every rate, but the improvement is not unbounded in the rate.
 
 \begin{table}[htbp]
 \centering
@@ -21,25 +21,25 @@ Two qualifications. First, the dividend is a flat cash payment and we do not mod
 Rate & Recycled & Dividend & Winners & $\Delta$ Poverty & $\Delta$ Poverty & Decile 1 \\
 (\%) & (\pounds bn) & (\pounds/person) & (\%) & BHC (pp) & AHC (pp) & (\pounds) \\
 \midrule
-0.77 & 0.0   & 0        & 68.2 & $+$0.03 & $-$0.72 & $+$647 \\
-1.0  & 17.0  & 238      & 71.5 & $-$0.03 & $-$0.99 & $+$887 \\
-1.5  & 54.3  & 762      & 70.8 & $-$0.95 & $-$1.91 & $+$1{,}414 \\
-2.0  & 91.6  & 1{,}285  & 69.9 & $-$1.15 & $-$3.21 & $+$1{,}941 \\
-3.0  & 166.3 & 2{,}332  & 69.3 & $-$0.27 & $-$2.87 & $+$2{,}995 \\
-5.0  & 315.5 & 4{,}425  & 68.4 & $-$0.61 & $-$2.81 & $+$5{,}102 \\
+0.79 & 0.0   & 0        & 67.4 & $-$0.23 & $-$0.69 & $+$584 \\
+1.0  & 15.9  & 223      & 71.9 & $-$0.03 & $-$1.35 & $+$763 \\
+1.5  & 53.1  & 745      & 71.1 & $-$0.75 & $-$2.22 & $+$1{,}181 \\
+2.0  & 90.3  & 1{,}266  & 70.4 & $-$0.80 & $-$2.79 & $+$1{,}599 \\
+3.0  & 164.6 & 2{,}309  & 69.4 & $-$0.42 & $-$3.63 & $+$2{,}434 \\
+5.0  & 313.4 & 4{,}395  & 68.4 & $-$0.20 & $-$3.03 & $+$4{,}106 \\
 \bottomrule
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Council tax is abolished in every row. Revenue above the \pounds 57.6 billion replacement is divided equally across all individuals. No benefit interactions are modelled on the dividend. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} Council tax is abolished in every row. Revenue above the \pounds 58.5 billion replacement is divided equally across all individuals. No benefit interactions are modelled on the dividend. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
 \end{table}
 
 \subsection{An exempt band of land value}
 \label{sec:exemptband}
 
-Section~\ref{sec:discussion} notes an exempt band as a standard mitigation for the liquidity problem. Table~\ref{tab:exempt} costs it. Exempting the first \pounds 100{,}000 of land value per household removes 51.6 per cent of households from the tax altogether and shrinks the base from \pounds 7.46 to \pounds 5.57 trillion, so revenue neutrality requires 1.04 rather than 0.77 per cent. The distributional effect of the exemption is to sharpen the reform, not to soften it: winners rise from 68.2 to 70.7 per cent, the poorest decile's gain rises from \pounds 647 to \pounds 775, and the top wealth decile's loss rises from \pounds 5{,}752 to \pounds 7{,}574.
+Section~\ref{sec:discussion} notes an exempt band as a standard mitigation for the liquidity problem. Table~\ref{tab:exempt} costs it. Exempting the first \pounds 100{,}000 of land value per household removes 51.7 per cent of households from the tax altogether and shrinks the base from \pounds 7.44 to \pounds 5.55 trillion, so revenue neutrality requires 1.05 rather than 0.79 per cent. The distributional effect of the exemption is to sharpen the reform, not to soften it: winners rise from 67.4 to 69.4 per cent, the poorest decile's gain rises from \pounds 584 to \pounds 690, and the top wealth decile's loss rises from \pounds 5{,}871 to \pounds 7{,}727.
 
-This is worth emphasising because the intuition often runs the other way. An exempt band is usually discussed as a concession; here it is a progressivity instrument, because it removes small landholders from the base and concentrates the same revenue on large ones. At a \pounds 200{,}000 band, 64.5 per cent of households pay nothing, three-quarters gain, and the top wealth decile loses \pounds 9{,}398. The cost is a higher headline rate and a narrower, more concentrated base --- which is also a more volatile one, and more exposed to valuation dispute at the top.
+This is worth emphasising because the intuition often runs the other way. An exempt band is usually discussed as a concession; here it is a progressivity instrument, because it removes small landholders from the base and concentrates the same revenue on large ones. At a \pounds 200{,}000 band, 64.5 per cent of households pay nothing, nearly three-quarters gain, and the top wealth decile loses \pounds 9{,}584. The cost is a higher headline rate and a narrower, more concentrated base --- which is also a more volatile one, and more exposed to valuation dispute at the top.
 
 \begin{table}[htbp]
 \centering
@@ -50,15 +50,15 @@ This is worth emphasising because the intuition often runs the other way. An exe
 Exempt & Taxable & Rate & Households & Winners & Decile 1 & Wealth 10 \\
 band (\pounds) & base (\pounds tn) & (\%) & untaxed (\%) & (\%) & (\pounds) & (\pounds) \\
 \midrule
-0         & 7.46 & 0.77 & 17.2 & 68.2 & $+$647 & $-$5{,}752 \\
-50{,}000  & 6.43 & 0.90 & 40.5 & 69.5 & $+$713 & $-$6{,}650 \\
-100{,}000 & 5.57 & 1.04 & 51.6 & 70.7 & $+$775 & $-$7{,}574 \\
-200{,}000 & 4.25 & 1.36 & 64.5 & 74.9 & $+$859 & $-$9{,}398 \\
+0         & 7.44 & 0.79 & 17.2 & 67.4 & $+$584 & $-$5{,}871 \\
+50{,}000  & 6.41 & 0.91 & 40.6 & 68.4 & $+$639 & $-$6{,}786 \\
+100{,}000 & 5.55 & 1.05 & 51.7 & 69.4 & $+$690 & $-$7{,}727 \\
+200{,}000 & 4.23 & 1.38 & 64.5 & 73.5 & $+$754 & $-$9{,}584 \\
 \bottomrule
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Each row replaces the same \pounds 57.6 billion. ``Untaxed'' includes the 17.2 per cent of households holding no land. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
+{\footnotesize\emph{Note:} Each row replaces the same \pounds 58.5 billion. ``Untaxed'' includes the 17.2 per cent of households holding no land. \emph{Source:} Authors' calculations; \texttt{analysis/deep\_dive.py}.}
 \end{table}
 
 \subsection{Broadening the taxes replaced}
@@ -66,7 +66,7 @@ band (\pounds) & base (\pounds tn) & (\%) & untaxed (\%) & (\%) & (\pounds) & (\
 
 \citet{mirrlees2011}, \citet{muellbauer2005} and \citet{leunig2024} all propose replacing stamp duty alongside council tax, on the grounds reviewed in Section~\ref{sec:literature}: a transaction tax distorts mobility and the timing and volume of sales \citep{best2018, hilber2017}, and none of that distortion has any counterpart under a recurrent charge on an immobile base. Table~\ref{tab:targets} costs the broader packages.
 
-Adding stamp duty, which the model puts at \pounds 11.4 billion, raises the replacement target to \pounds 69.1 billion and the revenue-neutral rate to 0.93 per cent. Fewer households gain (64.9 against 68.2 per cent), which is unsurprising: stamp duty is paid by a small number of movers in any given year, so replacing it with a recurrent charge spreads a concentrated liability across all landholders. The efficiency argument for doing so is strong and the distributional argument is weaker --- a trade-off the proposals cited above generally acknowledge. Folding in Northern Irish domestic rates (\pounds 0.6 billion) moves the rate only to 0.78 per cent, and slightly improves the distribution by removing the double taxation of Northern Irish households that our central specification imposes.
+Adding stamp duty, which the model puts at \pounds 11.4 billion, raises the replacement target to \pounds 69.9 billion and the revenue-neutral rate to 0.94 per cent. Fewer households gain (63.9 against 67.4 per cent), which is unsurprising: stamp duty is paid by a small number of movers in any given year, so replacing it with a recurrent charge spreads a concentrated liability across all landholders. The efficiency argument for doing so is strong and the distributional argument is weaker --- a trade-off the proposals cited above generally acknowledge. Folding in Northern Irish domestic rates (\pounds 0.6 billion) leaves the rate essentially unchanged at 0.79 per cent, and slightly improves the distribution by removing the double taxation of Northern Irish households that our central specification imposes.
 
 \begin{table}[htbp]
 \centering
@@ -78,10 +78,10 @@ Adding stamp duty, which the model puts at \pounds 11.4 billion, raises the repl
 Taxes replaced & Revenue & Rate & Winners & Decile 1 & Decile 10 & Wealth 10 \\
  & (\pounds bn) & (\%) & (\%) & (\pounds) & (\pounds) & (\pounds) \\
 \midrule
-Council tax (central)              & 57.6 & 0.77 & 68.2 & $+$647 & $-$963 & $-$5{,}752 \\
-Council tax and NI domestic rates  & 58.2 & 0.78 & 69.8 & $+$662 & $-$990 & $-$5{,}823 \\
-Council tax and stamp duty         & 69.1 & 0.93 & 64.9 & $+$566 & $-$641 & $-$5{,}143 \\
-All three                          & 69.6 & 0.93 & 66.4 & $+$581 & $-$668 & $-$5{,}214 \\
+Council tax (central)              & 58.5 & 0.79 & 67.4 & $+$584 & $-$1{,}429 & $-$5{,}871 \\
+Council tax and NI domestic rates  & 59.0 & 0.79 & 68.8 & $+$598 & $-$1{,}461 & $-$5{,}942 \\
+Council tax and stamp duty         & 69.9 & 0.94 & 63.9 & $+$475 & $-$1{,}218 & $-$5{,}263 \\
+All three                          & 70.4 & 0.95 & 65.5 & $+$489 & $-$1{,}249 & $-$5{,}334 \\
 \bottomrule
 \end{tabular}
 
@@ -94,6 +94,6 @@ All three                          & 69.6 & 0.93 & 66.4 & $+$581 & $-$668 & $-$5
 
 The High Value Council Tax Surcharge \citep{hmt2025} addresses the same defect as our reform --- that council tax stops discriminating above Band H --- with a very different instrument. Simulating its announced parameters on our microdata gives a useful check and a sharp comparison. We find 171{,}000 liable properties raising \pounds 0.56 billion, against the OBR's 165{,}000 and \pounds 0.4 billion; the closeness of the property count is reassuring for the upper tail of our wealth data, and our slightly higher revenue is consistent with the OBR's costing being net of behavioural response and non-compliance, which we do not model.
 
-The comparison with the LVT is stark on every dimension. The surcharge touches 0.53 per cent of households and raises 1.0 per cent of what the land tax raises. All of it falls on the top wealth decile, but as an average across that decile it amounts to \pounds 172 a year, against \pounds 8{,}410 under the LVT. It reaches only 7.4 per cent of its revenue from the top \emph{income} decile, confirming that high-value property and high current income are different things. And because it is a flat charge within wide bands, it reintroduces at \pounds 2 million exactly the cliff-edge and value-insensitivity that makes the existing band structure regressive: a \pounds 2.1 million and a \pounds 3.4 million property both pay \pounds 3{,}500.
+The comparison with the LVT is stark on every dimension. The surcharge touches 0.53 per cent of households and raises 1.0 per cent of what the land tax raises. All of it falls on the top wealth decile, but as an average across that decile it amounts to \pounds 172 a year, against \pounds 8{,}533 under the LVT. It reaches only 7.4 per cent of its revenue from the top \emph{income} decile, confirming that high-value property and high current income are different things. And because it is a flat charge within wide bands, it reintroduces at \pounds 2 million exactly the cliff-edge and value-insensitivity that makes the existing band structure regressive: a \pounds 2.1 million and a \pounds 3.4 million property both pay \pounds 3{,}500.
 
 None of this makes the surcharge a bad measure --- it raises revenue from an under-taxed group at low administrative cost, and it establishes that the Valuation Office can value high-value homes at current prices, which is the precondition for anything more ambitious. But it is a patch of roughly one per cent the size of the reform considered here, and it leaves the structure it patches intact.
