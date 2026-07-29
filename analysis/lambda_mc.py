@@ -48,7 +48,7 @@ LAMBDA = {
 
 
 def headline(df, delta, w):
-    inc_d = _deciles(df["net_income"].values, w)
+    inc_d = df["income_decile"].values  # model equivalised-income deciles
     wlt_d = _deciles(df["total_wealth"].values, w)
 
     def dmean(d, k):

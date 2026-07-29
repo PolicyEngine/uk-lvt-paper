@@ -58,7 +58,9 @@ def statistics(df, w):
     delta = ct - rate * land
 
     pw = w * df["people"].values
-    inc_d = _deciles(df["net_income"].values, w)
+    # Model equivalised-income deciles (fixed baseline assignment), matching
+    # the paper's income tables; wealth deciles re-derived per replicate.
+    inc_d = df["income_decile"].values
     wlt_d = _deciles(df["total_wealth"].values, w)
 
     # Poverty: baseline-fixed thresholds, HBAI person shares.
