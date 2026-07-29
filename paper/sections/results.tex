@@ -235,6 +235,18 @@ decile & value (\pounds) & (\pounds) & saved (\pounds) & change (\pounds) & (\%)
 \label{fig:net_wealth}
 \end{figure}
 
+\subsection{The joint distribution: income deciles against wealth deciles}
+\label{sec:jointdist}
+
+The contrast between the two preceding tables is resolved by crossing them. Figure~\ref{fig:joint} reports the mean net income change in each cell of the income-decile $\times$ wealth-decile matrix. Within every income decile --- including the top one --- households in wealth deciles 1--7 gain, typically by \pounds 700--1{,}800 a year, and households in the top wealth decile lose, typically by \pounds 4{,}000--6{,}000 and more where high income coincides with very large land holdings. The gradient runs almost entirely along the wealth axis: reading across any row, effects flip from gains to losses between wealth deciles 7 and 9 regardless of income; reading up any column, effects barely move. The population-weighted rank correlation between household income and total wealth is 0.36, which is why a tax organised by wealth registers so weakly in statistics organised by income. This figure is the paper's central claim in a single exhibit.
+
+\begin{figure}[htbp]
+\centering
+\safefig{../results/figures/fig_joint_income_wealth.png}
+\caption{Mean household net income change by income decile (rows) and wealth decile (columns) at the budget-neutral 0.79 per cent rate. \emph{Note:} income deciles are the model's equivalised-income deciles; wealth deciles are equal-weight total-wealth deciles; cells holding under 0.1 per cent of households are blank. \emph{Source:} Authors' calculations; \texttt{analysis/submission\_extras.py}.}
+\label{fig:joint}
+\end{figure}
+
 \subsection{Winners and losers within deciles}
 \label{sec:winners}
 
@@ -347,6 +359,8 @@ The decile tables and the Gini result can be combined into two summary statistic
 
 Against the \emph{income} ranking --- equivalised net income, person-weighted, matching the Gini convention above --- both taxes are regressive: Kakwani is $-0.201$ for council tax and $-0.084$ for the LVT (Suits, $-0.205$ and $-0.086$). A land tax is regressive in income for the same reason council tax is --- land, like housing, is held disproportionately by households whose current income is low relative to their assets --- though the swap roughly halves the shortfall from proportionality on this axis. The improvement is nonetheless modest in level terms, which is the same conclusion the near-zero Gini change invites.
 
+The corresponding Reynolds--Smolensky indices --- the reduction in the income Gini achieved by each tax, combining its progressivity with its size --- tell the same story on the income axis: $-0.0072$ for council tax and $-0.0047$ for the LVT (both taxes \emph{raise} income inequality, the LVT by about a third less), and the swap itself lowers the Gini by 0.0025, matching the reform effect reported in Section~\ref{sec:poverty}.
+
 Against the \emph{wealth} ranking the two taxes are almost unrecognisably different. Council tax has a Kakwani index of $-0.523$: it is sharply regressive in wealth, taking a much smaller share from wealthy households than their share of wealth. The LVT has a Kakwani index of $-0.032$ --- within rounding of proportionality. Its concentration index against wealth is 0.672, against a wealth Gini of 0.704, so the tax is distributed across households almost exactly as wealth itself is. Council tax's concentration index is 0.180, barely a quarter as concentrated. Because a small fraction of households have negative net wealth, over which cumulative-share indices are not well defined, we recompute all the wealth-ranked indices with wealth bottom-coded at zero; they are identical to four decimal places.
 
 This is the sharpest statement of the result. Replacing council tax with a land value tax converts a steeply wealth-regressive tax into a nearly wealth-proportional one, while doing very little that conventional income-based statistics can detect. The gap between $-0.523$ and $-0.032$ is what the reform accomplishes; the gap between $-0.201$ and $-0.084$ is what a standard distributional analysis would report.
@@ -383,7 +397,28 @@ LVT at 0.79\%            & $-$0.084 & $-$0.086 & $-$0.032 & $-$0.050 \\
 
 The final row of Table~\ref{tab:robustness} is a comparator rather than a robustness check: a proportional tax on total property value, structures included, at the 0.74 per cent rate that raises the same revenue. It is less progressive on the wealth ranking --- the top wealth decile loses \pounds 4{,}310 rather than \pounds 5{,}871 --- and it produces fewer winners (63.4 against 67.4 per cent), because the base is spread more evenly across the property-owning population instead of being concentrated where location value is highest. That difference is the quantitative content of the land/structures distinction.
 
-\paragraph{Incidence variants.} Two further variants relax the incidence assumptions rather than the calibration. First, the central specification charges the corporate component of the levy (\pounds 16.2 billion at the budget-neutral rate) to households as a same-year cash reduction in disposable income, in proportion to their corporate wealth --- including wealth held through pensions, where the first-round effect would in practice fall on the (often inaccessible) pension asset rather than on current cash income. Treating the corporate component instead as a stock levy on corporate wealth, with only the household-land component entering current income, raises the winner share to 75.8 per cent and cuts the top wealth decile's income-side loss to \pounds 3{,}224; the corporate charge is then analogous to the capitalisation effects discussed below, amounting to 0.06 per cent of total household wealth per year. Second, under partial rent pass-through --- half of the levy on privately rented dwellings shifted to tenants, using the regional mean owner-occupier land value as a proxy for the (unobserved) land under each rented dwelling, with the same aggregate rebated to owners --- \pounds 8.0 billion moves from owners to private renters, the winner share falls only to 66.8 per cent, and the after-housing-cost poverty reduction shrinks from 0.69 to 0.23 percentage points. The poverty result, more than the winner share, is what the fixed-rent assumption protects.
+\paragraph{Incidence variants.} Two further variants relax the incidence assumptions rather than the calibration. First, the central specification charges the corporate component of the levy (\pounds 16.2 billion at the budget-neutral rate) to households as a same-year cash reduction in disposable income, in proportion to their corporate wealth --- including wealth held through pensions, where the first-round effect would in practice fall on the (often inaccessible) pension asset rather than on current cash income. Treating the corporate component instead as a stock levy on corporate wealth, with only the household-land component entering current income, raises the winner share to 75.8 per cent and cuts the top wealth decile's income-side loss to \pounds 3{,}224; the corporate charge is then analogous to the capitalisation effects discussed below, amounting to 0.06 per cent of total household wealth per year. Second, we treat rent pass-through as a sensitivity dimension rather than a single variant. Table~\ref{tab:passthrough} reports incidence as a function of the share $\theta$ of the levy on privately rented dwellings shifted to tenants, from the fixed-rent central case ($\theta=0$) to the full pass-through that \citet{loeffler2024} estimate for recurrent property taxes in German data ($\theta=1$), using the regional mean owner-occupier land value as a proxy for the (unobserved) land under each rented dwelling and rebating the same aggregate to owners so total revenue is unchanged. The winner share is robust --- it falls only from 67.4 to 63.4 per cent across the whole range --- but the after-housing-cost poverty reduction is not: it shrinks from 0.69 percentage points at $\theta=0$ to 0.23 at $\theta=0.5$ and reverses sign between $\theta=0.5$ and $\theta=0.75$, as low-income private renters progressively hand back their council tax savings in higher rents. The poverty result, much more than the winner share, is what the fixed-rent assumption protects, and readers who find the Danish and German pass-through evidence persuasive should discount it accordingly.
+
+\begin{table}[htbp]
+\centering
+\caption{Incidence as a function of the rent pass-through share $\theta$}
+\label{tab:passthrough}
+\begin{tabular}{lrrrrr}
+\toprule
+$\theta$ & Shifted to & Winners & Private renter & $\Delta$ Poverty & $\Delta$ Poverty \\
+ & tenants (\pounds bn) & (\%) & mean (\pounds) & BHC (pp) & AHC (pp) \\
+\midrule
+0.00 & 0.0  & 67.4 & $+$773     & $-$0.23 & $-$0.69 \\
+0.25 & 4.0  & 66.7 & $+$193     & $-$0.32 & $-$0.39 \\
+0.50 & 8.0  & 66.8 & $-$386     & $-$0.34 & $-$0.23 \\
+0.75 & 11.9 & 64.9 & $-$966     & $-$0.29 & $+$0.24 \\
+1.00 & 15.9 & 63.4 & $-$1{,}545 & $-$0.02 & $+$0.43 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+{\footnotesize\emph{Note:} Budget-neutral 0.79 per cent rate throughout; the amount shifted to tenants is rebated to owner households in proportion to household land, so aggregate revenue is unchanged. ``Private renter mean'' is the mean net income change of private-renter households. \emph{Source:} Authors' calculations; \texttt{analysis/submission\_extras.py}.}
+\end{table}
 
 \begin{table}[htbp]
 \centering
