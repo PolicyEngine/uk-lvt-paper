@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Run test suite
+        run: uv run --extra dev pytest -q
+
+  paper:
+    name: Build and check paper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tectonic and poppler
+        run: |
+          curl -fsSL https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.17.0/tectonic-0.17.0-x86_64-unknown-linux-musl.tar.gz | sudo tar -xz -C /usr/local/bin
+          sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+      - name: Cache tectonic packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Tectonic
+          key: tectonic-${{ runner.os }}-v1
+      - name: Rebuild paper from source
+        run: |
+          cp paper/main.pdf /tmp/committed.pdf
+          cd paper && tectonic main.tex
+      - name: Check paper content and PDF sync
+        run: bash scripts/check_paper.sh paper/main.pdf /tmp/committed.pdf
