@@ -28,22 +28,22 @@ Decile & 0.5\% & 0.79\% & 1.0\% & 1.5\% & 2.0\% & 3.0\% & 5.0\% \\
 \end{tabular}
 
 \medskip
-{\footnotesize\emph{Note:} Rates above 0.79\% raise net revenue that is not recycled; rates below it reduce net revenue.}
+{\footnotesize\emph{Note:} Rates above 0.79\% raise net revenue that is not recycled; rates below it reduce net revenue. \emph{Source:} Authors' calculations using PolicyEngine UK.}
 \end{table}
 
 \subsection{Landless households}
 
-Households holding no land --- neither residential property nor corporate wealth --- make up 17.2 per cent of the population. Because their LVT liability is zero at any rate, their outcome is invariant across the rate grid: an average gain of \pounds 885 per year (their abolished council tax bill), with 77.1 per cent winning. The non-winners are predominantly households whose council tax was already fully covered by council tax reduction, for whom abolition changes nothing.
+Households holding no land --- no residential property, directly owned land or corporate wealth --- make up 17.2 per cent of households. Because their LVT liability is zero at any rate, their outcome is invariant across the rate grid: an average gain of \pounds 885 per year (their abolished council tax bill), with 77.1 per cent winning. The non-winners are predominantly households whose council tax was already fully covered by council tax reduction, for whom abolition changes nothing.
 
 \subsection{Worked single-household example}
 
-Consider a household owning a \pounds 400{,}000 home in London, where the land share is 85 per cent, implying household land of \pounds 340{,}000. If the household also holds \pounds 50{,}000 of corporate wealth, its attributed corporate land is that sum multiplied by the population ratio of aggregate corporate land to aggregate corporate wealth, which the simulation puts at \pounds 0.145 per pound of corporate wealth, or \pounds 7{,}257. Its total land value is therefore \pounds 347{,}257 and its annual liability at the budget-neutral rate (0.786 per cent before rounding) is \pounds 2{,}730; at a 1 per cent rate it would be \pounds 3{,}473. Whether the household gains depends on the abolished council tax bill: with a typical upper-band London bill of around \pounds 2{,}400 it loses roughly \pounds 330 a year, and it breaks even at a bill of \pounds 2{,}730.
+Consider a household owning a \pounds 400{,}000 home in London, where the land share is 85 per cent, implying household land of \pounds 340{,}000. If the household also holds \pounds 50{,}000 of corporate wealth, its attributed corporate land is that sum multiplied by the population ratio of aggregate corporate land to aggregate corporate wealth, which the simulation puts at \pounds 0.14514 per pound of corporate wealth, or \pounds 7{,}257. Its total land value is therefore \pounds 347{,}257 and its annual liability at the budget-neutral rate (0.786 per cent before rounding) is \pounds 2{,}730; at a 1 per cent rate it would be \pounds 3{,}473. Whether the household gains depends on the abolished council tax bill: with an illustrative upper-band London bill of \pounds 2{,}400 it loses roughly \pounds 330 a year, and it breaks even at a bill of \pounds 2{,}730.
 
 The allocation ratio must be computed against the weighted population. Evaluating equation~(\ref{eq:land}) inside a single-household simulation assigns the entire \pounds 2.06 trillion corporate land base to that one record, because it constitutes the whole population; the example above therefore uses the population ratio from the microsimulation.
 
 \subsection{Capitalisation by wealth decile}
 
-Table~\ref{tab:capitalisation} reports the one-off wealth loss implied by full capitalisation of the permanent 0.79 per cent levy, $\Delta W_i = -(r^{*}/\rho) L_i$, at 3 and 5 per cent discount rates. The aggregate loss is \pounds 1.17 trillion at $\rho=5$ per cent, \pounds 1.46 trillion at 4 per cent and \pounds 1.95 trillion at 3 per cent, corresponding to falls in land prices of 15.7, 19.7 and 26.2 per cent. Expressed as a share of total wealth the loss peaks in the middle of the wealth distribution --- deciles 5 and 6, whose wealth is overwhelmingly housing --- while in absolute terms it is concentrated at the top.
+Table~\ref{tab:capitalisation} reports the one-off wealth loss implied by full capitalisation of the permanent 0.79 per cent levy, $\Delta W_i = -(r^{*}/\rho) L_i$, at discount rates of 3, 4 and 5 per cent (the table reports the 3 and 5 per cent columns), under the assumption that the levy is assessed for ever on the fixed pre-reform base --- a levy reassessed on post-capitalisation values falls by $r^{*}/(\rho+r^{*})$ instead, so these are upper bounds. The aggregate loss is \pounds 1.17 trillion at $\rho=5$ per cent, \pounds 1.46 trillion at 4 per cent and \pounds 1.95 trillion at 3 per cent, corresponding to falls in land prices of 15.7, 19.7 and 26.2 per cent. Expressed as a share of total wealth the loss peaks in the middle of the wealth distribution --- deciles 5 and 6, whose wealth is overwhelmingly housing --- while in absolute terms it is concentrated at the top.
 
 \begin{table}[htbp]
 \centering
@@ -74,7 +74,7 @@ decile & Loss (\pounds) & \% of wealth & Loss (\pounds) & \% of wealth \\
 
 \subsection{Deferral for pensioner households}
 
-The liquidity problem the reform creates is concentrated and measurable. Households containing at least one person of state pension age make up 27.2 per cent of the population and would owe \pounds 20.6 billion of the \pounds 58.5 billion total, or 35.2 per cent of the yield, at an average liability of \pounds 2{,}354. A full deferral option for pensioner households --- the liability rolled up with interest against the property, as recommended by \citet{mirrlees2011} --- would therefore postpone rather than forgo roughly a third of receipts in the first year, declining thereafter as deferred estates are settled. This is the scale of the transitional financing problem; it is large but bounded, and it is a cash-flow cost to government rather than a revenue loss.
+The liquidity problem the reform creates is concentrated and measurable. Households containing at least one person of state pension age make up 27.2 per cent of households and would owe \pounds 20.6 billion of the \pounds 58.5 billion total, or 35.2 per cent of the yield, at an average liability of \pounds 2{,}354. This is an upper bound on what a deferral scheme could attract: it counts every pensioner household's full liability, including attributed corporate land and households that would not elect to defer, and models no eligibility test, take-up, interest or settlement flows. A full deferral option --- the liability rolled up with interest against the property, as recommended by \citet{mirrlees2011} --- would therefore postpone at most roughly a third of receipts in the first year, declining thereafter as deferred estates are settled. This bounds the transitional financing problem: it is a cash-flow cost to government rather than a revenue loss.
 
 \subsection{Data and parameter summary}
 
@@ -89,7 +89,7 @@ Item & Value & Source / method \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Simulation}} \\
 \quad Microdata & EFRS 2023--24 & FRS enhanced with SPI quantile-forest imputation and WAS wealth \\
-\quad Model version & policyengine-uk 2.89.4 & Pinned; see replication note below \\
+\quad Model version & policyengine-uk 2.89.4 & Released version used; see replication note below \\
 \quad Simulation year & 2026--27 & Uprated from the 2023--24 survey \\
 \quad Households & 32.08m & Weighted EFRS household count \\
 \addlinespace
@@ -107,6 +107,8 @@ Item & Value & Source / method \\
 \addlinespace
 \multicolumn{3}{@{}l}{\emph{Reform}} \\
 \quad Budget-neutral rate ($r^{*}$) & 0.79\% & $R_{\mathrm{CT}}/L$ \\
+\quad LVT parameter & \multicolumn{2}{l}{\texttt{gov.contrib.ubi\_center.land\_value\_tax.rate}} \\
+\quad Abolition parameter & \multicolumn{2}{l}{\texttt{gov.contrib.abolish\_council\_tax}} \\
 \bottomrule
 \end{tabular}
 \end{table}
