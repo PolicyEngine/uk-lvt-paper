@@ -1,6 +1,6 @@
 # uk-lvt-paper
 
-**Replacing council tax with a 0.79% flat land value tax raises the same £58.5bn, leaves 67% of households better off, and shifts the burden sharply up the wealth distribution. Simulated household by household in PolicyEngine UK.**
+**Replacing council tax with a 0.79% flat land value tax raises the same £58.5bn, leaves 67% of households better off (63–76% across incidence variants), and shifts the burden sharply up the wealth distribution. Simulated household by household in PolicyEngine UK.**
 
 ```
 WAS property values → regional land shares → ONS calibration →
@@ -56,11 +56,10 @@ pairs to `results/figures/` — no licensed data needed.
 | Income decile 10 average change | −£1,429/yr |
 | Top wealth decile average change | −£5,871/yr |
 | Share of land held by top wealth decile | 47.5% |
-| Council tax as % of property value | 1.76% (under £150k) → 0.07% (over £2m) |
+| Council tax as % of property value | 1.78% (under £150k) → 0.07% (over £2m) |
 | Kakwani index vs wealth | council tax −0.523, LVT −0.032 |
 | Kakwani index vs income | council tax −0.201, LVT −0.084 |
 | Outright owners / renters | −£755 / +£235 to +£773 per year |
-| Constituencies gaining | 327 of 650 (all of Scotland and Wales) |
 
 ## Reproduce
 

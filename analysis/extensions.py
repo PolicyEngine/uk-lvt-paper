@@ -53,6 +53,7 @@ CT_OBR_BN = 53.7  # OBR March 2025 EFO accruals-based council tax receipts
 
 DISCOUNT_RATES = (0.03, 0.04, 0.05)
 FOREIGN_EQUITY_SHARE = 0.5  # share of UK corporate equity held abroad
+ONS_HH_LAND_2024_TN = 5.04  # un-uprated ONS 2024 household land benchmark, £tn
 
 # Northern Ireland is now interpolated from price-similar North East / North
 # West regions (0.44). Retain the superseded 0.67 English population-weighted
@@ -255,6 +256,9 @@ def build() -> dict:
     land = df["land"].values
     hh_land = df["household_land"].values
     corp_land = df["corporate_land"].values
+    # Rescale factor to the un-uprated ONS 2024 household land benchmark,
+    # derived from the data rather than hard-coded (106.7% in this release).
+    ons_scale = (float(np.sum(hh_land * w)) / 1e12) / ONS_HH_LAND_2024_TN
 
     out: dict = {}
 
@@ -368,7 +372,7 @@ def build() -> dict:
             "half of corporate land assumed foreign-owned and outside the household base",
         ),
         scenario(
-            df, hh_land / 1.0712 + corp_land, ct_saved, ct_model_bn,
+            df, hh_land / ons_scale + corp_land, ct_saved, ct_model_bn,
             "Household land scaled to ONS 2024",
             "household land rescaled to the un-uprated ONS benchmark",
         ),
@@ -400,7 +404,7 @@ def build() -> dict:
             "data releases) removed from the base",
         ),
         scenario(
-            df, hh_land / 1.0712 + corp_land, ct_saved, CT_OBR_BN,
+            df, hh_land / ons_scale + corp_land, ct_saved, CT_OBR_BN,
             "OBR target on ONS-scaled base",
             "both calibration gaps closed at once: replacement target set to "
             "OBR receipts and household land rescaled to the un-uprated ONS "
