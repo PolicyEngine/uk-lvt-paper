@@ -1,0 +1,309 @@
+# Input manifest for the local-authority land value work in uk_lvt/land/.
+#
+# Every external input the method uses is listed here, including inputs that
+# have not been fetched yet, so the gaps are visible. `python -m
+# uk_lvt.land.fetch` downloads each `pinned` source into the git-ignored cache
+# (.cache/land/ by default) and refuses any file whose sha256 differs from the
+# value recorded here. Raw inputs are never committed; only the small derived
+# tables in uk_lvt/land/data/ are (see data/derived_manifest.json).
+#
+# status:
+#   pinned       - downloaded once; `sha256` and `bytes` are of that copy.
+#   not_fetched  - URL (or landing page) known; no copy taken, so no hash yet.
+#   request      - no public file; the data has to be requested from the owner.
+#
+# retrieved_utc: when the pinned copy was downloaded (file mtime, UTC).
+# remote_check: how the live URL was checked against the pinned copy on
+#   2026-10-06 without re-downloading it (HTTP HEAD only).
+#
+# Dropped input: BCIS rebuild costs (commercial licence; outputs must stay
+# open), so it is deliberately not listed.
+
+schema_version: 1
+default_cache_dir: .cache/land
+
+sources:
+  - id: mhclg_lve_2023
+    title: Land value estimates for policy appraisal 2023
+    publisher: Ministry of Housing, Communities and Local Government
+    landing_page: https://www.gov.uk/government/publications/land-value-estimates-for-policy-appraisal-2023
+    url: https://assets.publishing.service.gov.uk/media/69b2d95f912f3f96bf687b1c/Land_value_estimates_for_policy_appraisal_2023.xlsx
+    filename: Land_value_estimates_for_policy_appraisal_2023.xlsx
+    edition: 2023 edition, first published 2026-03-16 (no later updates listed)
+    period: valuation date 2023-10-01; England only
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T01:42:36Z"
+    bytes: 175902
+    sha256: ca626b7ef921a08cd886cf76904bb830d2be8cf8d4b0018d1a54f029168b8705
+    remote_check: HEAD content-length 175902 matches
+    used_for: [plot land per new dwelling (sheets Residential and Residential (adj for floor))]
+    notes: >
+      295 English authorities (no Isles of Scilly). Barnsley and Sheffield are
+      published under pre-April-2023 codes E08000016 and E08000019.
+
+  - id: ukhpi_average_prices_2026_07
+    title: UK House Price Index, average prices (July 2026 release)
+    publisher: HM Land Registry
+    landing_page: https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-july-2026
+    url: https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/Average-prices-2026-07.csv
+    filename: Average-prices-2026-07.csv
+    edition: July 2026 data, published 2026-09-16
+    period: monthly series to 2026-07; this work reads 2023-10-01
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T01:44:50Z"
+    bytes: 7559925
+    sha256: 508c566d772204e9f8d018ca657ff4bf438fb45f0479d51e0daf3f3453484b0f
+    remote_check: HEAD content-length 7559925 matches; ETag equals the pinned copy's MD5 (0e0bc5881f36a0e775595b1a0a0cab5c)
+    used_for: [stock price proxy per authority (prototype)]
+    notes: >
+      295 English authorities on 2023 codes (no Isles of Scilly). The average
+      price is a standardised, mix-adjusted value derived from a geometric
+      mean, with a 3-month moving average below region level (About the UK
+      HPI); it is a proxy for, not a measure of, the arithmetic mean value of
+      the dwelling stock.
+
+  - id: ukhpi_average_prices_property_type_2026_07
+    title: UK House Price Index, average prices by property type (July 2026 release)
+    publisher: HM Land Registry
+    landing_page: https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-july-2026
+    url: https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/Average-prices-Property-Type-2026-07.csv
+    filename: Average-prices-Property-Type-2026-07.csv
+    edition: July 2026 data, published 2026-09-16
+    period: monthly series to 2026-07
+    licence: OGL-UK-3.0
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: URL listed on the downloads page (GOV.UK content API, 2026-10-06)
+    used_for: [type-mix reweighting of the stock price to the VOA stock (next step)]
+
+  - id: ukhpi_new_and_old_2026_07
+    title: UK House Price Index, new build and existing resold property (July 2026 release)
+    publisher: HM Land Registry
+    landing_page: https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-july-2026
+    url: https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/New-and-Old-2026-07.csv
+    filename: New-and-Old-2026-07.csv
+    edition: July 2026 data, published 2026-09-16
+    period: monthly series to 2026-07
+    licence: OGL-UK-3.0
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: URL listed on the downloads page (GOV.UK content API, 2026-10-06)
+    used_for: [new-build price bridge (next step); local-authority coverage not yet checked]
+
+  - id: hmlr_price_paid_complete
+    title: Price Paid Data, single file (pp-complete.csv)
+    publisher: HM Land Registry
+    landing_page: https://www.gov.uk/government/statistical-data-sets/price-paid-data-single-file
+    url: https://price-paid-data.publicdata.landregistry.gov.uk/pp-complete.csv
+    filename: pp-complete.csv
+    edition: monthly refresh; HEAD on 2026-10-06 showed last-modified 2026-09-28
+    period: transactions from 1995-01-01
+    licence: OGL-UK-3.0 (attribution statement required; see landing page)
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: HEAD content-length 5525539417 (about 5.5 GB) on 2026-10-06
+    used_for: [stock price per authority from the latest sale per dwelling (next step)]
+    notes: >
+      The file is replaced every month, so a pin must be taken when it is
+      downloaded (`python -m uk_lvt.land.fetch --only hmlr_price_paid_complete
+      --allow-unpinned` prints the hash to record here).
+
+  - id: voa_ctsop_2026_summary
+    title: Council Tax stock of properties 2026, summary tables (CTSOP1.0, 2.0, 3.0, 4.0)
+    publisher: Valuation Office Agency (published on GOV.UK under HM Revenue & Customs)
+    landing_page: https://www.gov.uk/government/statistics/council-tax-stock-of-properties-2026
+    url: https://assets.publishing.service.gov.uk/media/6aa926a2086ce7c57b818495/2026_CT_SoP_Summary_Tables.ods
+    filename: 2026_CT_SoP_Summary_Tables.ods
+    edition: published 2026-09-24
+    period: counts at 2026-03-31; England and Wales
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T02:03:02Z"
+    bytes: 1391108
+    sha256: 9e9be6944fb8c23a8cdb9491527ebf545072b8f38e8575308d84e595246029d9
+    remote_check: HEAD content-length 1391108 matches
+    used_for: [authority universe (296 English authorities), dwelling counts (CTSOP1.0), band and type mix (CTSOP1.0, 3.0, 4.0; next step)]
+
+  - id: mhclg_live_table_125
+    title: Live Table 125, dwelling stock estimates by local authority district
+    publisher: Ministry of Housing, Communities and Local Government
+    landing_page: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
+    url: https://assets.publishing.service.gov.uk/media/6a0dcbf65c3c79da61662e39/LiveTable125.ods
+    filename: LiveTable125.ods
+    edition: live table, page updated 2026-06-25
+    period: not checked (file not fetched)
+    licence: OGL-UK-3.0
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: HEAD content-length 195364 on 2026-10-06
+    used_for: [dwelling-count cross-check against CTSOP1.0 (next step)]
+
+  - id: mhclg_live_table_126
+    title: Live Table 126, dwelling stock density estimates by local authority district
+    publisher: Ministry of Housing, Communities and Local Government
+    landing_page: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
+    url: https://assets.publishing.service.gov.uk/media/6a0dcc035c3c79da61662e3a/LiveTable126.ods
+    filename: LiveTable126.ods
+    edition: live table, page updated 2026-06-25
+    period: 2011 to 2025 (file contents sheet)
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T02:00:29Z"
+    bytes: 90471
+    sha256: 6d74dde0004a6f058121559dd66089ef239813abbe69d48bc45892606410fadb
+    remote_check: HEAD content-length 90471 matches
+    used_for: [plot-to-stock sensitivity (next step)]
+
+  - id: epc_d3_domestic
+    title: Energy Performance of Buildings Certificates live tables, Table D3 (domestic, by floor area)
+    publisher: Ministry of Housing, Communities and Local Government
+    landing_page: https://www.gov.uk/government/statistical-data-sets/live-tables-on-energy-performance-of-buildings-certificates
+    url: https://assets.publishing.service.gov.uk/media/6a69c5260d360fa159c37c91/D3-_Domestic_Properties.ods
+    filename: D3-_Domestic_Properties.ods
+    edition: first published 2026-07-30; next publication 2026-10-29 (file contents page)
+    period: certificates lodged 2008 to 2026-06-30 (file cover sheet)
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T02:00:35Z"
+    bytes: 4447951
+    sha256: b00a3afaccf9627b085fe71adef5bff4f804ea06863dfebac8ca5946a30eccfe
+    remote_check: HEAD content-length 4447951 matches
+    used_for: [floor area by authority for the plot-to-stock sensitivity (next step)]
+
+  - id: ons_nbs_2025
+    title: The UK national balance sheet estimates, 2025 reference tables
+    publisher: Office for National Statistics
+    landing_page: https://www.ons.gov.uk/economy/nationalaccounts/uksectoraccounts/datasets/thenationalbalancesheetestimates
+    url: https://www.ons.gov.uk/file?uri=/economy/nationalaccounts/uksectoraccounts/datasets/thenationalbalancesheetestimates/current/nbsreferencetables2025.xlsx
+    filename: nbsreferencetables2025.xlsx
+    edition: 2025 edition, released 2025-12-18
+    period: end-year stocks to 2024
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T01:46:02Z"
+    bytes: 532615
+    sha256: 8bec0fbbaf474c76daf721100f1cbda6bda57957ff370f85d36fca4e310d3a79
+    remote_check: ETag equals the pinned copy's SHA-1 (988a6ebec3117ac151966ea83e9207b50fc11622)
+    used_for: [national level anchor and sector bridge (next step, D1.5)]
+
+  - id: ons_land_under_dwellings_latest
+    title: Latest all-sector land under dwellings series (capital stocks)
+    publisher: Office for National Statistics
+    landing_page: null
+    url: null
+    filename: null
+    edition: null
+    period: null
+    licence: to be confirmed on receipt
+    status: request
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: no public file identified
+    used_for: [level anchor (next step, D1.5); the published 2020 article value is the fallback]
+
+  - id: ons_housing_affordability_2025
+    title: Housing affordability in England and Wales, 2025 (median house prices for administrative geographies)
+    publisher: Office for National Statistics
+    landing_page: https://www.ons.gov.uk/peoplepopulationandcommunity/housing/bulletins/housingaffordabilityinenglandandwales/2025
+    url: null
+    filename: null
+    edition: released 2026-03-26
+    period: year to September 2025
+    licence: OGL-UK-3.0
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: landing page HEAD 200 on 2026-10-06; dataset file URL not yet identified
+    used_for: [median-price bridge for the stock price (next step)]
+
+  - id: mhclg_council_tax_levels_2026_27_tables_1_9
+    title: Council Tax levels set by local authorities in England 2026 to 2027, Tables 1 to 9
+    publisher: Ministry of Housing, Communities and Local Government
+    landing_page: https://www.gov.uk/government/statistics/council-tax-levels-set-by-local-authorities-in-england-2026-to-2027
+    url: https://assets.publishing.service.gov.uk/media/69de1fa63e81003ae0422508/Tables_1-9_2026-27.ods
+    filename: Tables_1-9_2026-27.ods
+    edition: published 2026-03-25
+    period: 2026-27
+    licence: OGL-UK-3.0
+    status: pinned
+    retrieved_utc: "2026-10-06T01:48:24Z"
+    bytes: 99083
+    sha256: 66b7c20f70c804038c0a392ff2b7249fd09e83f4e88ac87d0278ce7e19da5537
+    remote_check: HEAD content-length 99083 matches
+    used_for: [Band A to H council tax by billing authority (Table_9), for council tax localisation (later step)]
+
+  - id: wales_council_tax_levels_2026_27
+    title: Council Tax levels, April 2026 to March 2027 (Band D by council)
+    publisher: Welsh Government
+    landing_page: https://www.gov.wales/council-tax-levels-april-2026-march-2027
+    url: null
+    filename: null
+    edition: published 2026-03-24
+    period: 2026-27
+    licence: OGL-UK-3.0 (to be confirmed)
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: landing page returned HTTP 403 to an automated HEAD on 2026-10-06; unverified
+    used_for: [Welsh Band D by council (later step)]
+
+  - id: scotland_council_tax_by_band_2026_27
+    title: Council Tax by band 2026-27
+    publisher: Scottish Government
+    landing_page: https://www.gov.scot/publications/council-tax-datasets/
+    url: null
+    filename: null
+    edition: listed as published 2026-03-31 (search index only)
+    period: 2026-27
+    licence: OGL-UK-3.0 (to be confirmed)
+    status: not_fetched
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: landing page returned a bot challenge (HTTP 202, empty body) on 2026-10-06; unverified
+    used_for: [Scottish Band D by council (later step)]
+
+  - id: tpa_lvt_model_cells
+    title: Tax Policy Associates lvt_model_2026, webapp/cells.json
+    publisher: Tax Policy Associates
+    landing_page: https://github.com/DanNeidle/lvt_model_2026
+    url: https://raw.githubusercontent.com/DanNeidle/lvt_model_2026/fef94f9e7a36ada25a9c29f1f6827759a12eed07/webapp/cells.json
+    filename: tpa_cells_fef94f9.json
+    edition: repository commit fef94f9e7a36ada25a9c29f1f6827759a12eed07 (2026-09-10)
+    period: valuation date 2026-04-01 (preprocessing/config.py VALUATION_DATE)
+    licence: MIT
+    status: pinned
+    retrieved_utc: "2026-10-06T01:56:05Z"
+    bytes: 926678
+    sha256: 995ce9b6efabcdd6b2aff9bd5a59ae1d90c9ba7e908ab6dfec192ab7de63b300
+    remote_check: HEAD content-length 926678 matches (URL pinned to the commit)
+    used_for: [independent cross-validation of authority land per home (next step, D1.6)]
+
+  - id: progress_and_property_la_aggregates
+    title: Progress and Property authority-level land value aggregates and method note
+    publisher: Progress and Property
+    landing_page: null
+    url: null
+    filename: null
+    edition: null
+    period: null
+    licence: to be agreed (publication permission and attribution)
+    status: request
+    retrieved_utc: null
+    bytes: null
+    sha256: null
+    remote_check: no public download
+    used_for: [independent cross-validation (next step, D1.6)]

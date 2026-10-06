@@ -1,0 +1,70 @@
+{
+  "generated_by": "python -m uk_lvt.land.derive",
+  "files": {
+    "mhclg_lve2023_residential.csv": {
+      "description": "MHCLG land value estimates 2023, residential sheets, long form",
+      "sha256": "125f7c94cd11c88129bafd4873cbf062d5c12cf111c2b3671d54f70c5ccbd37a",
+      "rows": 8850,
+      "columns": [
+        "la_code_mhclg",
+        "la_name",
+        "region",
+        "sheet",
+        "density_scenario",
+        "dwellings_per_ha",
+        "price_percentile",
+        "land_value_gbp_per_ha"
+      ],
+      "sources": [
+        {
+          "id": "mhclg_lve_2023",
+          "sha256": "ca626b7ef921a08cd886cf76904bb830d2be8cf8d4b0018d1a54f029168b8705"
+        }
+      ]
+    },
+    "ukhpi_la_average_price.csv": {
+      "description": "UK HPI average price, English authorities, dates ['2023-10-01']",
+      "sha256": "c726d5ed45fb06d25867f0e3046313abd3d00b0e54fd38f911facf3c05b5db61",
+      "rows": 295,
+      "columns": [
+        "la_code",
+        "la_name",
+        "date",
+        "average_price"
+      ],
+      "sources": [
+        {
+          "id": "ukhpi_average_prices_2026_07",
+          "sha256": "508c566d772204e9f8d018ca657ff4bf438fb45f0479d51e0daf3f3453484b0f"
+        }
+      ]
+    },
+    "voa_ctsop1_2026_england_la.csv": {
+      "description": "VOA CTSOP1.0 property counts by band, 296 English authorities, 31 March 2026",
+      "sha256": "26c1c1ba51bb9a201f1d64286a01b3f762ddc845099b513226ce2709e0fd793d",
+      "rows": 296,
+      "columns": [
+        "la_code",
+        "la_name",
+        "region_code",
+        "region_name",
+        "billing_authority_code",
+        "band_a",
+        "band_b",
+        "band_c",
+        "band_d",
+        "band_e",
+        "band_f",
+        "band_g",
+        "band_h",
+        "all_properties"
+      ],
+      "sources": [
+        {
+          "id": "voa_ctsop_2026_summary",
+          "sha256": "9e9be6944fb8c23a8cdb9491527ebf545072b8f38e8575308d84e595246029d9"
+        }
+      ]
+    }
+  }
+}

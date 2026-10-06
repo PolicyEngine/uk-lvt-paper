@@ -1,0 +1,181 @@
+geography_code,geography_name,variant,weighting,lambda_raw,n_authorities,n_missing,n_capped,dwellings
+E92000001,England,central,dwellings,0.333687,296,0,0,25945040
+E92000001,England,central,value,0.353815,296,0,0,25945040
+E92000001,England,central,unweighted,0.329885,296,0,0,25945040
+E92000001,England,density_minus25,dwellings,0.250265,296,0,0,25945040
+E92000001,England,density_minus25,value,0.265361,296,0,0,25945040
+E92000001,England,density_minus25,unweighted,0.247414,296,0,0,25945040
+E92000001,England,density_plus25,dwellings,0.417108,296,0,0,25945040
+E92000001,England,density_plus25,value,0.442269,296,0,0,25945040
+E92000001,England,density_plus25,unweighted,0.412357,296,0,0,25945040
+E92000001,England,price_p25,dwellings,0.242019,296,0,0,25945040
+E92000001,England,price_p25,value,0.264614,296,0,0,25945040
+E92000001,England,price_p25,unweighted,0.244466,296,0,0,25945040
+E92000001,England,price_p75,dwellings,0.430348,296,0,0,25945040
+E92000001,England,price_p75,value,0.452726,296,0,0,25945040
+E92000001,England,price_p75,unweighted,0.419975,296,0,0,25945040
+E92000001,England,unadjusted,dwellings,0.334784,295,1,0,25945040
+E92000001,England,unadjusted,value,0.354415,295,1,0,25945040
+E92000001,England,unadjusted,unweighted,0.330387,295,1,0,25945040
+E12000001,North East,central,dwellings,0.255732,12,0,0,1296370
+E12000001,North East,central,value,0.258293,12,0,0,1296370
+E12000001,North East,central,unweighted,0.2633,12,0,0,1296370
+E12000001,North East,density_minus25,dwellings,0.191799,12,0,0,1296370
+E12000001,North East,density_minus25,value,0.19372,12,0,0,1296370
+E12000001,North East,density_minus25,unweighted,0.197475,12,0,0,1296370
+E12000001,North East,density_plus25,dwellings,0.319666,12,0,0,1296370
+E12000001,North East,density_plus25,value,0.322866,12,0,0,1296370
+E12000001,North East,density_plus25,unweighted,0.329125,12,0,0,1296370
+E12000001,North East,price_p25,dwellings,0.14417,12,0,0,1296370
+E12000001,North East,price_p25,value,0.147229,12,0,0,1296370
+E12000001,North East,price_p25,unweighted,0.148924,12,0,0,1296370
+E12000001,North East,price_p75,dwellings,0.371969,12,0,0,1296370
+E12000001,North East,price_p75,value,0.372624,12,0,0,1296370
+E12000001,North East,price_p75,unweighted,0.37415,12,0,0,1296370
+E12000001,North East,unadjusted,dwellings,0.255732,12,0,0,1296370
+E12000001,North East,unadjusted,value,0.258293,12,0,0,1296370
+E12000001,North East,unadjusted,unweighted,0.2633,12,0,0,1296370
+E12000002,North West,central,dwellings,0.266604,35,0,0,3493650
+E12000002,North West,central,value,0.272977,35,0,0,3493650
+E12000002,North West,central,unweighted,0.247976,35,0,0,3493650
+E12000002,North West,density_minus25,dwellings,0.199953,35,0,0,3493650
+E12000002,North West,density_minus25,value,0.204733,35,0,0,3493650
+E12000002,North West,density_minus25,unweighted,0.185982,35,0,0,3493650
+E12000002,North West,density_plus25,dwellings,0.333254,35,0,0,3493650
+E12000002,North West,density_plus25,value,0.341222,35,0,0,3493650
+E12000002,North West,density_plus25,unweighted,0.309969,35,0,0,3493650
+E12000002,North West,price_p25,dwellings,0.164647,35,0,0,3493650
+E12000002,North West,price_p25,value,0.168879,35,0,0,3493650
+E12000002,North West,price_p25,unweighted,0.158351,35,0,0,3493650
+E12000002,North West,price_p75,dwellings,0.367753,35,0,0,3493650
+E12000002,North West,price_p75,value,0.374555,35,0,0,3493650
+E12000002,North West,price_p75,unweighted,0.348769,35,0,0,3493650
+E12000002,North West,unadjusted,dwellings,0.272335,34,1,0,3493650
+E12000002,North West,unadjusted,value,0.277673,34,1,0,3493650
+E12000002,North West,unadjusted,unweighted,0.250124,34,1,0,3493650
+E12000003,Yorkshire and The Humber,central,dwellings,0.324567,15,0,0,2564610
+E12000003,Yorkshire and The Humber,central,value,0.326022,15,0,0,2564610
+E12000003,Yorkshire and The Humber,central,unweighted,0.312196,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_minus25,dwellings,0.243425,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_minus25,value,0.244517,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_minus25,unweighted,0.234147,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_plus25,dwellings,0.405708,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_plus25,value,0.407527,15,0,0,2564610
+E12000003,Yorkshire and The Humber,density_plus25,unweighted,0.390245,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p25,dwellings,0.199183,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p25,value,0.201394,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p25,unweighted,0.191774,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p75,dwellings,0.452451,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p75,value,0.451513,15,0,0,2564610
+E12000003,Yorkshire and The Humber,price_p75,unweighted,0.435305,15,0,0,2564610
+E12000003,Yorkshire and The Humber,unadjusted,dwellings,0.324567,15,0,0,2564610
+E12000003,Yorkshire and The Humber,unadjusted,value,0.326022,15,0,0,2564610
+E12000003,Yorkshire and The Humber,unadjusted,unweighted,0.312196,15,0,0,2564610
+E12000004,East Midlands,central,dwellings,0.251388,35,0,0,2254310
+E12000004,East Midlands,central,value,0.251328,35,0,0,2254310
+E12000004,East Midlands,central,unweighted,0.239984,35,0,0,2254310
+E12000004,East Midlands,density_minus25,dwellings,0.188541,35,0,0,2254310
+E12000004,East Midlands,density_minus25,value,0.188496,35,0,0,2254310
+E12000004,East Midlands,density_minus25,unweighted,0.179988,35,0,0,2254310
+E12000004,East Midlands,density_plus25,dwellings,0.314235,35,0,0,2254310
+E12000004,East Midlands,density_plus25,value,0.31416,35,0,0,2254310
+E12000004,East Midlands,density_plus25,unweighted,0.29998,35,0,0,2254310
+E12000004,East Midlands,price_p25,dwellings,0.17449,35,0,0,2254310
+E12000004,East Midlands,price_p25,value,0.175839,35,0,0,2254310
+E12000004,East Midlands,price_p25,unweighted,0.163146,35,0,0,2254310
+E12000004,East Midlands,price_p75,dwellings,0.335939,35,0,0,2254310
+E12000004,East Midlands,price_p75,value,0.332057,35,0,0,2254310
+E12000004,East Midlands,price_p75,unweighted,0.324553,35,0,0,2254310
+E12000004,East Midlands,unadjusted,dwellings,0.251287,35,0,0,2254310
+E12000004,East Midlands,unadjusted,value,0.251247,35,0,0,2254310
+E12000004,East Midlands,unadjusted,unweighted,0.239783,35,0,0,2254310
+E12000005,West Midlands,central,dwellings,0.361316,30,0,0,2656150
+E12000005,West Midlands,central,value,0.359909,30,0,0,2656150
+E12000005,West Midlands,central,unweighted,0.344781,30,0,0,2656150
+E12000005,West Midlands,density_minus25,dwellings,0.270988,30,0,0,2656150
+E12000005,West Midlands,density_minus25,value,0.269932,30,0,0,2656150
+E12000005,West Midlands,density_minus25,unweighted,0.258586,30,0,0,2656150
+E12000005,West Midlands,density_plus25,dwellings,0.451646,30,0,0,2656150
+E12000005,West Midlands,density_plus25,value,0.449886,30,0,0,2656150
+E12000005,West Midlands,density_plus25,unweighted,0.430976,30,0,0,2656150
+E12000005,West Midlands,price_p25,dwellings,0.263417,30,0,0,2656150
+E12000005,West Midlands,price_p25,value,0.26253,30,0,0,2656150
+E12000005,West Midlands,price_p25,unweighted,0.250287,30,0,0,2656150
+E12000005,West Midlands,price_p75,dwellings,0.453657,30,0,0,2656150
+E12000005,West Midlands,price_p75,value,0.450417,30,0,0,2656150
+E12000005,West Midlands,price_p75,unweighted,0.428239,30,0,0,2656150
+E12000005,West Midlands,unadjusted,dwellings,0.361316,30,0,0,2656150
+E12000005,West Midlands,unadjusted,value,0.359909,30,0,0,2656150
+E12000005,West Midlands,unadjusted,unweighted,0.344781,30,0,0,2656150
+E12000006,East of England,central,dwellings,0.333168,45,0,0,2890210
+E12000006,East of England,central,value,0.344657,45,0,0,2890210
+E12000006,East of England,central,unweighted,0.334943,45,0,0,2890210
+E12000006,East of England,density_minus25,dwellings,0.249876,45,0,0,2890210
+E12000006,East of England,density_minus25,value,0.258493,45,0,0,2890210
+E12000006,East of England,density_minus25,unweighted,0.251208,45,0,0,2890210
+E12000006,East of England,density_plus25,dwellings,0.41646,45,0,0,2890210
+E12000006,East of England,density_plus25,value,0.430822,45,0,0,2890210
+E12000006,East of England,density_plus25,unweighted,0.418679,45,0,0,2890210
+E12000006,East of England,price_p25,dwellings,0.256744,45,0,0,2890210
+E12000006,East of England,price_p25,value,0.269863,45,0,0,2890210
+E12000006,East of England,price_p25,unweighted,0.260528,45,0,0,2890210
+E12000006,East of England,price_p75,dwellings,0.417105,45,0,0,2890210
+E12000006,East of England,price_p75,value,0.427469,45,0,0,2890210
+E12000006,East of England,price_p75,unweighted,0.417202,45,0,0,2890210
+E12000006,East of England,unadjusted,dwellings,0.333168,45,0,0,2890210
+E12000006,East of England,unadjusted,value,0.344657,45,0,0,2890210
+E12000006,East of England,unadjusted,unweighted,0.334943,45,0,0,2890210
+E12000007,London,central,dwellings,0.386805,33,0,0,3864760
+E12000007,London,central,value,0.400397,33,0,0,3864760
+E12000007,London,central,unweighted,0.390531,33,0,0,3864760
+E12000007,London,density_minus25,dwellings,0.290104,33,0,0,3864760
+E12000007,London,density_minus25,value,0.300297,33,0,0,3864760
+E12000007,London,density_minus25,unweighted,0.292898,33,0,0,3864760
+E12000007,London,density_plus25,dwellings,0.483506,33,0,0,3864760
+E12000007,London,density_plus25,value,0.500496,33,0,0,3864760
+E12000007,London,density_plus25,unweighted,0.488164,33,0,0,3864760
+E12000007,London,price_p25,dwellings,0.297658,33,0,0,3864760
+E12000007,London,price_p25,value,0.306944,33,0,0,3864760
+E12000007,London,price_p25,unweighted,0.303414,33,0,0,3864760
+E12000007,London,price_p75,dwellings,0.499215,33,0,0,3864760
+E12000007,London,price_p75,value,0.52603,33,0,0,3864760
+E12000007,London,price_p75,unweighted,0.500539,33,0,0,3864760
+E12000007,London,unadjusted,dwellings,0.386805,33,0,0,3864760
+E12000007,London,unadjusted,value,0.400397,33,0,0,3864760
+E12000007,London,unadjusted,unweighted,0.390531,33,0,0,3864760
+E12000008,South East,central,dwellings,0.373402,64,0,0,4203060
+E12000008,South East,central,value,0.373663,64,0,0,4203060
+E12000008,South East,central,unweighted,0.382882,64,0,0,4203060
+E12000008,South East,density_minus25,dwellings,0.280052,64,0,0,4203060
+E12000008,South East,density_minus25,value,0.280247,64,0,0,4203060
+E12000008,South East,density_minus25,unweighted,0.287161,64,0,0,4203060
+E12000008,South East,density_plus25,dwellings,0.466753,64,0,0,4203060
+E12000008,South East,density_plus25,value,0.467079,64,0,0,4203060
+E12000008,South East,density_plus25,unweighted,0.478602,64,0,0,4203060
+E12000008,South East,price_p25,dwellings,0.29673,64,0,0,4203060
+E12000008,South East,price_p25,value,0.299507,64,0,0,4203060
+E12000008,South East,price_p25,unweighted,0.304735,64,0,0,4203060
+E12000008,South East,price_p75,dwellings,0.450725,64,0,0,4203060
+E12000008,South East,price_p75,value,0.448587,64,0,0,4203060
+E12000008,South East,price_p75,unweighted,0.459128,64,0,0,4203060
+E12000008,South East,unadjusted,dwellings,0.373402,64,0,0,4203060
+E12000008,South East,unadjusted,value,0.373663,64,0,0,4203060
+E12000008,South East,unadjusted,unweighted,0.382882,64,0,0,4203060
+E12000009,South West,central,dwellings,0.370511,27,0,0,2721920
+E12000009,South West,central,value,0.368864,27,0,0,2721920
+E12000009,South West,central,unweighted,0.367298,27,0,0,2721920
+E12000009,South West,density_minus25,dwellings,0.277883,27,0,0,2721920
+E12000009,South West,density_minus25,value,0.276648,27,0,0,2721920
+E12000009,South West,density_minus25,unweighted,0.275474,27,0,0,2721920
+E12000009,South West,density_plus25,dwellings,0.463139,27,0,0,2721920
+E12000009,South West,density_plus25,value,0.461081,27,0,0,2721920
+E12000009,South West,density_plus25,unweighted,0.459123,27,0,0,2721920
+E12000009,South West,price_p25,dwellings,0.284223,27,0,0,2721920
+E12000009,South West,price_p25,value,0.282153,27,0,0,2721920
+E12000009,South West,price_p25,unweighted,0.285106,27,0,0,2721920
+E12000009,South West,price_p75,dwellings,0.457932,27,0,0,2721920
+E12000009,South West,price_p75,value,0.456448,27,0,0,2721920
+E12000009,South West,price_p75,unweighted,0.451988,27,0,0,2721920
+E12000009,South West,unadjusted,dwellings,0.370511,27,0,0,2721920
+E12000009,South West,unadjusted,value,0.368864,27,0,0,2721920
+E12000009,South West,unadjusted,unweighted,0.367298,27,0,0,2721920
