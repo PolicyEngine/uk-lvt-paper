@@ -1,4 +1,15 @@
 {
+  "provenance": {
+    "packages": {
+      "policyengine-uk": "2.89.4",
+      "policyengine-core": "3.30.3",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6"
+    },
+    "dataset": "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14",
+    "dataset_sha256": "584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d",
+    "dataset_matches_pin": true
+  },
   "budget_neutral_rate_pct": 0.786,
   "etr_by_property_value": [
     {
