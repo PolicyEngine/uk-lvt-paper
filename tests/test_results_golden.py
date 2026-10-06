@@ -6,6 +6,7 @@ and these assertions must move together in one commit.
 """
 
 import json
+import tomllib
 from pathlib import Path
 
 import pytest
@@ -36,11 +37,27 @@ def test_budget_neutral_rate_consistent(lvt, deep, ext):
 
 
 def test_validation_passed(lvt, ext):
-    for check in lvt["validation"]["checks"]:
-        assert check["max_abs_delta_gap"] <= lvt["validation"]["tolerance_gbp"]
+    validation = lvt["validation"]
+    assert validation["tolerance_float32_ulps"] == 8
+    assert validation["tolerance_gbp"] == 1.0
+    assert [c["rate"] for c in validation["checks"]] == [0.005, 0.01, 0.02]
+    for check in validation["checks"]:
+        # The guard: every household within 8 float32 spacings of its largest
+        # total, so no household shows a benefit interaction.
+        assert (
+            check["max_delta_gap_float32_ulps"] <= validation["tolerance_float32_ulps"]
+        )
         assert check["share_households_with_benefit_interaction"] == 0.0
+        # The paper's statements (results.tex): the full model and the
+        # arithmetic agree to within £0.25 for every household, and the share
+        # differing by more than £1 is zero.
+        assert check["max_abs_delta_gap"] <= 0.25
+        assert check["share_households_gap_over_threshold_gbp"] == 0.0
         assert check["model_poverty_bhc"] == pytest.approx(
             check["arithmetic_poverty_bhc"], abs=0.01
+        )
+        assert check["model_poverty_ahc"] == pytest.approx(
+            check["arithmetic_poverty_ahc"], abs=0.01
         )
     assert ext["validation"]["share_households_with_benefit_interaction"] == 0.0
 
@@ -133,3 +150,109 @@ def test_hvcts_comparator(deep):
     h = deep["hvcts"]
     assert h["properties_liable_thousands"] == pytest.approx(165, rel=0.2)
     assert h["share_borne_by_top_wealth_decile_pct"] == 100.0
+
+
+# ---------------------------------------------------------------------------
+# Headline numbers, pinned exactly to the committed JSON. If a regeneration
+# moves any of these, the paper text has to move with it in the same commit.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def extras():
+    return json.loads((ROOT / "results" / "submission_extras.json").read_text())
+
+
+def test_headline_numbers_pinned(lvt, deep, ext, extras):
+    replacement = lvt["council_tax_replacement"]
+    assert replacement["council_tax_revenue_bn"] == 58.5  # net council tax
+    assert replacement["council_tax_gross_bn"] == 61.9
+    assert replacement["council_tax_benefit_bn"] == 3.4
+    assert replacement["total_land_bn"] == 7436.2
+    assert replacement["required_lvt_rate_pct"] == 0.79
+    assert replacement["households_m"] == 32.08
+    # The budget-neutral rate to three decimals, wherever it is reported.
+    assert deep["budget_neutral_rate_pct"] == 0.786
+    assert ext["validation"]["central_rate_pct"] == 0.786
+    assert extras["central_rate_pct"] == 0.786
+    assert extras["replacement_target_bn"] == 58.5
+    central = next(r for r in ext["robustness"] if r["label"] == "Central")
+    assert central["rate_pct"] == 0.786
+    assert central["revenue_target_bn"] == 58.5
+    assert central["pct_winners"] == 67.4  # share of households gaining
+    assert central["poverty_ahc_change"] == -0.69
+    assert central["wealth_decile_10"] == -5871
+    assert lvt["poverty_gini"]["scenarios"]["0.79%"]["poverty_ahc_change"] == -0.69
+
+
+def test_headline_rate_is_net_council_tax_over_land(lvt):
+    # 58.5 / 7436.2 = 0.787%, the rounded inputs; the unrounded ratio behind
+    # the published 0.786 must round to the same two-decimal label.
+    replacement = lvt["council_tax_replacement"]
+    ratio_pct = (
+        100 * replacement["council_tax_revenue_bn"] / replacement["total_land_bn"]
+    )
+    assert round(ratio_pct, 2) == replacement["required_lvt_rate_pct"]
+    assert "0.79%" in lvt["poverty_gini"]["scenarios"]
+
+
+# ---------------------------------------------------------------------------
+# Provenance: every committed results JSON names the pinned model, core and
+# dataset, and those pins agree with pyproject.toml and uv.lock.
+# ---------------------------------------------------------------------------
+
+PROVENANCE_STAMPED = (
+    "lvt_results.json",
+    "extensions.json",
+    "deep_dive.json",
+    "submission_extras.json",
+    "bootstrap_ci.json",
+    "lambda_mc.json",
+)
+
+
+def _simulation_pins() -> dict[str, str]:
+    pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    pins = {}
+    for spec in pyproject["project"]["optional-dependencies"]["simulation"]:
+        name, version = spec.split("==")
+        pins[name.strip()] = version.strip()
+    return pins
+
+
+def _locked_versions() -> dict[str, str]:
+    lock = tomllib.loads((ROOT / "uv.lock").read_text())
+    return {package["name"]: package["version"] for package in lock["package"]}
+
+
+def test_simulation_pins_are_exact_and_locked():
+    pins = _simulation_pins()
+    assert pins["policyengine-uk"] == "2.89.4"
+    assert set(pins) == {"policyengine-uk", "policyengine-core"}
+    locked = _locked_versions()
+    for name, version in pins.items():
+        assert locked[name] == version
+
+
+@pytest.mark.parametrize("name", PROVENANCE_STAMPED)
+def test_results_carry_pinned_provenance(name):
+    from uk_lvt.provenance import PINNED_DATASET, PINNED_DATASET_SHA256
+
+    data = json.loads((ROOT / "results" / name).read_text())
+    provenance = data["provenance"]
+    locked = _locked_versions()
+    for package, version in provenance["packages"].items():
+        assert version == locked[package], package
+    assert provenance["packages"]["policyengine-uk"] == "2.89.4"
+    assert (
+        provenance["packages"]["policyengine-core"]
+        == _simulation_pins()["policyengine-core"]
+    )
+    assert provenance["dataset"] == PINNED_DATASET
+    assert provenance["dataset_sha256"] == PINNED_DATASET_SHA256
+    assert provenance["dataset_matches_pin"] is True
+
+
+def test_lvt_results_top_level_stamp_matches_provenance(lvt):
+    assert lvt["model_version"] == lvt["provenance"]["packages"]["policyengine-uk"]
+    assert lvt["dataset"] == lvt["provenance"]["dataset"]

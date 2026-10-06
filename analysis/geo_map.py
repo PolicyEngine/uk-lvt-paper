@@ -1,5 +1,11 @@
 """Constituency map of the council-tax-to-budget-neutral-LVT swap.
 
+SUPERSEDED (not part of the paper): this script ran on a different microdata
+build from the rest of the paper and its outputs in results/geo/ are
+mixed-vintage; see results/geo/README.md. It refuses to run unless passed
+``--allow-superseded``. The aggregation ``(W @ change) / W.sum(1)`` and the
+neutrality guard below are kept for reuse by a same-vintage rebuild.
+
 Runs baseline and reform PolicyEngine UK simulations on the Enhanced FRS
 2023-24 microdata, computes each household's net income change, and averages
 it into the 650 Westminster (2024) parliamentary constituencies using the
@@ -195,4 +201,9 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    if "--allow-superseded" not in sys.argv[1:]:
+        raise SystemExit(
+            "analysis/geo_map.py is superseded: its outputs are mixed-vintage "
+            "(see results/geo/README.md). Pass --allow-superseded to run it anyway."
+        )
     main()

@@ -37,13 +37,19 @@ Contents
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from uk_lvt.provenance import build_provenance, dataset_source  # noqa: E402
+
+DATASET = dataset_source()
 YEAR = 2026
 OUTPUT = ROOT / "results" / "extensions.json"
 
@@ -260,7 +266,7 @@ def build() -> dict:
     # derived from the data rather than hard-coded (106.7% in this release).
     ons_scale = (float(np.sum(hh_land * w)) / 1e12) / ONS_HH_LAND_2024_TN
 
-    out: dict = {}
+    out: dict = {"provenance": build_provenance(DATASET)}
 
     # Integrity check on the model's own decile variables: the wealth deciles
     # are degenerate because of the mass of tied zero-wealth households.

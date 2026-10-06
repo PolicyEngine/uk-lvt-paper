@@ -12,8 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - name: Check uv.lock is up to date
+        run: uv lock --check
       - name: Run test suite
-        run: uv run --extra dev pytest -q
+        run: uv run --locked --extra dev pytest -q
 
   paper:
     name: Build and check paper
