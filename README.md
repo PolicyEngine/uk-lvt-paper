@@ -171,9 +171,11 @@ it, or any household-level extract or intermediate file derived from it.
   PR #12: they were produced on a different microdata build and are
   mixed-vintage. See `results/geo/README.md`. `analysis/geo_map.py`, which
   wrote them, refuses to run without `--allow-superseded`.
-- The regional bar chart that `figures.py` still drew as `fig9` left the
-  paper in PR #11. Its generator and outputs are removed; the regional numbers
-  remain in `results/lvt_results.json` (`impact_by_region`).
+- `results/figures/fig9_net_change_by_region.png` and `.csv`, the regional
+  bar chart, left the paper in PR #11. They are kept as an archive under a
+  superseded notice in `results/figures/README.md`. `figures.py` no longer
+  redraws them by default; pass `--include-superseded` to redraw them from
+  `impact_by_region` in `results/lvt_results.json`.
 
 ## Known limitations
 
