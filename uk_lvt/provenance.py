@@ -45,17 +45,23 @@ def dataset_source() -> str:
 def resolve_dataset_path(dataset: str) -> Path:
     """Return a local path for ``dataset``, downloading ``hf://`` sources.
 
-    ``hf://`` URLs are parsed the way ``policyengine_uk.Microsimulation``
-    parses them and fetched through policyengine-core's Hugging Face helper,
-    which uses the same local cache the simulation itself reads from.
+    ``hf://owner/repo/path/to/file[@revision]`` URLs are split with
+    policyengine-core's ``parse_hf_url``, which keeps the owner and any
+    directories in the file path, and fetched through policyengine-core's
+    Hugging Face helper, which uses the same local cache the simulation reads
+    from. For a file at the top of the repository, such as the pin, this
+    requests the same repository, file and revision as the simulation's own
+    download. policyengine-uk 2.89.4 takes the last three path segments as
+    owner, repository and file, so for a file in a subdirectory the simulation
+    itself requests the wrong repository.
     """
     if dataset.startswith("hf://"):
-        from policyengine_core.tools.hugging_face import download_huggingface_dataset
+        from policyengine_core.tools.hugging_face import (
+            download_huggingface_dataset,
+            parse_hf_url,
+        )
 
-        owner, repo, filename = dataset.split("/")[-3:]
-        version = None
-        if "@" in filename:
-            filename, version = filename.split("@", 1)
+        owner, repo, filename, version = parse_hf_url(dataset)
         return Path(
             download_huggingface_dataset(
                 repo=f"{owner}/{repo}", repo_filename=filename, version=version
