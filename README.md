@@ -37,7 +37,7 @@ the poverty rates match to 0.01pp (`uk_lvt/validation.py`).
 ### 3. Revenue-neutral rate (`uk_lvt/validation.py`)
 
 Rate = net council tax revenue / total land value = £58.5bn / £7,436bn =
-**0.79%** (0.786% to three decimals).
+**0.79%**.
 
 ### 4. Table builders (`uk_lvt/analysis.py`)
 
