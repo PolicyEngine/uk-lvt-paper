@@ -1,11 +1,13 @@
 """Property-based tests for the raw land-share arithmetic in uk_lvt.land.lambda_raw."""
 
 import math
+import sys
+from fractions import Fraction
 
 import numpy as np
 import pandas as pd
 import pytest
-from hypothesis import assume, given, settings
+from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
 from uk_lvt.land import lambda_raw as L
@@ -18,11 +20,17 @@ densities = st.floats(min_value=1.0, max_value=1_000.0, allow_nan=False)
 prices = st.floats(min_value=1e3, max_value=1e8, allow_nan=False)
 factors = st.floats(min_value=0.05, max_value=20.0, allow_nan=False)
 
+# The properties here are about arithmetic, not speed. Hypothesis's timing
+# checks (the 200 ms deadline and the slow-generation health check) fail on a
+# loaded shared host, so every property test in this module switches them off.
+TIMING_FREE = settings(deadline=None, suppress_health_check=[HealthCheck.too_slow])
+
 
 # --------------------------------------------------------------------------
 # 0 <= lambda <= 1
 # --------------------------------------------------------------------------
 
+@TIMING_FREE
 @given(v=land_values, d=densities, p=prices, f=factors)
 def test_lambda_in_unit_interval_and_exact_for_valid_inputs(v, d, p, f):
     ratio = v / (f * d) / p
@@ -33,6 +41,7 @@ def test_lambda_in_unit_interval_and_exact_for_valid_inputs(v, d, p, f):
     assert math.isclose(lam[0], ratio, rel_tol=1e-12, abs_tol=0.0)
 
 
+@TIMING_FREE
 @given(v=land_values, d=densities, p=prices, f=factors)
 def test_lambda_always_reported_on_unit_interval_and_capping_is_flagged(v, d, p, f):
     lam, capped = L.lambda_from_inputs([v], [d], [p], f)
@@ -65,38 +74,72 @@ def test_invalid_inputs_are_rejected(v, d, p, f):
 lams = st.one_of(st.floats(min_value=0.0, max_value=1.0), st.just(float("nan")))
 # Weights are 0 or at least 1e-3 so rescaling by k >= 1e-6 cannot underflow to 0.
 weights = st.one_of(st.just(0.0), st.floats(min_value=1e-3, max_value=1e7))
+# Any finite non-negative float, subnormals and the largest float included:
+# two of the largest already sum to infinity.
+any_finite_weights = st.one_of(
+    weights,
+    st.floats(min_value=0.0, max_value=sys.float_info.max, allow_nan=False, allow_infinity=False),
+    st.just(sys.float_info.max),
+)
 
 
 @st.composite
-def lambda_weight_pairs(draw):
+def lambda_weight_pairs(draw, weight_strategy=weights):
     n = draw(st.integers(min_value=1, max_value=40))
     xs = draw(st.lists(lams, min_size=n, max_size=n))
-    ws = draw(st.lists(weights, min_size=n, max_size=n))
-    keep = [i for i, x in enumerate(xs) if not math.isnan(x)]
-    assume(keep and sum(ws[i] for i in keep) > 0)
+    ws = draw(st.lists(weight_strategy, min_size=n, max_size=n))
+    assume(any(ws[i] > 0 for i, x in enumerate(xs) if not math.isnan(x)))
     return np.array(xs), np.array(ws)
 
 
-@given(pair=lambda_weight_pairs())
+@TIMING_FREE
+@given(pair=lambda_weight_pairs(any_finite_weights))
 def test_weighted_mean_is_a_convex_combination(pair):
     xs, ws = pair
     keep = ~np.isnan(xs)
     m = L.weighted_mean(xs, ws)
     alpha = L.convex_weights(ws[keep])
-    assert np.all(alpha >= 0)
+    assert np.all(np.isfinite(alpha)) and np.all(alpha >= 0)
     assert math.isclose(alpha.sum(), 1.0, rel_tol=1e-12)
     assert math.isclose(m, float(np.dot(alpha, xs[keep])), rel_tol=1e-12, abs_tol=1e-15)
     # Bounded by the extremes of the values it averages (tolerance: fp rounding).
     assert xs[keep].min() - 1e-12 <= m <= xs[keep].max() + 1e-12
 
 
+@TIMING_FREE
+@given(pair=lambda_weight_pairs(any_finite_weights))
+def test_weighted_mean_matches_exact_rational_mean(pair):
+    """Differential check against exact arithmetic: sum(w x) / sum(w) in rationals."""
+    xs, ws = pair
+    keep = ~np.isnan(xs)
+    w = [Fraction(v) for v in ws[keep]]
+    x = [Fraction(v) for v in xs[keep]]
+    exact = sum(wi * xi for wi, xi in zip(w, x)) / sum(w)
+    # Every term is non-negative, so rounding error is relative (about 2n
+    # machine epsilons); the absolute floor covers subnormal underflow.
+    assert math.isclose(L.weighted_mean(xs, ws), float(exact), rel_tol=1e-12, abs_tol=1e-300)
+
+
+def test_weighted_mean_with_weights_whose_sum_overflows():
+    big = sys.float_info.max
+    assert math.isinf(sum([big, big]))
+    for w in ([1e308, 1e308], [big, big], [big, big, big]):
+        assert math.isclose(L.weighted_mean([0.2, 0.4, 0.6][: len(w)], w),
+                            float(np.mean([0.2, 0.4, 0.6][: len(w)])), rel_tol=1e-12)
+    assert math.isclose(L.weighted_mean([0.2, 0.4], [big, 1.0]), 0.2, rel_tol=1e-12)
+    alpha = L.convex_weights([big, big, 0.0])
+    np.testing.assert_allclose(alpha, [0.5, 0.5, 0.0], rtol=1e-15)
+
+
+@TIMING_FREE
 @given(pair=lambda_weight_pairs(), k=st.floats(min_value=1e-6, max_value=1e6))
 def test_weighted_mean_scale_invariant(pair, k):
     xs, ws = pair
     assert math.isclose(L.weighted_mean(xs, ws), L.weighted_mean(xs, ws * k), rel_tol=1e-9, abs_tol=1e-12)
 
 
-@given(pair=lambda_weight_pairs(), data=st.data())
+@TIMING_FREE
+@given(pair=lambda_weight_pairs(any_finite_weights), data=st.data())
 def test_weighted_mean_permutation_invariant(pair, data):
     xs, ws = pair
     perm = data.draw(st.permutations(range(len(xs))))
@@ -104,22 +147,31 @@ def test_weighted_mean_permutation_invariant(pair, data):
     assert math.isclose(L.weighted_mean(xs, ws), L.weighted_mean(xs[perm], ws[perm]), rel_tol=1e-9, abs_tol=1e-12)
 
 
-@given(x=st.floats(min_value=0.0, max_value=1.0), ws=st.lists(st.floats(min_value=1e-3, max_value=1e6), min_size=1, max_size=20))
+@TIMING_FREE
+@given(x=st.floats(min_value=0.0, max_value=1.0), ws=st.lists(any_finite_weights, min_size=1, max_size=20))
 def test_weighted_mean_of_constant_is_that_constant(x, ws):
+    assume(any(w > 0 for w in ws))
     assert math.isclose(L.weighted_mean([x] * len(ws), ws), x, rel_tol=1e-12, abs_tol=1e-15)
 
 
-def test_weighted_mean_rejects_negative_or_zero_total_weights():
+def test_weighted_mean_rejects_negative_zero_or_non_finite_weights():
     with pytest.raises(ValueError):
         L.weighted_mean([0.2, 0.4], [1.0, -1.0])
     with pytest.raises(ValueError):
         L.weighted_mean([0.2, 0.4], [0.0, 0.0])
+    with pytest.raises(ValueError):
+        L.weighted_mean([0.2, 0.4], [1.0, float("inf")])
+    with pytest.raises(ValueError):
+        L.weighted_mean([0.2, 0.4], [1.0, float("nan")])
+    with pytest.raises(ValueError):
+        L.convex_weights([])
 
 
 # --------------------------------------------------------------------------
 # Density sensitivity moves lambda in the expected direction
 # --------------------------------------------------------------------------
 
+@TIMING_FREE
 @given(v=land_values, d=densities, p=prices, f1=factors, f2=factors)
 def test_lambda_non_increasing_in_density_factor(v, d, p, f1, f2):
     lo, hi = sorted((f1, f2))
@@ -133,18 +185,58 @@ def _variant(name):
     return next(v for v in L.VARIANTS if v.name == name)
 
 
+# Density factor f of each variant: the density used is f x the published one.
+EXPECTED_DENSITY_FACTORS = {
+    "central": 1.0,
+    "density_minus25": 0.75,      # density -25%: lambda x 4/3
+    "density_plus25": 1.25,       # density +25%: lambda x 0.8
+    "gross_net_lower": 4.0 / 3.0,  # gross/net-density bound, lambda -25%
+    "gross_net_upper": 0.8,       # gross/net-density bound, lambda +25%
+    "price_p25": 1.0,
+    "price_p75": 1.0,
+    "unadjusted": 1.0,
+}
+DENSITY_VARIANTS = ("density_minus25", "density_plus25", "gross_net_lower", "gross_net_upper")
+
+
+def test_variant_density_factors_are_as_documented():
+    assert len(set(L.VARIANT_NAMES)) == len(L.VARIANT_NAMES)
+    assert {v.name: v.density_factor for v in L.VARIANTS} == EXPECTED_DENSITY_FACTORS
+    central = _variant("central")
+    for name in DENSITY_VARIANTS:  # only the density changes
+        v = _variant(name)
+        assert (v.sheet, v.density_scenario, v.price_percentile) == (
+            central.sheet, central.density_scenario, central.price_percentile)
+
+
+@TIMING_FREE
+@given(v=land_values, d=densities, p=prices, f=factors)
+def test_density_factor_multiplies_the_published_density(v, d, p, f):
+    """f x d homes per hectare: the same as publishing a density of f x d."""
+    lam, capped = L.lambda_from_inputs([v], [d], [p], f)
+    literal, literal_capped = L.lambda_from_inputs([v], [f * d], [p], 1.0)
+    assert math.isclose(lam[0], literal[0], rel_tol=1e-12, abs_tol=1e-300)
+    assert capped[0] == literal_capped[0]
+
+
+@TIMING_FREE
 @given(v=land_values, d=densities, p=prices)
-def test_density_variants_bracket_central_with_exact_ratios(v, d, p):
-    central, _ = L.lambda_from_inputs([v], [d], [p], _variant("central").density_factor)
-    plus, plus_capped = L.lambda_from_inputs([v], [d], [p], _variant("density_plus25").density_factor)
-    minus, _ = L.lambda_from_inputs([v], [d], [p], _variant("density_minus25").density_factor)
-    assert minus[0] <= central[0] * (1 + 1e-12)
-    assert central[0] <= plus[0] * (1 + 1e-12)
-    if not plus_capped[0]:
-        assert math.isclose(plus[0], 1.25 * central[0], rel_tol=1e-12, abs_tol=1e-300)
+def test_density_variants_scale_central_lambda_exactly(v, d, p):
+    lam = {name: L.lambda_from_inputs([v], [d], [p], _variant(name).density_factor)[0][0]
+           for name in ("central",) + DENSITY_VARIANTS}
+    # Density ±25%: more homes per hectare, less land per home, lower lambda.
+    assert lam["density_plus25"] <= lam["central"] * (1 + 1e-12)
+    assert lam["central"] <= lam["density_minus25"] * (1 + 1e-12)
+    # Gross/net-density bound: lambda ±25%.
+    assert lam["gross_net_lower"] <= lam["central"] * (1 + 1e-12)
+    assert lam["central"] <= lam["gross_net_upper"] * (1 + 1e-12)
     raw_central = v / d / p
-    if raw_central <= 1.0:
-        assert math.isclose(minus[0], 0.75 * central[0], rel_tol=1e-12, abs_tol=1e-300)
+    # Exact ratios to central wherever neither side is capped at 1.
+    ratios = {"density_minus25": 4.0 / 3.0, "density_plus25": 0.8,
+              "gross_net_lower": 0.75, "gross_net_upper": 1.25}
+    for name, ratio in ratios.items():
+        if raw_central <= 1.0 and raw_central * ratio <= 1.0:
+            assert math.isclose(lam[name], ratio * lam["central"], rel_tol=1e-12, abs_tol=1e-300), name
 
 
 # --------------------------------------------------------------------------
@@ -192,7 +284,7 @@ def synthetic_universe(draw):
     return rows
 
 
-@settings(deadline=None, max_examples=60)
+@settings(parent=TIMING_FREE, max_examples=60)
 @given(rows=synthetic_universe())
 def test_builder_keeps_every_authority_once_with_lambda_on_unit_interval(rows):
     mh, hp, ct = _synthetic_inputs(rows)
@@ -203,8 +295,10 @@ def test_builder_keeps_every_authority_once_with_lambda_on_unit_interval(rows):
     vals = out[lam_cols].to_numpy(dtype=float)
     assert np.all((vals[~np.isnan(vals)] >= 0) & (vals[~np.isnan(vals)] <= 1))
     assert out["lambda_raw"].notna().all()
-    assert (out["lambda_raw_density_plus25"] >= out["lambda_raw"] - 1e-6).all()
-    assert (out["lambda_raw_density_minus25"] <= out["lambda_raw"] + 1e-6).all()
+    assert (out["lambda_raw_density_plus25"] <= out["lambda_raw"] + 1e-6).all()
+    assert (out["lambda_raw_density_minus25"] >= out["lambda_raw"] - 1e-6).all()
+    assert (out["lambda_raw_gross_net_upper"] >= out["lambda_raw"] - 1e-6).all()
+    assert (out["lambda_raw_gross_net_lower"] <= out["lambda_raw"] + 1e-6).all()
     if ISLES_OF_SCILLY in set(out["la_code"]):
         s = out.set_index("la_code")
         assert s.loc[ISLES_OF_SCILLY, "method_flag"] == f"imputed_from_{CORNWALL}"

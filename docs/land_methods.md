@@ -66,6 +66,16 @@ This step reads three of them, through the committed tables in
 MHCLG's guidance is *Land value estimates for policy appraisal: guidelines for
 use* (GOV.UK, 16 March 2026); paragraph numbers below refer to it.
 
+UK HPI data is republished here (`ukhpi_la_average_price.csv`, and the
+`stock_price` column of `results/land/la_lambda_raw.csv`). HM Land Registry
+requires this statement (*About the UK House Price Index*, section 7,
+"Republishing data"):
+
+> Contains HM Land Registry data © Crown copyright and database right 2020. This data is licensed under the Open Government Licence v3.0.
+
+The nature and dates of the data are given in step 3 and in
+`uk_lvt/land/data/README.md`.
+
 ## Steps
 
 ### 1. Authorities and codes
@@ -138,18 +148,26 @@ variant.
 ### 5. Sensitivities
 
 All variants change one thing from the central case. A density factor `f`
-replaces `d` with `f × d`.
+replaces `d` with `f × d`. Two pairs of variants move the density, and they
+answer different questions:
 
-- **Density ±25%** (`density_plus25`, `density_minus25`). MHCLG does not say
-  whether its densities are per gross or per net hectare. Under the net
-  reading, a gross hectare outside London holds 0.8 × `d` homes (80% net
-  developable area), so land per home and λ are 25% higher: `f = 0.8`,
-  `density_plus25`. The guidance states the 80% for sites outside London only,
-  so under that reading London's λ would not change; `density_plus25` applies
-  the 25% to the 33 London boroughs too and is the mechanical upper bound
-  there. `density_minus25` (`f = 4/3`, λ × 0.75) is the symmetric lower bound;
-  no mechanism for it is identified in the guidance. The basis question is
-  open (see below).
+- **Density ±25%** (`density_minus25`, `density_plus25`). The published
+  density times 0.75 and 1.25 (`f = 0.75` and `f = 1.25`), so λ is multiplied
+  by 4/3 and by 0.8. This is the plain ±25% perturbation of the density.
+- **Gross/net-density bound, λ ±25%** (`gross_net_upper`, `gross_net_lower`).
+  MHCLG does not say whether its densities are per gross or per net hectare.
+  Under the net reading, a gross hectare outside London holds 0.8 × `d` homes
+  (80% net developable area), so land per home and λ are 25% higher:
+  `f = 0.8`, `gross_net_upper`. The guidance states the 80% for sites outside
+  London only, so under that reading London's λ would not change;
+  `gross_net_upper` applies the 25% to the 33 London boroughs too and is the
+  mechanical upper bound there. `gross_net_lower` (`f = 4/3`, λ × 0.75) is
+  the mirror-image lower bound; no mechanism for it is identified in the
+  guidance. The basis question is open (see below).
+
+Density +25% (λ × 0.8) and the gross/net lower bound (λ × 0.75) are therefore
+different numbers, as are density −25% (λ × 4/3) and the gross/net upper bound
+(λ × 1.25).
 - **Price percentile** (`price_p25`, `price_p75`). MHCLG's value at the 25th
   and 75th new-build price percentiles instead of the median, with the same
   stock price.
@@ -162,8 +180,10 @@ replaces `d` with `f × d`.
 | Variant | Definition | England, dwelling-weighted | England, value-weighted | Authorities with a value | Capped at 1 |
 |---|---|---:|---:|---:|---:|
 | `central` | Floor-adjusted sheet, medium (central) density, median new-build price percentile | 0.334 | 0.354 | 296 | 0 |
-| `density_minus25` | As central with 4/3 x published density (lambda x 0.75) | 0.250 | 0.265 | 296 | 0 |
-| `density_plus25` | As central with 0.8 x published density (lambda x 1.25; the net-hectare reading outside London) | 0.417 | 0.442 | 296 | 0 |
+| `density_minus25` | Density -25%: as central with 0.75 x published density (lambda x 4/3) | 0.445 | 0.472 | 296 | 0 |
+| `density_plus25` | Density +25%: as central with 1.25 x published density (lambda x 0.8) | 0.267 | 0.283 | 296 | 0 |
+| `gross_net_lower` | Gross/net-density bound, lambda -25%: as central with 4/3 x published density (lambda x 0.75; mirror image of the upper bound) | 0.250 | 0.265 | 296 | 0 |
+| `gross_net_upper` | Gross/net-density bound, lambda +25%: as central with 0.8 x published density (lambda x 1.25; the net-hectare reading outside London) | 0.417 | 0.442 | 296 | 0 |
 | `price_p25` | As central at MHCLG's 25th new-build price percentile | 0.242 | 0.265 | 296 | 0 |
 | `price_p75` | As central at MHCLG's 75th new-build price percentile | 0.430 | 0.453 | 296 | 0 |
 | `unadjusted` | As central from the sheet without MHCLG's floor value; missing where MHCLG reports no value | 0.335 | 0.354 | 295 | 0 |
@@ -232,24 +252,33 @@ from `results/land/`; `tests/test_land_data.py` fails if they drift.
   specifies.
 - **A7.** The central case reads densities as dwellings per gross hectare
   (`f = 1`).
-- **A8.** The density sensitivity is symmetric ±25% on λ (`f = 0.8` and
-  `f = 4/3`) for every authority, London included.
+- **A8.** Both density sensitivities apply to every authority, London
+  included: density ±25% (`f = 0.75` and `f = 1.25`, λ × 4/3 and λ × 0.8) and
+  the gross/net-density bound, λ ±25% (`f = 0.8` and `f = 4/3`).
 - **A9.** Regions are taken from CTSOP1.0's region rows.
 - **A10.** λ above 1 would be capped at 1 and flagged (not triggered).
 
 ## Tests
 
 - `tests/test_land_lambda.py` (Hypothesis): 0 ≤ λ ≤ 1 for valid inputs and
-  λ equal to the uncapped ratio whenever that ratio is at most 1; the weighted
-  aggregation is a convex combination (bounded by the extremes, equal to
-  `Σ αᵢ λᵢ` with `αᵢ ≥ 0`, `Σ αᵢ = 1`, invariant to rescaling the weights and
-  to reordering); λ is non-increasing in the density factor, with
-  `density_plus25` = 1.25 × central and `density_minus25` = 0.75 × central
-  whenever nothing is capped; and the authority-table builder keeps each
-  authority exactly once for generated inputs.
+  λ equal to the uncapped ratio whenever that ratio is at most 1. For values
+  in [0, 1] (NaN skipped) and finite non-negative weights from 0 up to the
+  largest float, the weighted aggregation is a convex combination: bounded by
+  the extremes, equal to `Σ αᵢ λᵢ` with `αᵢ ≥ 0`, `Σ αᵢ = 1`, equal to the
+  exact rational `Σ wᵢ λᵢ / Σ wᵢ` to a relative 1e-12, and invariant to
+  reordering. Invariance to rescaling the weights is tested for weights in
+  [1e-3, 1e7] and factors in [1e-6, 1e6]. The density factor multiplies the
+  published density; λ is non-increasing in it; `density_minus25` and
+  `density_plus25` are 4/3 × and 0.8 × central, and `gross_net_upper` and
+  `gross_net_lower` are 1.25 × and 0.75 × central, whenever nothing is capped.
+  The authority-table builder keeps each authority exactly once for generated
+  inputs.
 - `tests/test_land_data.py`: all 296 authorities present exactly once, on 2023
-  codes, with the crosswalk and Scilly flags; the results and the tables in
-  this note rebuild byte for byte from the committed tables; every committed
+  codes, with the crosswalk and Scilly flags; the density variants equal the
+  published density times 0.75 and 1.25 on the real data; the results and the
+  tables in this note rebuild byte for byte from the committed tables; the
+  UK HPI attribution statement is present here and in
+  `uk_lvt/land/data/README.md`; every committed
   table's sha256 matches `derived_manifest.json`, whose source hashes match
   `sources.yaml`; MHCLG's floor-adjusted values are never below the unadjusted
   ones, rise with the price percentile, and densities lie in [30, 400] with
@@ -294,7 +323,8 @@ from `results/land/`; `tests/test_land_data.py` fails if they drift.
    value, plot land, λ, method flag, reference comparisons) and a methods note
    covering the HPI, MHCLG-plot and Wealth and Assets Survey bridges.
 7. **Open question to MHCLG:** are the published densities per gross or per net
-   hectare? Until answered the ±25% sensitivity stands.
+   hectare? Until answered the gross/net-density bound (λ ±25%) stands
+   alongside the density ±25% sensitivity.
 8. **Inputs not fetched yet:** UK HPI by property type and new/old files,
    Price Paid, Live Table 125, ONS affordability 2025, Welsh and Scottish
    council tax by band (both landing pages refused automated requests), the

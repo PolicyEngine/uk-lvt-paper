@@ -26,6 +26,13 @@ from uk_lvt.land.manifest import load_manifest
 
 CUMBERLAND = "E06000063"
 
+# HM Land Registry's prescribed statement for republished UK HPI data
+# ("About the UK House Price Index", GOV.UK, section 7, Republishing data).
+UKHPI_ATTRIBUTION = (
+    "Contains HM Land Registry data © Crown copyright and database right 2020. "
+    "This data is licensed under the Open Government Licence v3.0."
+)
+
 
 @pytest.fixture(scope="module")
 def la():
@@ -105,11 +112,30 @@ def test_lambda_columns_on_unit_interval(la):
     assert (la["capped_variants"].isna()).all()
 
 
-def test_density_sensitivity_direction_on_data(la):
-    assert (la["lambda_raw_density_plus25"] >= la["lambda_raw"]).all()
-    assert (la["lambda_raw_density_minus25"] <= la["lambda_raw"]).all()
-    np.testing.assert_allclose(la["lambda_raw_density_plus25"], 1.25 * la["lambda_raw"], atol=2e-6)
-    np.testing.assert_allclose(la["lambda_raw_density_minus25"], 0.75 * la["lambda_raw"], atol=2e-6)
+def test_density_sensitivity_on_data(la):
+    central = la["lambda_raw"]
+    # Density ±25%: more homes per hectare, less land per home, lower lambda.
+    assert (la["lambda_raw_density_plus25"] <= central).all()
+    assert (la["lambda_raw_density_minus25"] >= central).all()
+    np.testing.assert_allclose(la["lambda_raw_density_plus25"], 0.8 * central, atol=2e-6)
+    np.testing.assert_allclose(la["lambda_raw_density_minus25"], central / 0.75, atol=2e-6)
+    # Literal reading: the published central density itself times 0.75 or 1.25.
+    for col, factor in (("lambda_raw_density_minus25", 0.75), ("lambda_raw_density_plus25", 1.25)):
+        literal = (la["land_value_central_gbp_per_ha"]
+                   / (factor * la["density_central_dph"]) / la["stock_price"])
+        np.testing.assert_allclose(la[col], literal.astype(float), atol=1e-6)
+
+
+def test_gross_net_density_bound_on_data(la):
+    central = la["lambda_raw"]
+    # The gross/net-density bound is lambda ±25% (density x 0.8 and x 4/3).
+    assert (la["lambda_raw_gross_net_upper"] >= central).all()
+    assert (la["lambda_raw_gross_net_lower"] <= central).all()
+    np.testing.assert_allclose(la["lambda_raw_gross_net_upper"], 1.25 * central, atol=2e-6)
+    np.testing.assert_allclose(la["lambda_raw_gross_net_lower"], 0.75 * central, atol=2e-6)
+
+
+def test_price_percentile_sensitivity_on_data(la):
     assert (la["lambda_raw_price_p25"] <= la["lambda_raw"]).all()
     assert (la["lambda_raw"] <= la["lambda_raw_price_p75"]).all()
 
@@ -161,6 +187,12 @@ def test_methods_note_tables_match_results():
     summary = L.summarise(la)
     note = METHODS_NOTE_PATH.read_text()
     assert L.replace_generated_blocks(note, la, summary) == note
+
+
+def test_ukhpi_attribution_statement_is_reproduced():
+    """UK HPI data is republished in data/ and results/land/; both carry HMLR's statement."""
+    for path in (DERIVED_DIR / "README.md", METHODS_NOTE_PATH):
+        assert UKHPI_ATTRIBUTION in " ".join(path.read_text().split()), path
 
 
 def test_derived_tables_match_their_manifest_and_sources():

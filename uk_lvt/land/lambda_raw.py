@@ -8,11 +8,16 @@
   density scenario, median new-build price percentile).
 * ``d``: MHCLG's published dwellings per hectare for the same density
   scenario.
-* ``f``: density factor. 1 in the central case. The guidance does not say
-  whether ``d`` is per gross or per net hectare; under the net reading a
-  gross hectare holds 0.8 d homes outside London (80% net developable area),
-  i.e. f = 0.8 and lambda is 25% higher. The sensitivity runs f = 0.8
-  (lambda x 1.25) and f = 4/3 (lambda x 0.75) for every authority.
+* ``f``: density factor; the density used is ``f * d``. 1 in the central
+  case. Two pairs of sensitivities move it, for every authority:
+
+  - density ±25%: f = 0.75 and f = 1.25 (lambda x 4/3 and lambda x 0.8);
+  - the gross/net-density bound, lambda ±25%: f = 0.8 and f = 4/3
+    (lambda x 1.25 and lambda x 0.75). The guidance does not say whether
+    ``d`` is per gross or per net hectare; under the net reading a gross
+    hectare holds 0.8 d homes outside London (80% net developable area),
+    i.e. f = 0.8 and lambda is 25% higher. f = 4/3 is the mirror-image
+    lower bound.
 * ``stock price``: prototype proxy, the UK HPI average price for the
   authority in October 2023 (MHCLG's valuation date is 1 October 2023). The
   Price Paid route is not built yet; see ``docs/land_methods.md``.
@@ -50,6 +55,7 @@ from .geography import (
 
 HPI_DATE = "2023-10-01"
 NET_DEVELOPABLE_SHARE = 0.8
+DENSITY_STEP = 0.25
 
 
 @dataclass(frozen=True)
@@ -65,10 +71,16 @@ class Variant:
 VARIANTS: tuple[Variant, ...] = (
     Variant("central", "floor_adjusted", "medium", 50, 1.0,
             "Floor-adjusted sheet, medium (central) density, median new-build price percentile"),
-    Variant("density_minus25", "floor_adjusted", "medium", 50, 4.0 / 3.0,
-            "As central with 4/3 x published density (lambda x 0.75)"),
-    Variant("density_plus25", "floor_adjusted", "medium", 50, NET_DEVELOPABLE_SHARE,
-            "As central with 0.8 x published density (lambda x 1.25; the net-hectare reading outside London)"),
+    Variant("density_minus25", "floor_adjusted", "medium", 50, 1.0 - DENSITY_STEP,
+            "Density -25%: as central with 0.75 x published density (lambda x 4/3)"),
+    Variant("density_plus25", "floor_adjusted", "medium", 50, 1.0 + DENSITY_STEP,
+            "Density +25%: as central with 1.25 x published density (lambda x 0.8)"),
+    Variant("gross_net_lower", "floor_adjusted", "medium", 50, 4.0 / 3.0,
+            "Gross/net-density bound, lambda -25%: as central with 4/3 x published density "
+            "(lambda x 0.75; mirror image of the upper bound)"),
+    Variant("gross_net_upper", "floor_adjusted", "medium", 50, NET_DEVELOPABLE_SHARE,
+            "Gross/net-density bound, lambda +25%: as central with 0.8 x published density "
+            "(lambda x 1.25; the net-hectare reading outside London)"),
     Variant("price_p25", "floor_adjusted", "medium", 25, 1.0,
             "As central at MHCLG's 25th new-build price percentile"),
     Variant("price_p75", "floor_adjusted", "medium", 75, 1.0,
@@ -132,18 +144,31 @@ def lambda_from_inputs(land_value_per_ha, dwellings_per_ha, stock_price, density
 
 
 def convex_weights(weights) -> np.ndarray:
-    """Normalise non-negative weights with a positive sum to sum to 1."""
+    """Normalise finite non-negative weights, at least one positive, to sum to 1.
+
+    The weights are divided by the largest one before summing, so the sum is
+    at most the number of weights and cannot overflow: weights up to the
+    largest finite float are handled (a plain ``w / w.sum()`` returns zeros
+    once the sum overflows to infinity).
+    """
     w = np.asarray(weights, dtype=float)
     if np.any(~np.isfinite(w)) or np.any(w < 0):
         raise ValueError("weights must be finite and non-negative")
-    total = w.sum()
-    if not total > 0:
+    top = w.max(initial=0.0)
+    if not top > 0:
         raise ValueError("weights must have a positive sum")
-    return w / total
+    scaled = w / top
+    return scaled / scaled.sum()
 
 
 def weighted_mean(values, weights) -> float:
-    """Weighted mean over the non-NaN values: a convex combination of them."""
+    """Weighted mean over the non-NaN values: a convex combination of them.
+
+    Weights must be finite and non-negative, with at least one positive weight
+    on a non-NaN value. ``tests/test_land_lambda.py`` checks the convexity
+    properties for values in [0, 1] (the range of lambda) and weights from 0
+    up to the largest finite float.
+    """
     x = np.asarray(values, dtype=float)
     w = np.asarray(weights, dtype=float)
     if x.shape != w.shape:

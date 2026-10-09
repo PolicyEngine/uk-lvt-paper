@@ -17,3 +17,21 @@ Contains public sector information licensed under the Open Government Licence
 v3.0 (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/):
 data from the Ministry of Housing, Communities and Local Government, HM Land
 Registry and the Valuation Office Agency. Crown copyright and database right.
+
+### UK House Price Index
+
+`ukhpi_la_average_price.csv`, and the `stock_price` column of
+`results/land/la_lambda_raw.csv` built from it, republish UK HPI data. HM Land
+Registry requires this statement when UK HPI data is republished
+([About the UK House Price Index, section 7, "Republishing data"](https://www.gov.uk/government/publications/about-the-uk-house-price-index/about-the-uk-house-price-index#republishing-data)):
+
+> Contains HM Land Registry data © Crown copyright and database right 2020. This data is licensed under the Open Government Licence v3.0.
+
+The same section asks for the nature of the data and the dates it covers.
+The table holds the UK HPI standard average price (`Average_Price`) of each
+English local authority for October 2023 (`date` 2023-10-01), from the July
+2026 data release (published 16 September 2026, downloaded 6 October 2026).
+It is not an average of October 2023 sales: the UK HPI takes the geometric
+mean price in January 2015 and moves it back and forward with the index, and
+below region level it publishes a 3-month moving average (here August,
+September and October 2023).

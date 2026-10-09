@@ -50,7 +50,7 @@ sources:
     filename: Average-prices-2026-07.csv
     edition: July 2026 data, published 2026-09-16
     period: monthly series to 2026-07; this work reads 2023-10-01
-    licence: OGL-UK-3.0
+    licence: OGL-UK-3.0 (attribution statement required; reproduced in data/README.md)
     status: pinned
     retrieved_utc: "2026-10-06T01:44:50Z"
     bytes: 7559925
@@ -72,7 +72,7 @@ sources:
     filename: Average-prices-Property-Type-2026-07.csv
     edition: July 2026 data, published 2026-09-16
     period: monthly series to 2026-07
-    licence: OGL-UK-3.0
+    licence: OGL-UK-3.0 (attribution statement required; reproduced in data/README.md)
     status: not_fetched
     retrieved_utc: null
     bytes: null
@@ -88,7 +88,7 @@ sources:
     filename: New-and-Old-2026-07.csv
     edition: July 2026 data, published 2026-09-16
     period: monthly series to 2026-07
-    licence: OGL-UK-3.0
+    licence: OGL-UK-3.0 (attribution statement required; reproduced in data/README.md)
     status: not_fetched
     retrieved_utc: null
     bytes: null
