@@ -266,16 +266,17 @@ from `results/land/`; `tests/test_land_data.py` fails if they drift.
   largest float, the weighted aggregation is a convex combination: bounded by
   the extremes, equal to `Σ αᵢ λᵢ` with `αᵢ ≥ 0`, `Σ αᵢ = 1`, equal to the
   exact rational `Σ wᵢ λᵢ / Σ wᵢ` to a relative 1e-12, and invariant to
-  reordering. Invariance to rescaling the weights is tested for weights in
-  [1e-3, 1e7] and factors in [1e-6, 1e6]. The density factor multiplies the
+  reordering. Invariance to rescaling the weights is tested for weights of 0
+  or in [1e-3, 1e7] and factors in [1e-6, 1e6]. The density factor multiplies the
   published density; λ is non-increasing in it; `density_minus25` and
   `density_plus25` are 4/3 × and 0.8 × central, and `gross_net_upper` and
   `gross_net_lower` are 1.25 × and 0.75 × central, whenever nothing is capped.
   The authority-table builder keeps each authority exactly once for generated
   inputs.
 - `tests/test_land_data.py`: all 296 authorities present exactly once, on 2023
-  codes, with the crosswalk and Scilly flags; the density variants equal the
-  published density times 0.75 and 1.25 on the real data; the results and the
+  codes, with the crosswalk and Scilly flags; on the real data, λ in the
+  density variants equals λ recomputed with the published density times 0.75
+  and 1.25; the results and the
   tables in this note rebuild byte for byte from the committed tables; the
   UK HPI attribution statement is present here and in
   `uk_lvt/land/data/README.md`; every committed
