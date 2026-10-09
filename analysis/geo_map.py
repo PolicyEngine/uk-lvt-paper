@@ -21,13 +21,23 @@ Follows the map conventions of uk-ai-study/analysis/geo_choropleth.py.
 
 from __future__ import annotations
 
-import os
 import sys
-from pathlib import Path
 
-import h5py
-import numpy as np
-import pandas as pd
+# Refuse before the optional imports below (h5py and the undeclared
+# geopandas), so a clean environment prints the reason rather than an
+# ImportError.
+if __name__ == "__main__" and "--allow-superseded" not in sys.argv[1:]:
+    raise SystemExit(
+        "analysis/geo_map.py is superseded: its outputs are mixed-vintage "
+        "(see results/geo/README.md). Pass --allow-superseded to run it anyway."
+    )
+
+import os  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+import h5py  # noqa: E402
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
@@ -201,9 +211,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    if "--allow-superseded" not in sys.argv[1:]:
-        raise SystemExit(
-            "analysis/geo_map.py is superseded: its outputs are mixed-vintage "
-            "(see results/geo/README.md). Pass --allow-superseded to run it anyway."
-        )
     main()

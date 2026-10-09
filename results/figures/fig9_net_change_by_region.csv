@@ -1,0 +1,13 @@
+region,household_share_pct,avg_council_tax_saved,avg_lvt,avg_net_change,avg_income_change_pct,pct_winners,pct_losers,aggregate_net_change_bn
+London,12.6,1782,2907,-1125,-1.5,43.9,54.4,-4.55
+Northern Ireland,2.4,0,1026,-1026,-1.9,0.0,61.1,-0.77
+East of England,9.4,2042,2138,-96,-0.2,67.8,31.8,-0.29
+South East,13.6,2168,2250,-83,-0.2,63.2,36.0,-0.36
+North West,11.3,1587,1460,128,0.3,68.1,25.9,0.46
+South West,8.9,2076,1933,144,0.3,74.3,24.8,0.41
+East Midlands,7.3,1878,1640,238,0.4,64.1,35.1,0.56
+West Midlands,8.6,1804,1525,278,0.5,78.0,20.7,0.77
+Yorkshire and the Humber,8.4,1725,1332,393,0.8,82.3,16.6,1.05
+North East,4.2,1628,1208,420,0.8,79.5,19.4,0.57
+Scotland,8.6,1689,1254,435,0.8,80.4,15.2,1.19
+Wales,4.9,2025,1417,608,1.2,84.0,15.6,0.96
