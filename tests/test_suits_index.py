@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from hypothesis import given, settings
+from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays
 
@@ -33,8 +33,14 @@ def _reference_suits(tax, y, w):
 
 positive = st.floats(min_value=1.0, max_value=1e6)
 
+# Timing is not what these properties test. On a busy shared host the
+# per-example deadline and the slow-generation health check both fail on
+# arrays like these, so both are off; the example counts are unchanged.
+NO_DEADLINE = settings(deadline=None)
+SLOW_GENERATION = settings(NO_DEADLINE, suppress_health_check=[HealthCheck.too_slow])
 
-@settings(max_examples=200)
+
+@settings(SLOW_GENERATION, max_examples=200)
 @given(
     arrays(np.float64, 50, elements=positive),
     arrays(np.float64, 50, elements=positive),
@@ -46,7 +52,7 @@ def test_suits_matches_hand_trapezoid(tax, y, w):
     )
 
 
-@settings(max_examples=200)
+@settings(SLOW_GENERATION, max_examples=200)
 @given(
     arrays(np.float64, 50, elements=positive),
     arrays(np.float64, 50, elements=st.floats(min_value=0.1, max_value=1e4)),

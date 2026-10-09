@@ -7,7 +7,7 @@ These tests pin down what that guard accepts and rejects on synthetic data.
 """
 
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays
 
@@ -24,6 +24,13 @@ from uk_lvt.validation import (
 money = st.floats(min_value=0.0, max_value=5e8, allow_nan=False, allow_infinity=False)
 positive_money = st.floats(min_value=1.0, max_value=5e8)
 
+# Timing is not what these properties test. On a busy shared host the
+# per-example deadline and the slow-generation health check both fail on
+# the array tests below, so the array tests turn both off and the scalar
+# tests turn off the deadline; the example counts are unchanged.
+NO_DEADLINE = settings(deadline=None)
+SLOW_GENERATION = settings(NO_DEADLINE, suppress_health_check=[HealthCheck.too_slow])
+
 
 def test_float32_ulp_matches_known_spacings():
     assert float32_ulp(2.0**23) == 1.0
@@ -33,18 +40,21 @@ def test_float32_ulp_matches_known_spacings():
     assert float32_ulp(-1_000_000.0) == 0.0625
 
 
+@NO_DEADLINE
 @given(positive_money)
 def test_tolerance_is_eight_float32_spacings(scale):
     assert gap_tolerance(scale) == FLOAT32_ULP_TOLERANCE * float32_ulp(scale)
     assert FLOAT32_ULP_TOLERANCE == 8
 
 
+@NO_DEADLINE
 @given(money, money)
 def test_tolerance_is_monotone_in_scale(a, b):
     lo, hi = sorted((a, b))
     assert gap_tolerance(lo) <= gap_tolerance(hi)
 
 
+@NO_DEADLINE
 @given(
     st.floats(min_value=1e-3, max_value=1e6), st.integers(min_value=-10, max_value=10)
 )
@@ -52,6 +62,7 @@ def test_tolerance_scales_with_powers_of_two(scale, k):
     assert gap_tolerance(scale * 2.0**k) == 2.0**k * gap_tolerance(scale)
 
 
+@NO_DEADLINE
 @given(st.floats(min_value=0.0, max_value=2_000_000.0))
 def test_no_looser_than_one_pound_below_two_million(scale):
     # The previous guard allowed |gap| <= £1 for every household. For any
@@ -60,7 +71,7 @@ def test_no_looser_than_one_pound_below_two_million(scale):
     assert gap_tolerance(scale) <= 1.0
 
 
-@settings(max_examples=200)
+@settings(SLOW_GENERATION, max_examples=200)
 @given(
     arrays(np.float64, 20, elements=positive_money),
     st.integers(min_value=0, max_value=19),
@@ -76,7 +87,7 @@ def test_gaps_within_tolerance_pass(scale, i, k):
     assert result["max_delta_gap_float32_ulps"] <= FLOAT32_ULP_TOLERANCE
 
 
-@settings(max_examples=200)
+@settings(SLOW_GENERATION, max_examples=200)
 @given(
     arrays(np.float64, 20, elements=positive_money),
     st.integers(min_value=0, max_value=19),
@@ -92,6 +103,7 @@ def test_gaps_beyond_tolerance_fail(scale, i, factor):
     assert result["share_households_with_benefit_interaction"] == 100 / len(scale)
 
 
+@SLOW_GENERATION
 @given(arrays(np.float64, 30, elements=positive_money))
 def test_one_pound_interaction_caught_for_ordinary_households(scale):
     # A real benefit interaction moves net income by pounds. For households
@@ -109,7 +121,7 @@ def _f32(x):
     return np.float32(x)
 
 
-@settings(max_examples=500)
+@settings(NO_DEADLINE, max_examples=500)
 @given(
     market=money,
     benefits=money,
