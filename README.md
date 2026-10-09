@@ -123,6 +123,11 @@ The figure CSVs reproduce byte for byte. The PNGs are rewritten with
 different bytes, so restore them with `git checkout results/figures` unless
 a figure has changed on purpose.
 
+`tests/test_provenance.py` checks how dataset URLs resolve against the pinned
+policyengine-core and policyengine-uk, so it is skipped without the
+`simulation` extra. CI runs it in a separate step with
+`uv run --locked --extra dev --extra simulation pytest -q tests/test_provenance.py`.
+
 ### With licensed data
 
 ```bash
