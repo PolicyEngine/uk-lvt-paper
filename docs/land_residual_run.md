@@ -79,4 +79,5 @@ Large yearly raw files, scratch databases and task-created environments are
 removed after verification. Small source caches and the isolated Git metadata
 remain ignored. The workspace artifact `residual-land.patch` retains all commits for portability.
 
-Draft PR URL will be recorded after creation.
+Draft PR: [PolicyEngine/uk-lvt-paper#16](https://github.com/PolicyEngine/uk-lvt-paper/pull/16),
+into `land/d1-prototype`; review requested from `vahid-ahmadi`.
