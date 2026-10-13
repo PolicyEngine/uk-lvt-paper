@@ -1,0 +1,172 @@
+{
+  "coverage": {
+    "latest_deed_date": "2026-04-30",
+    "latest_sales": 5778353,
+    "leasehold_sales": 1295781,
+    "new_build_sales": 640383,
+    "raw_rows": 8460348,
+    "sales_clipped": 921458,
+    "stock_conversion": {
+      "maximum_authority_scale_factor": 1.0005006508460998,
+      "minimum_authority_scale_factor": 0.9531568228105907,
+      "suppressed_cells_imputed": 2095,
+      "suppressed_count_imputation": 2.5
+    },
+    "transaction_years": [
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "unmatched_districts": [
+      {
+        "district": "BLAENAU GWENT",
+        "sales": 9040
+      },
+      {
+        "district": "BRIDGEND",
+        "sales": 20755
+      },
+      {
+        "district": "CAERPHILLY",
+        "sales": 22277
+      },
+      {
+        "district": "CARDIFF",
+        "sales": 49052
+      },
+      {
+        "district": "CARMARTHENSHIRE",
+        "sales": 26832
+      },
+      {
+        "district": "CEREDIGION",
+        "sales": 10021
+      },
+      {
+        "district": "CONWY",
+        "sales": 19487
+      },
+      {
+        "district": "DENBIGHSHIRE",
+        "sales": 14474
+      },
+      {
+        "district": "FLINTSHIRE",
+        "sales": 21510
+      },
+      {
+        "district": "GWYNEDD",
+        "sales": 17886
+      },
+      {
+        "district": "ISLE OF ANGLESEY",
+        "sales": 10089
+      },
+      {
+        "district": "MERTHYR TYDFIL",
+        "sales": 7105
+      },
+      {
+        "district": "MONMOUTHSHIRE",
+        "sales": 13649
+      },
+      {
+        "district": "NEATH PORT TALBOT",
+        "sales": 18523
+      },
+      {
+        "district": "NEWPORT",
+        "sales": 23157
+      },
+      {
+        "district": "PEMBROKESHIRE",
+        "sales": 19378
+      },
+      {
+        "district": "POWYS",
+        "sales": 17842
+      },
+      {
+        "district": "RHONDDA CYNON TAFF",
+        "sales": 34069
+      },
+      {
+        "district": "SWANSEA",
+        "sales": 31808
+      },
+      {
+        "district": "THE VALE OF GLAMORGAN",
+        "sales": 20468
+      },
+      {
+        "district": "TORFAEN",
+        "sales": 12008
+      },
+      {
+        "district": "WREXHAM",
+        "sales": 16335
+      }
+    ]
+  },
+  "ons": {
+    "historical_dwelling_land_date": "2021-12-31",
+    "historical_precision_gbp": 100000000000.0,
+    "historical_source_id": "ons_dwelling_land_2021",
+    "historical_uk_dwelling_land_gbp": 5900000000000.0,
+    "latest_dwelling_land_status": "not separately published; request required",
+    "latest_edition": "Preliminary UK national balance sheet estimates, 10 June 2026",
+    "latest_uk_total_land_2025_gbp": 6872455000000.0
+  },
+  "prototype_tables": {
+    "results/land/la_lambda_raw.csv": "ecbcea2a2887ef7d02ee9ec4da17c88421539d14e2293ae6815a1e323c98f201",
+    "uk_lvt/land/data/voa_ctsop1_2026_england_la.csv": "26c1c1ba51bb9a201f1d64286a01b3f762ddc845099b513226ce2709e0fd793d"
+  },
+  "schema_version": 1,
+  "sources": {
+    "ehs_2018_floor_areas": "ca404c135f893de7dee48856b1ffb0fddf6d52387291da4e620f418aee934601",
+    "hmlr_price_paid_2018": "2e9fb3872f0800c86458ea62a2c999195a7b55b5da17b4a8a96705c122590b27",
+    "hmlr_price_paid_2019": "94764797c69f02556f904a8dffb3efb962df3048f6eadd64b28e7a18fa2c2d39",
+    "hmlr_price_paid_2020": "ca172e2eec82097d12b577026811922b0256ba4eae2c28624c2ead6aa9c4803c",
+    "hmlr_price_paid_2021": "04f6869b861bcebd0bee3eec00baccdbe19372b299190a161b33b476589a6bfc",
+    "hmlr_price_paid_2022": "e543dd53d6b2f8f47d95bed2956693c38c28ba2d0450c3df173ddce3eb80b84a",
+    "hmlr_price_paid_2023": "0d87c096be0c46d358d2d0a9e426e3e9aff16c0ca9d514162b5e56f000d97a1d",
+    "hmlr_price_paid_2024": "afec0cff353cc4570cc02795b78dbd270b4e678b5a0a50bc3e082c883abb7707",
+    "hmlr_price_paid_2025": "83540b18086e5748116c744d9e930ad210cafcbb01a5d7d41fcbd2464ba0b5fd",
+    "hmlr_price_paid_2026": "3ba529a2e622f38159bb9bdceb292b7311e1e7b770f0d3bc7bc4c7b3d80b9ad4",
+    "ons_dwelling_land_2021": "1b99e4f94383d5aa39d4829454cfc12bc6f46dc58ad54c9bafcf9614cfc2fd0f",
+    "ons_nbs_timeseries_2026": "3b140f0e280038cfaa06ac739b40b4a6b772edcec7c082dae34467a861692944",
+    "ons_preliminary_nbs_2026": "fdf049181fa29bdaa3029dcfb655b0f2096da8746310058142cbb385397eab90",
+    "tpa_cell_method": "f2c45f4dc7dcc1c0dc5b9ec6c09a82c346a77b05f794c64356438b7eaa04a34c",
+    "tpa_lvt_model_cells": "995ce9b6efabcdd6b2aff9bd5a59ae1d90c9ba7e908ab6dfec192ab7de63b300",
+    "tpa_mit_licence": "4ad0c70a2318b5ce74236310b721e67a8d245826000ee80e958576b9b484abf6",
+    "tpa_property_value_method": "15b048fce5368dceffba1eb7438c0c5abbb4f6bac04e583aeb601b8f44a94310",
+    "tpa_rebuild_config": "1ca9a253e3fddca1aa7bf97afc15fb833710daaff40c284cb7ec6ea6ae52312e",
+    "ukhpi_average_prices_2026_07": "508c566d772204e9f8d018ca657ff4bf438fb45f0479d51e0daf3f3453484b0f",
+    "voa_ctsop_2026_summary": "9e9be6944fb8c23a8cdb9491527ebf545072b8f38e8575308d84e595246029d9"
+  },
+  "tables": {
+    "residual_cells.csv": {
+      "rows": 9472,
+      "sha256": "9903363e313da49b8c193d32d249e3bdacceb031901bb415b10a33bb20ef2639"
+    },
+    "residual_floor_areas.csv": {
+      "rows": 36,
+      "sha256": "15ad9b3e539073cd366a8304fd2eb0541d3539dd05f5a09d77315fc4a81337ff"
+    },
+    "residual_rebuild_costs.csv": {
+      "rows": 1184,
+      "sha256": "69cbd28d86c7d683c61dd24e82400dfa6d44b0fe7bf3cee4829db5599a8ec62f"
+    },
+    "tpa_residual_reference.csv": {
+      "rows": 296,
+      "sha256": "6734b013c59afae3ba3ca266324008d90e97ce49a2e86840734481a1a5e829c5"
+    }
+  },
+  "valuation_date": "2026-04-01"
+}
