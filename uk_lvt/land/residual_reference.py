@@ -15,7 +15,6 @@ from pathlib import Path
 from statistics import mean
 
 import pandas as pd
-from openpyxl import load_workbook
 
 
 def _positive(value: object, description: str) -> float:
@@ -74,6 +73,8 @@ The detailed region/type cross-tab is not published: this is a separability
 assumption. F uses AT1.5's directly published regional flat mean. EHS excludes
 bedsits; Price Paid cannot separately identify bungalows within D/S/T.
 """
+    from openpyxl import load_workbook
+
     workbook = load_workbook(path, read_only=True, data_only=True)
     try:
         detailed = workbook["AT1.2"]

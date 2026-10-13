@@ -207,6 +207,25 @@ def test_ons_parser_accepts_source_whitespace_and_converts_trillions(tmp_path):
         R.parse_ons_dwelling_land(path)
 
 
+def test_tpa_authority_share_is_ratio_of_stock_totals_not_mean_band_ratios(tmp_path):
+    import json
+
+    path = tmp_path / "tpa_cells.json"
+    path.write_text(json.dumps({"las": {"E06000001": {"bands": {
+        "A": {"count": 100, "value_deciles": [100] * 10,
+              "land_deciles": [20] * 10},
+        "H": {"count": 1, "value_deciles": [20_000] * 10,
+              "land_deciles": [18_000] * 10},
+    }}}}))
+    row = R.parse_tpa_cells(path).iloc[0]
+    assert row.la_code == "E06000001"
+    assert row.dwellings == 101
+    assert row.property_value_gbp == 30_000
+    assert row.land_value_gbp == 20_000
+    assert row.tpa_land_value_share == pytest.approx(2 / 3)
+    assert row.tpa_land_value_share != pytest.approx((100 * .2 + .9) / 101)
+
+
 def cached_source(source_id):
     sources, top = load_manifest()
     path = REPO_ROOT / top["default_cache_dir"] / sources[source_id].filename
