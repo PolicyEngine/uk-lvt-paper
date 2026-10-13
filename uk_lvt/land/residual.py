@@ -80,6 +80,8 @@ def authority_table(cells: pd.DataFrame, universe: pd.DataFrame) -> pd.DataFrame
         # Sensitivity: type-only weights, without the imputed price-rank bands.
         type_means, type_weights = [], []
         for _, t in c.groupby("property_type", sort=True):
+            if t.stock.sum() == 0:
+                continue
             observed = t[t.sales.gt(0)]
             type_weights.append(t.stock.sum())
             type_means.append(weighted_mean(observed.mean_share, observed.sales)
@@ -135,21 +137,36 @@ def output_payloads() -> dict[Path, str]:
         authorities, pd.read_csv(DERIVED_DIR / "tpa_residual_reference.csv"),
         pd.read_csv(RESULT_DIR / "la_lambda_raw.csv"))
     england = regions.iloc[0]
-    summary = dict(valuation_date=VALUATION_DATE, spearman=correlations,
+    summary = dict(valuation_date=VALUATION_DATE, spearman={k: round(v, 9) for k, v in correlations.items()},
                    latest_sales=int(table.latest_sales.sum()), sales_clipped=int(table.sales_clipped.sum()),
-                   implied_england_land_gbp=float(england.implied_land_gbp),
-                   implied_england_property_gbp=float(england.implied_property_gbp),
-                   dwelling_weighted_share=float(england.residual_dwelling_weighted),
-                   value_weighted_share=float(england.residual_value_weighted),
+                   implied_england_land_gbp=round(float(england.implied_land_gbp)),
+                   implied_england_property_gbp=round(float(england.implied_property_gbp)),
+                   dwelling_weighted_share=round(float(england.residual_dwelling_weighted), 9),
+                   value_weighted_share=round(float(england.residual_value_weighted), 9),
                    ons=meta["ons"], coverage=meta["coverage"],
-                   england_2026_to_uk_2021_land_ratio=float(england.implied_land_gbp) / meta["ons"]["historical_uk_dwelling_land_gbp"],
+                   england_2026_to_uk_2021_land_ratio=round(float(england.implied_land_gbp) / meta["ons"]["historical_uk_dwelling_land_gbp"], 9),
                    comparison_warning="England April 2026 versus UK end-2021: geography and date differ; latest dwelling-land subclass unavailable")
     return {
-        RESULT_DIR / "la_lambda_residual.csv": table.to_csv(index=False, float_format="%.9f", lineterminator="\n"),
-        RESULT_DIR / "land_residual_disagreements.csv": disagreements.to_csv(index=False, float_format="%.9f", lineterminator="\n"),
-        RESULT_DIR / "land_residual_regions.csv": regions.to_csv(index=False, float_format="%.9f", lineterminator="\n"),
+        RESULT_DIR / "la_lambda_residual.csv": csv_payload(table),
+        RESULT_DIR / "land_residual_disagreements.csv": csv_payload(disagreements),
+        RESULT_DIR / "land_residual_regions.csv": csv_payload(regions),
         RESULT_DIR / "land_residual_summary.json": json.dumps(summary, indent=2, sort_keys=True) + "\n",
     }
+
+
+def csv_payload(frame: pd.DataFrame) -> str:
+    """Report totals to pounds and dwelling means to pence, avoiding false precision.
+
+    Aggregations use the unrounded cell means. Rounding only serialized outputs
+    also prevents insignificant BLAS/platform differences changing golden files.
+    """
+    out = frame.copy()
+    for column in out.columns:
+        if column.startswith("implied_") and column.endswith("_gbp"):
+            out[column] = out[column].round(0)
+        elif column.endswith("_gbp"):
+            out[column] = out[column].round(2)
+    return out.to_csv(index=False, float_format="%.9f", lineterminator="\n")
 
 
 def main(argv=None):

@@ -1,0 +1,141 @@
+{
+  "comparison_warning": "England April 2026 versus UK end-2021: geography and date differ; latest dwelling-land subclass unavailable",
+  "coverage": {
+    "latest_deed_date": "2026-04-30",
+    "latest_sales": 5778353,
+    "leasehold_sales": 1295781,
+    "new_build_sales": 640383,
+    "raw_rows": 8460348,
+    "sales_clipped": 921458,
+    "stock_conversion": {
+      "maximum_authority_scale_factor": 1.0005006508460998,
+      "minimum_authority_scale_factor": 0.9531568228105907,
+      "suppressed_cells_imputed": 2095,
+      "suppressed_count_imputation": 2.5
+    },
+    "transaction_years": [
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "unmatched_districts": [
+      {
+        "district": "BLAENAU GWENT",
+        "sales": 9040
+      },
+      {
+        "district": "BRIDGEND",
+        "sales": 20755
+      },
+      {
+        "district": "CAERPHILLY",
+        "sales": 22277
+      },
+      {
+        "district": "CARDIFF",
+        "sales": 49052
+      },
+      {
+        "district": "CARMARTHENSHIRE",
+        "sales": 26832
+      },
+      {
+        "district": "CEREDIGION",
+        "sales": 10021
+      },
+      {
+        "district": "CONWY",
+        "sales": 19487
+      },
+      {
+        "district": "DENBIGHSHIRE",
+        "sales": 14474
+      },
+      {
+        "district": "FLINTSHIRE",
+        "sales": 21510
+      },
+      {
+        "district": "GWYNEDD",
+        "sales": 17886
+      },
+      {
+        "district": "ISLE OF ANGLESEY",
+        "sales": 10089
+      },
+      {
+        "district": "MERTHYR TYDFIL",
+        "sales": 7105
+      },
+      {
+        "district": "MONMOUTHSHIRE",
+        "sales": 13649
+      },
+      {
+        "district": "NEATH PORT TALBOT",
+        "sales": 18523
+      },
+      {
+        "district": "NEWPORT",
+        "sales": 23157
+      },
+      {
+        "district": "PEMBROKESHIRE",
+        "sales": 19378
+      },
+      {
+        "district": "POWYS",
+        "sales": 17842
+      },
+      {
+        "district": "RHONDDA CYNON TAFF",
+        "sales": 34069
+      },
+      {
+        "district": "SWANSEA",
+        "sales": 31808
+      },
+      {
+        "district": "THE VALE OF GLAMORGAN",
+        "sales": 20468
+      },
+      {
+        "district": "TORFAEN",
+        "sales": 12008
+      },
+      {
+        "district": "WREXHAM",
+        "sales": 16335
+      }
+    ]
+  },
+  "dwelling_weighted_share": 0.369097785,
+  "england_2026_to_uk_2021_land_ratio": 0.89282099,
+  "implied_england_land_gbp": 5267643838570,
+  "implied_england_property_gbp": 10244081507361,
+  "latest_sales": 5778353,
+  "ons": {
+    "historical_dwelling_land_date": "2021-12-31",
+    "historical_precision_gbp": 100000000000.0,
+    "historical_source_id": "ons_dwelling_land_2021",
+    "historical_uk_dwelling_land_gbp": 5900000000000.0,
+    "latest_dwelling_land_status": "not separately published; request required",
+    "latest_edition": "Preliminary UK national balance sheet estimates, 10 June 2026",
+    "latest_uk_total_land_2025_gbp": 6872455000000.0
+  },
+  "sales_clipped": 921458,
+  "spearman": {
+    "mhclg": 0.463117485,
+    "mhclg_value_weighted": 0.439233429,
+    "tpa": 0.985368574,
+    "tpa_value_weighted": 0.981673353
+  },
+  "valuation_date": "2026-04-01",
+  "value_weighted_share": 0.514213386
+}

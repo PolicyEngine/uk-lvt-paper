@@ -124,6 +124,15 @@ def test_authority_aggregation_rejects_missing_stock(universe, synthetic_cells):
         R.authority_table(incomplete, universe)
 
 
+def test_zero_stock_unobserved_type_does_not_affect_aggregation(universe, synthetic_cells):
+    zero = synthetic_cells.iloc[[0]].assign(property_type="D", stock=0, sales=0,
+                                            sales_clipped=0, fallback="region_type")
+    out = R.authority_table(pd.concat([synthetic_cells, zero], ignore_index=True), universe)
+    np.testing.assert_allclose(out.lambda_residual, 0.625)
+    # The type-only sensitivity weights real samples differently from stock.
+    np.testing.assert_allclose(out.lambda_type_only, 0.45)
+
+
 @pytest.fixture
 def pinned_inputs(tmp_path, monkeypatch):
     """Small independent raw, derived and prototype bytes with their true hashes."""
