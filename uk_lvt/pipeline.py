@@ -7,17 +7,17 @@ the study "Replacing council tax with a revenue-neutral land value tax in the
 UK" and shapes the outputs into ``results/lvt_results.json``.
 
 Land values
-    Each household's land value is imputed upstream in policyengine-uk-data as
-    WAS (Wealth and Assets Survey) property value multiplied by a regional land
-    share. Corporate land (£2.06tn) is allocated to households in proportion to
-    their corporate wealth. The resulting totals are calibrated to the ONS
-    National Balance Sheet: £7.46tn of UK land in 2026-27, uprated from £7.10tn
-    in 2024 by OBR per-capita nominal GDP growth.
+    policyengine-uk computes each household's land value as property wealth
+    (imputed from the Wealth and Assets Survey) times a regional land share,
+    plus directly owned land. Corporate land (the ONS aggregate of £2.06tn,
+    held at its 2024 value) is allocated to households in proportion to their
+    corporate wealth. ``ons_comparison`` compares the totals with the ONS
+    National Balance Sheet.
 
 Revenue-neutral rate
     The budget-neutral flat LVT rate equals total net council tax revenue
-    (gross council tax less council tax benefit) divided by total land value
-    (£7,463bn), giving 0.77%.
+    (gross council tax less council tax benefit) divided by total land value;
+    the committed results give £58.5bn / £7,436.2bn = 0.79%.
 
 Reform levers
     Scenarios set the PolicyEngine UK parameters
@@ -36,7 +36,9 @@ without licensed data access.
    person-weighted Gini). This module is retained as an independent
    cross-check through the policyengine.py v4 client; its poverty and Gini
    outputs are household-weighted and unequivalised and should not be
-   quoted in the paper.
+   quoted in the paper. No build script or entry point drives it, and the
+   policyengine.py client it needs is not part of the locked environment
+   (install it separately to run the cross-check).
 """
 
 from __future__ import annotations
@@ -95,8 +97,10 @@ def _import_pe():
         from policyengine.tax_benefit_models.uk import uk_latest
     except ImportError as exc:
         raise RuntimeError(
-            "Running the simulation requires policyengine and policyengine-uk. "
-            "Install the package with the simulation extra first."
+            "This cross-check needs the policyengine.py client, which is not "
+            "part of the locked environment: install it separately "
+            "(uv pip install policyengine). The canonical generator is "
+            "uk_lvt.pipeline_direct."
         ) from exc
     return pe, Simulation, Policy, Parameter, ParameterValue, uk_latest
 

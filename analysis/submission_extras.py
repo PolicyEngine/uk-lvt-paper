@@ -32,12 +32,15 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 
+import extensions  # noqa: E402
 from extensions import (  # noqa: E402
-    load_baseline,
-    summarise_delta,
     _gini,
     _wmean,
+    load_baseline,
+    summarise_delta,
 )
+
+from uk_lvt.provenance import build_provenance  # noqa: E402
 
 OUTPUT = ROOT / "results" / "submission_extras.json"
 THETAS = (0.0, 0.25, 0.5, 0.75, 1.0)
@@ -151,6 +154,7 @@ def main():
     delta = ct_saved - central_rate * land
 
     out = {
+        "provenance": build_provenance(extensions.DATASET),
         "central_rate_pct": round(central_rate * 100, 3),
         "replacement_target_bn": round(target / 1e9, 1),
         "pass_through_curve": pass_through_curve(df, central_rate),

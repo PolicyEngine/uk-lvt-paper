@@ -12,8 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - name: Check uv.lock is up to date
+        run: uv lock --check
       - name: Run test suite
-        run: uv run --extra dev pytest -q
+        run: uv run --locked --extra dev pytest -q
+      - name: Run provenance tests against the pinned model
+        run: uv run --locked --extra dev --extra simulation pytest -q tests/test_provenance.py
 
   paper:
     name: Build and check paper
