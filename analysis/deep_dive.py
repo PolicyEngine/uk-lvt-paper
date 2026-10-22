@@ -52,13 +52,19 @@ Sections
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from uk_lvt.provenance import build_provenance, dataset_source  # noqa: E402
+
+DATASET = dataset_source()
 YEAR = 2026
 OUTPUT = ROOT / "results" / "deep_dive.json"
 
@@ -133,7 +139,9 @@ def suits_index(tax, y, w):
         return float("nan")
     x = np.concatenate([[0.0], np.cumsum(inc) / inc.sum()])
     z = np.concatenate([[0.0], np.cumsum(t) / t.sum()])
-    area = np.trapz(z, x)
+    # np.trapz was removed in NumPy 2.4; np.trapezoid (NumPy >= 2.0) is the
+    # same trapezoidal rule under its new name.
+    area = np.trapezoid(z, x)
     return float(1 - 2 * area)
 
 
@@ -660,6 +668,7 @@ def build():
     rate = ct_revenue_bn / land_bn
 
     return {
+        "provenance": build_provenance(DATASET),
         "budget_neutral_rate_pct": round(rate * 100, 3),
         "etr_by_property_value": etr_by_property_value(df, rate),
         "etr_by_main_residence_value": etr_by_property_value(

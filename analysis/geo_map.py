@@ -1,5 +1,11 @@
 """Constituency map of the council-tax-to-budget-neutral-LVT swap.
 
+SUPERSEDED (not part of the paper): this script ran on a different microdata
+build from the rest of the paper and its outputs in results/geo/ are
+mixed-vintage; see results/geo/README.md. It refuses to run unless passed
+``--allow-superseded``. The aggregation ``(W @ change) / W.sum(1)`` and the
+neutrality guard below are kept for reuse by a same-vintage rebuild.
+
 Runs baseline and reform PolicyEngine UK simulations on the Enhanced FRS
 2023-24 microdata, computes each household's net income change, and averages
 it into the 650 Westminster (2024) parliamentary constituencies using the
@@ -15,13 +21,23 @@ Follows the map conventions of uk-ai-study/analysis/geo_choropleth.py.
 
 from __future__ import annotations
 
-import os
 import sys
-from pathlib import Path
 
-import h5py
-import numpy as np
-import pandas as pd
+# Refuse before the optional imports below (h5py and the undeclared
+# geopandas), so a clean environment prints the reason rather than an
+# ImportError.
+if __name__ == "__main__" and "--allow-superseded" not in sys.argv[1:]:
+    raise SystemExit(
+        "analysis/geo_map.py is superseded: its outputs are mixed-vintage "
+        "(see results/geo/README.md). Pass --allow-superseded to run it anyway."
+    )
+
+import os  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+import h5py  # noqa: E402
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))

@@ -13,15 +13,28 @@ every invocation:
 * the land value tax is linear in the rate, ``LVT_i = r L_i``, because the base
   is a stock that the reform does not alter;
 * the swap generates no benefit interactions, so the change in household net
-  income is exactly ``CT_i - r L_i`` (checked against full reform runs; the
-  share of households for which this fails is reported as
-  ``validation.share_households_with_benefit_interaction``);
+  income is exactly ``CT_i - r L_i`` up to the model's float32 rounding
+  (checked against full reform runs: every household's gap must be within
+  ``FLOAT32_ULP_TOLERANCE`` float32 spacings of its largest income, benefit
+  or tax total, see
+  ``uk_lvt/validation.py``; the share of households for which this fails is
+  reported as ``validation.share_households_with_benefit_interaction``);
 * poverty under the reform can therefore be recomputed by shifting equivalised
   HBAI income by that change and comparing with the baseline-fixed thresholds
   (checked against the model's own ``in_poverty_bhc`` / ``in_poverty_ahc`` under
   full reform runs at three rates).
 
 If any check fails the module raises rather than writing a results file.
+
+Reproducing
+-----------
+``uv sync --frozen --extra simulation`` installs the pinned model, then
+``uv run python -m uk_lvt.pipeline_direct`` regenerates the file. Pass
+``--dataset`` (or set ``UK_LVT_DATASET``) to read a local copy of the pinned
+dataset, and ``--uk-data-root`` (or ``POLICYENGINE_UK_DATA_ROOT``) for the
+ONS land targets; ``scripts/fetch_uk_data_targets.py`` fetches those at the
+pinned policyengine-uk-data commit. The output records the package versions
+and the dataset SHA-256 in its ``provenance`` block.
 
 Deciles
 -------
@@ -42,6 +55,7 @@ household-weighted, matching the ONS WAS convention.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 from pathlib import Path
@@ -65,13 +79,34 @@ from .analysis import (
     format_rate_label,
     make_rate_grid,
 )
+from .provenance import build_provenance, dataset_source
+from .validation import (
+    FLOAT32_ULP_TOLERANCE,
+    REPORTING_THRESHOLD_GBP,
+    budget_neutral_rate,
+    closed_form_gap_check,
+    household_scale,
+)
 
-DATASET = "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14"
+DATASET = dataset_source()
 YEAR = 2026
 OUTPUT = Path("results/lvt_results.json")
 VALIDATION_RATES = (0.005, 0.01, 0.02)
-TOLERANCE_GBP = 1.0
+# Reporting threshold for share_households_gap_over_threshold_gbp. The guard
+# itself is relative: FLOAT32_ULP_TOLERANCE float32 spacings of each
+# household's largest total (uk_lvt/validation.py).
+TOLERANCE_GBP = REPORTING_THRESHOLD_GBP
 TOLERANCE_PP = 0.01
+# household_net_income = market income + benefits - tax - pension
+# contributions. The largest absolute value of net income, market income,
+# benefits and tax, in the baseline or reform run, sets each household's
+# float32 rounding scale.
+NET_INCOME_TOTALS = (
+    "household_net_income",
+    "household_market_income",
+    "household_benefits",
+    "household_tax",
+)
 
 
 def _v(sim, name, year=YEAR, dtype=np.float64):
@@ -131,6 +166,8 @@ def load_baseline():
             "poverty_line_ahc": _v(sim, "poverty_line_ahc"),
         }
     )
+    for name in NET_INCOME_TOTALS[1:]:
+        df[name] = _v(sim, name)
     df["council_tax_saved"] = (
         df["council_tax"] - df["council_tax_benefit"]
     )
@@ -185,37 +222,69 @@ def income_gini(df, delta=0.0):
 
 
 def validate(df) -> dict:
-    """Check linearity, absence of benefit interactions, and poverty replication."""
+    """Check linearity, absence of benefit interactions, and poverty replication.
+
+    A household's full-model change in net income must equal the closed form
+    ``CT_i - r L_i`` to within ``FLOAT32_ULP_TOLERANCE`` float32 spacings of
+    its largest total among ``NET_INCOME_TOTALS`` (baseline or reform run). The model computes these totals in float32, so the rounding
+    gap grows with the household's income; an absolute £ tolerance would trip
+    on very high-income households whose float32 spacing approaches £1.
+    """
     w = df["weight"].values
     pw = df["person_weight"].values
     land = df["land_value"].values
     ct = df["council_tax_saved"].values
+    baseline_totals = [df["income"].values] + [
+        df[name].values for name in NET_INCOME_TOTALS[1:]
+    ]
     checks = []
     for rate in VALIDATION_RATES:
         sim = reform_run(rate)
         model_lvt = _v(sim, "LVT")
-        model_delta = _v(sim, "household_net_income") - df["income"].values
+        reform_totals = [_v(sim, name) for name in NET_INCOME_TOTALS]
+        model_delta = reform_totals[0] - df["income"].values
         arith_delta = ct - rate * land
+        gap = closed_form_gap_check(
+            model_delta,
+            arith_delta,
+            household_scale(*baseline_totals, *reform_totals),
+            w,
+            ulps=FLOAT32_ULP_TOLERANCE,
+            reporting_threshold_gbp=TOLERANCE_GBP,
+        )
         pov_bhc, pov_ahc = poverty_rates(df, arith_delta)
         model_bhc = 100 * float(np.sum(_v(sim, "in_poverty_bhc") * pw) / np.sum(pw))
         model_ahc = 100 * float(np.sum(_v(sim, "in_poverty_ahc") * pw) / np.sum(pw))
         check = {
             "rate": rate,
             "max_abs_lvt_gap": float(np.max(np.abs(model_lvt - rate * land))),
-            "max_abs_delta_gap": float(np.max(np.abs(model_delta - arith_delta))),
-            "share_households_with_benefit_interaction": 100
-            * float(np.sum((np.abs(model_delta - arith_delta) > TOLERANCE_GBP) * w) / np.sum(w)),
+            "max_abs_delta_gap": gap["max_abs_delta_gap"],
+            "share_households_with_benefit_interaction": gap[
+                "share_households_with_benefit_interaction"
+            ],
             "model_poverty_bhc": model_bhc,
             "arithmetic_poverty_bhc": pov_bhc,
             "model_poverty_ahc": model_ahc,
             "arithmetic_poverty_ahc": pov_ahc,
+            "max_delta_gap_float32_ulps": gap["max_delta_gap_float32_ulps"],
+            "share_households_gap_over_threshold_gbp": gap[
+                "share_households_gap_over_threshold_gbp"
+            ],
         }
-        if check["max_abs_delta_gap"] > TOLERANCE_GBP:
-            raise RuntimeError(f"Net income change is not CT - rL at rate {rate}: {check}")
+        if not gap["passed"]:
+            raise RuntimeError(
+                f"Net income change is not CT - rL within {FLOAT32_ULP_TOLERANCE} "
+                f"float32 spacings at rate {rate}: {check}"
+            )
         if abs(model_bhc - pov_bhc) > TOLERANCE_PP or abs(model_ahc - pov_ahc) > TOLERANCE_PP:
             raise RuntimeError(f"Poverty replication failed at rate {rate}: {check}")
         checks.append({k: (round(v, 4) if isinstance(v, float) else v) for k, v in check.items()})
-    return {"tolerance_gbp": TOLERANCE_GBP, "tolerance_pp": TOLERANCE_PP, "checks": checks}
+    return {
+        "tolerance_gbp": TOLERANCE_GBP,
+        "tolerance_pp": TOLERANCE_PP,
+        "tolerance_float32_ulps": FLOAT32_ULP_TOLERANCE,
+        "checks": checks,
+    }
 
 
 def _family_types(sim, n_households: int) -> list[str]:
@@ -253,7 +322,11 @@ def build_results(uk_data_root: Path | None = None) -> dict:
     land = df["land_value"].values
     ct = df["council_tax_saved"].values
 
-    results: dict = {"model_version": _model_version(), "dataset": DATASET}
+    results: dict = {
+        "model_version": _model_version(),
+        "dataset": DATASET,
+        "provenance": build_provenance(DATASET),
+    }
     results["validation"] = validate(df)
 
     baseline_df = df.rename(columns={"income": "income"})[
@@ -294,9 +367,9 @@ def build_results(uk_data_root: Path | None = None) -> dict:
         baseline_df, decile_col="wealth_decile"
     )
 
-    council_tax_revenue_bn = float(np.sum(ct * w)) / 1e9
-    total_land_bn = float(np.sum(land * w)) / 1e9
-    required_rate = council_tax_revenue_bn / total_land_bn
+    required_rate, council_tax_revenue_bn, total_land_bn = budget_neutral_rate(
+        ct, land, w
+    )
 
     results["revenue_by_rate"] = build_revenue_by_rate(
         council_tax_revenue_bn,
@@ -446,14 +519,44 @@ def _model_version() -> str:
     return f"{version}+git.{commit[:8]}" if commit else version
 
 
-def main() -> None:
-    results = build_results()
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(results, indent=2) + "\n")
-    print(f"Wrote {OUTPUT} (policyengine-uk {results['model_version']})")
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Regenerate results/lvt_results.json from one baseline run."
+    )
+    parser.add_argument(
+        "--dataset",
+        default=None,
+        help="Dataset path or hf:// URL (default: $UK_LVT_DATASET or the pin).",
+    )
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument(
+        "--uk-data-root",
+        type=Path,
+        default=None,
+        help="Local policyengine-uk-data checkout holding the ONS land targets.",
+    )
+    return parser
+
+
+def write_results(results: dict, output: Path = OUTPUT) -> Path:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(results, indent=2) + "\n")
+    return output
+
+
+def main(argv: list[str] | None = None) -> int:
+    global DATASET
+
+    args = build_parser().parse_args(argv)
+    if args.dataset:
+        DATASET = args.dataset
+    results = build_results(uk_data_root=args.uk_data_root)
+    write_results(results, args.output)
+    print(f"Wrote {args.output} (policyengine-uk {results['model_version']})")
     print(json.dumps(results["council_tax_replacement"], indent=2))
     print(json.dumps(results["poverty_gini"]["scenarios"], indent=2))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

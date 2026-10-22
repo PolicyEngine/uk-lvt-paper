@@ -32,7 +32,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 
-from extensions import load_baseline, _deciles  # noqa: E402
+import extensions  # noqa: E402
+from extensions import _deciles, load_baseline  # noqa: E402
+
+from uk_lvt.provenance import build_provenance  # noqa: E402
 
 OUTPUT = ROOT / "results" / "lambda_mc.json"
 SEED = 20260729
@@ -63,10 +66,12 @@ def headline(df, delta, w):
 
 
 def region_lambda(df):
-    regions = df["region"].values
+    # A NumPy unicode array: under pandas 3, .values on a string column is a
+    # pandas string array, which np.char.find does not accept.
+    regions = np.asarray(df["region"].values).astype(str)
     lam = np.zeros(len(df))
     for key, val in LAMBDA.items():
-        lam[np.char.find(regions.astype(str), key) >= 0] = val
+        lam[np.char.find(regions, key) >= 0] = val
     missing = lam == 0
     if missing.any():
         unmatched = sorted(set(df["region"].values[missing]))
@@ -93,6 +98,7 @@ def main():
     point_land = resid + owned + corp
     rate0 = float(np.sum(ct * w) / np.sum(point_land * w))
     out = {
+        "provenance": build_provenance(extensions.DATASET),
         "central": {"rate_pct": round(100 * rate0, 3),
                     **{k: round(v, 1) for k, v in
                        headline(df, ct - rate0 * point_land, w).items()}},
