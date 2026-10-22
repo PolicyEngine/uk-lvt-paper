@@ -1,4 +1,15 @@
 {
+  "provenance": {
+    "packages": {
+      "policyengine-uk": "2.89.4",
+      "policyengine-core": "3.30.3",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6"
+    },
+    "dataset": "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14",
+    "dataset_sha256": "584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d",
+    "dataset_matches_pin": true
+  },
   "decile_integrity": {
     "model_income_decile_population_share_pct": {
       "-1": 0.2,
@@ -235,7 +246,7 @@
       "rate_pct": 0.912,
       "pct_winners": 67.2,
       "pct_losers": 29.9,
-      "aggregate_change_bn": -0.0,
+      "aggregate_change_bn": 0.0,
       "income_decile_1": 561,
       "income_decile_5": -87,
       "income_decile_9": -583,
@@ -254,7 +265,7 @@
       "rate_pct": 0.823,
       "pct_winners": 67.4,
       "pct_losers": 29.9,
-      "aggregate_change_bn": 0.0,
+      "aggregate_change_bn": -0.0,
       "income_decile_1": 587,
       "income_decile_5": -87,
       "income_decile_9": -678,
@@ -330,7 +341,7 @@
       "rate_pct": 0.864,
       "pct_winners": 65.4,
       "pct_losers": 31.8,
-      "aggregate_change_bn": 0.0,
+      "aggregate_change_bn": -0.0,
       "income_decile_1": 603,
       "income_decile_5": -175,
       "income_decile_9": -839,

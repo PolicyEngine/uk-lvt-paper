@@ -31,7 +31,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 
-from extensions import load_baseline, _gini, _deciles  # noqa: E402
+import extensions  # noqa: E402
+from extensions import _deciles, _gini, load_baseline  # noqa: E402
+
+from uk_lvt.provenance import build_provenance  # noqa: E402
 
 OUTPUT = ROOT / "results" / "bootstrap_ci.json"
 SEED = 20260729
@@ -120,6 +123,7 @@ def main():
             print(f"replicate {b + 1}/{args.reps}")
 
     out = {
+        "provenance": build_provenance(extensions.DATASET),
         "reps": args.reps,
         "method": "Poisson(1) weight bootstrap; budget-neutral rate re-solved "
         "per replicate; percentile intervals. Captures survey sampling "

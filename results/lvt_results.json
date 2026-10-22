@@ -1,9 +1,21 @@
 {
   "model_version": "2.89.4",
   "dataset": "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14",
+  "provenance": {
+    "packages": {
+      "policyengine-uk": "2.89.4",
+      "policyengine-core": "3.30.3",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6"
+    },
+    "dataset": "hf://policyengine/policyengine-uk-data-private/enhanced_frs_2023_24.h5@1.56.14",
+    "dataset_sha256": "584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d",
+    "dataset_matches_pin": true
+  },
   "validation": {
     "tolerance_gbp": 1.0,
     "tolerance_pp": 0.01,
+    "tolerance_float32_ulps": 8,
     "checks": [
       {
         "rate": 0.005,
@@ -13,7 +25,9 @@
         "model_poverty_bhc": 8.7973,
         "arithmetic_poverty_bhc": 8.7973,
         "model_poverty_ahc": 13.7194,
-        "arithmetic_poverty_ahc": 13.7194
+        "arithmetic_poverty_ahc": 13.7194,
+        "max_delta_gap_float32_ulps": 3.3006,
+        "share_households_gap_over_threshold_gbp": 0.0
       },
       {
         "rate": 0.01,
@@ -23,7 +37,9 @@
         "model_poverty_bhc": 10.2099,
         "arithmetic_poverty_bhc": 10.2099,
         "model_poverty_ahc": 14.0921,
-        "arithmetic_poverty_ahc": 14.0921
+        "arithmetic_poverty_ahc": 14.0921,
+        "max_delta_gap_float32_ulps": 2.9606,
+        "share_households_gap_over_threshold_gbp": 0.0
       },
       {
         "rate": 0.02,
@@ -33,7 +49,9 @@
         "model_poverty_bhc": 12.4086,
         "arithmetic_poverty_bhc": 12.4086,
         "model_poverty_ahc": 16.5656,
-        "arithmetic_poverty_ahc": 16.5656
+        "arithmetic_poverty_ahc": 16.5656,
+        "max_delta_gap_float32_ulps": 2.9375,
+        "share_households_gap_over_threshold_gbp": 0.0
       }
     ]
   },

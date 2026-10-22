@@ -4,15 +4,17 @@ version = "0.1.0"
 description = "Replacing council tax with a revenue-neutral land value tax in the UK: PolicyEngine microsimulation"
 requires-python = ">=3.13"
 dependencies = [
-    "numpy>=1.26",
+    "numpy>=2.0",
     "pandas>=2.2",
     "matplotlib",
 ]
 
 [project.optional-dependencies]
+# Exact pins for the model behind results/*.json. uv.lock pins everything
+# else; install with `uv sync --frozen --extra simulation`.
 simulation = [
-    "policyengine>=4.4.0",
-    "policyengine-uk>=2.88.10",
+    "policyengine-uk==2.89.4",
+    "policyengine-core==3.30.3",
 ]
 land = [
     "pyyaml>=6.0",

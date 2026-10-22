@@ -7,6 +7,7 @@ simulation dependencies: this reproduces every chart without licensed data.
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -181,7 +182,11 @@ def fig8_poverty_gini_by_rate(data: dict) -> None:
 
 
 def fig9_net_change_by_region(data: dict) -> None:
-    """Average central-reform effect across standard UK regions."""
+    """Average central-reform effect across standard UK regions.
+
+    Superseded: this chart left the paper in PR #11. ``main`` draws it only
+    with ``--include-superseded``; see results/figures/README.md.
+    """
     df = pd.DataFrame(data["impact_by_region"]).sort_values("avg_net_change")
     fig, ax = plt.subplots(figsize=fs.SINGLE)
     colors = _gain_colors(df["avg_net_change"])
@@ -207,8 +212,16 @@ def fig9_net_change_by_region(data: dict) -> None:
     _save(fig, df, "fig9_net_change_by_region")
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     global COUNCIL_TAX_BN, NEUTRAL_RATE
+
+    parser = argparse.ArgumentParser(description="Draw the paper figures.")
+    parser.add_argument(
+        "--include-superseded",
+        action="store_true",
+        help="also redraw fig9_net_change_by_region, which left the paper in PR #11",
+    )
+    args = parser.parse_args(argv)
 
     data = json.loads(RESULTS.read_text())
     replacement = data["council_tax_replacement"]
@@ -222,7 +235,8 @@ def main() -> None:
     fig6_winners_losers_by_decile(data)
     fig7_revenue_by_rate(data)
     fig8_poverty_gini_by_rate(data)
-    fig9_net_change_by_region(data)
+    if args.include_superseded:
+        fig9_net_change_by_region(data)
 
 
 if __name__ == "__main__":
